@@ -6,7 +6,7 @@ public class OnboardingActivity4 extends AbstractOnboarding<MainActivity> {
 
     @Override
     protected int getLayoutId() {
-        return R.layout.activity_onboarding4; // XML for last onboarding screen
+        return R.layout.activity_onboarding4;
     }
 
     @Override
@@ -14,8 +14,9 @@ public class OnboardingActivity4 extends AbstractOnboarding<MainActivity> {
         return OnboardingActivity3.class;
     }
 
+    //TODO: Fix when main menus are fixed
     @Override
     protected Class<MainActivity> getNextActivity() {
-        return MainActivity.class; // Goes to main app
+        return MainActivity.class;
     }
 }

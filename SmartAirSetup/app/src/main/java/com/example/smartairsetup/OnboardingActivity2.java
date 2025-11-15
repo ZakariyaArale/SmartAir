@@ -10,7 +10,7 @@ public class OnboardingActivity2 extends AbstractOnboarding<OnboardingActivity3>
 
     @Override
     protected Class<? extends Activity> getPreviousActivity() {
-        return OnboardingActivity.class; // Back → screen 1
+        return OnboardingActivity.class;
     }
     @Override
     protected Class<OnboardingActivity3> getNextActivity() {

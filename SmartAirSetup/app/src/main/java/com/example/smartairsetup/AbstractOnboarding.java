@@ -16,6 +16,7 @@ public abstract class AbstractOnboarding<T extends Activity> extends AppCompatAc
     protected TextView onboardingSubtitle;
     protected TextView onboardingDescription;
 
+    //Setup all functionality for the activity
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -29,30 +30,31 @@ public abstract class AbstractOnboarding<T extends Activity> extends AppCompatAc
         applyFade();
     }
 
-    // ===== ABSTRACT METHODS =====
-    protected abstract int getLayoutId();             // XML layout for the screen
-    protected abstract Class<T> getNextActivity();    // Next Activity type
+    // For sending the screen layout for traversal
+    protected abstract int getLayoutId();
+    protected abstract Class<T> getNextActivity();
 
-    // ===== OPTIONAL METHODS WITH DEFAULTS =====
-    // By default, previous goes to MainActivity (first screen)
+    //This is default behaivour TODO: fix when Mainacitivty is implemented by Aydin
     protected Class<? extends Activity> getPreviousActivity() {
+
         return MainActivity.class;
     }
 
-    // By default, skip goes to MainActivity
+
     protected Class<? extends Activity> getSkipActivity() {
+
         return MainActivity.class;
     }
 
-    // ===== COMMON LOGIC =====
-    private void setViews() {
+    // Concrete methods for setting views and buttons
+    void setViews() {
         onboardingImage = findViewById(R.id.onboardingImage);
         onboardingHeading = findViewById(R.id.onboardingHeading);
         onboardingSubtitle = findViewById(R.id.onboardingSubtitle);
         onboardingDescription = findViewById(R.id.onboardingDescription);
     }
 
-    private void setNextButton() {
+    protected void setNextButton() {
         Button nextButton = findViewById(R.id.nextButton);
         if (nextButton != null && getNextActivity() != null) {
             nextButton.setOnClickListener(v -> {
@@ -62,7 +64,7 @@ public abstract class AbstractOnboarding<T extends Activity> extends AppCompatAc
         }
     }
 
-    private void setBackButton() {
+    protected void setBackButton() {
         Button backButton = findViewById(R.id.backButton);
         if (backButton != null) {
             Class<? extends Activity> previous = getPreviousActivity();
@@ -73,7 +75,7 @@ public abstract class AbstractOnboarding<T extends Activity> extends AppCompatAc
         }
     }
 
-    private void setSkipButton() {
+    protected void setSkipButton() {
         Button skipButton = findViewById(R.id.skipButton);
         if (skipButton != null) {
             Class<? extends Activity> skipTarget = getSkipActivity();
@@ -84,7 +86,7 @@ public abstract class AbstractOnboarding<T extends Activity> extends AppCompatAc
         }
     }
 
-    private void applyFade() {
+    protected void applyFade() {
         FadeIn fadeInMaker = new FadeIn(this);
         fadeInMaker.generateFadeIn(
                 onboardingImage,
