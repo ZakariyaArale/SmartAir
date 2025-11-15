@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools">
+<manifest xmlns:android="http://schemas.android.com/apk/res/android">
 
     <application
         android:allowBackup="true"
@@ -12,7 +11,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.SmartAirSetup">
 
-        <!-- Temporary (Lauches to OnboardingActivity) -->
+        <!-- Onboarding screens -->
         <activity
             android:name=".OnboardingActivity"
             android:exported="true">
@@ -21,10 +20,13 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name=".OnboardingActivity2" android:exported="true" />
+        <activity android:name=".OnboardingActivity3" android:exported="true" />
+        <activity android:name=".OnboardingActivity4" android:exported="true" />
 
-        <!-- Temorary (to integrate main acitivty when marrging) -->
-        <activity android:name=".MainActivity"
-            android:exported="true" />
+        <!-- Main Activity (app home) -->
+        <activity android:name=".MainActivity" android:exported="true" />
+
     </application>
 
 </manifest>
