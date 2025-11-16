@@ -20,6 +20,7 @@ lifecycleRuntimeKtx = "2.6.1"
 activityCompose = "1.11.0"
 composeBom = "2024.09.00"
 
+
 [libraries]
 appcompat-v170 = { module = "androidx.appcompat:appcompat", version.ref = "appcompatVersion" }
 constraintlayout-v221 = { module = "androidx.constraintlayout:constraintlayout", version.ref = "constraintlayoutVersion" }

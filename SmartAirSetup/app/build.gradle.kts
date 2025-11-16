@@ -46,13 +46,12 @@ kotlin {
 }
 
 dependencies {
+
     // --- AndroidX & UI stuff ---
     implementation(libs.core.ktx)
     implementation(libs.appcompat.v170)
     implementation(libs.material.v1120)
     implementation(libs.constraintlayout.v221)
-
-    // (If your project had other libs from the template, add them back too.)
 
     // --- Firebase ---
     implementation(platform(libs.firebase.bom))
@@ -62,14 +61,22 @@ dependencies {
     implementation(libs.lifecycle.livedata.ktx)
     implementation(libs.lifecycle.viewmodel.ktx)
     implementation(libs.lifecycle.runtime.ktx)
+
+    // --- Jetpack Compose ---
     implementation(libs.activity.compose)
     implementation(platform(libs.compose.bom))
     implementation(libs.ui)
     implementation(libs.ui.graphics)
     implementation(libs.ui.tooling.preview)
     implementation(libs.material3)
+
+    // --- Tests (from origin/main + compose tests) ---
+    testImplementation(libs.junit)
+    androidTestImplementation(libs.ext.junit)
+    androidTestImplementation(libs.espresso.core)
     androidTestImplementation(platform(libs.compose.bom))
     androidTestImplementation(libs.ui.test.junit4)
+
     debugImplementation(libs.ui.tooling)
     debugImplementation(libs.ui.test.manifest)
 }

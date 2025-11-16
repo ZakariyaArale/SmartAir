@@ -11,21 +11,43 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.SmartAirSetup">
+
+        <!-- Onboarding screens -->
+        <activity
+            android:name=".OnboardingActivity"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
+        <activity
+            android:name=".OnboardingActivity2"
+            android:exported="true" />
+
+        <activity
+            android:name=".OnboardingActivity3"
+            android:exported="true" />
+
+        <activity
+            android:name=".OnboardingActivity4"
+            android:exported="true" />
+
+        <!-- Authentication screens -->
         <activity
             android:name=".SignupActivity" />
+
         <activity
             android:name=".LoginActivity"
             android:exported="false"
             android:label="@string/title_activity_login" />
+
+        <!-- Main Activity (app home) -->
         <activity
             android:name=".MainActivity"
-            android:exported="true">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
+            android:exported="true" />
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
     </application>
 
 </manifest>

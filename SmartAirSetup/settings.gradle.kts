@@ -20,6 +20,7 @@ dependencyResolutionManagement {
         google()
         mavenCentral()
     }
+
 }
 
 rootProject.name = "SmartAirSetup"
