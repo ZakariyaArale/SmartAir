@@ -1,26 +1,27 @@
 <resources>
+    <!-- App name -->
     <string name="app_name">SmartAirSetup</string>
 
     <!-- Onboarding texts -->
     <string name="onboarding_heading">Welcome to SmartAir!</string>
     <string name="onboarding_subtitle">Your personalized asthma assistance</string>
-    <string name="onboarding_description">Click next to learn more about the purpose of the app\nClick skip to signup</string>
+    <string name="onboarding_description">Click next to learn more about the purpose of the app&#10;Click skip to signup</string>
 
     <string name="onboarding_heading2">Breathe With Confidence!</string>
     <string name="onboarding_subtitle2">SmartAir teaches children how to manage asthma safely while helping families and providers stay informed</string>
-    <string name="onboarding_description2">Click next to learn more about rescue vs controller\nClick back to return to the previous screen\nClick skip to signup</string>
+    <string name="onboarding_description2">Click next to learn more about rescue vs controller&#10;Click back to return to the previous screen&#10;Click skip to signup</string>
 
     <string name="onboarding_heading3">Quick Relief, Daily Protection!</string>
-    <string name="onboarding_subtitle3">Make sure to log the right inhaler:\nRescue for emergencies, Controller for daily protection</string>
-    <string name="onboarding_description3">Click next to learn more about data security\nClick back to return to the previous screen\nClick skip to signup</string>
+    <string name="onboarding_subtitle3">Make sure to log the right inhaler:&#10;Rescue for emergencies, Controller for daily protection</string>
+    <string name="onboarding_description3">Click next to learn more about data security&#10;Click back to return to the previous screen&#10;Click skip to signup</string>
 
     <string name="onboarding_heading4">Your Data, Your Safety!</string>
     <string name="onboarding_subtitle4">By default your health data is private, parents control what information is shared with healthcare providers, so your data stays safe and private</string>
-    <string name="onboarding_description4">Click next to get started!\nClick back to return to the previous screen</string>
-
+    <string name="onboarding_description4">Click next to get started!&#10;Click back to return to the previous screen</string>
 
     <string name="onboarding_speak">Onboarding slides</string>
-    <!-- Button texts -->
+
+    <!-- Onboarding button texts -->
     <string name="back_button">Back</string>
     <string name="skip_button">Skip</string>
     <string name="next_button">Next</string>
@@ -30,4 +31,21 @@
     <string name="onboarding_image_desc2">Family/Provider Image</string>
     <string name="onboarding_image_desc3">Inhaler Image</string>
     <string name="onboarding_image_desc4">Shield Image</string>
+
+    <!-- PB screen strings -->
+    <string name="pb_title">Enter Your Childs PEF</string>
+    <string name="pb_subtitle">Manually enter PEF readings, including optional pre and post medication values.</string>
+    <string name="choose_child">Select Child</string>
+    <string name="pb_entry_label">Enter PEF Readings</string>
+    <string name="pre_med_hint">Pre-medication (optional)</string>
+    <string name="post_med_hint">Post-medication (optional)</string>
+    <string name="save_button">Save</string>
+    <string name="unit_lmin">L/min</string>
+
+    <!-- Children list (for dynamic selection) -->
+    <string-array name="children_list">
+        <item>Ali</item>
+        <item>Sara</item>
+        <item>Zayd</item>
+    </string-array>
 </resources>
