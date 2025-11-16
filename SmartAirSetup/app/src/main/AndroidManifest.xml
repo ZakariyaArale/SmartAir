@@ -11,15 +11,18 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.SmartAirSetup">
 
-        <!-- Onboarding screens -->
+        <!-- PEF Activity (app start) -->
         <activity
-            android:name=".OnboardingActivity"
+            android:name=".PEFActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <!-- Onboarding screens -->
+        <activity android:name=".OnboardingActivity" android:exported="true" />
         <activity android:name=".OnboardingActivity2" android:exported="true" />
         <activity android:name=".OnboardingActivity3" android:exported="true" />
         <activity android:name=".OnboardingActivity4" android:exported="true" />

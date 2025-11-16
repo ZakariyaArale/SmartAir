@@ -30,21 +30,4 @@
     <string name="onboarding_image_desc2">Family/Provider Image</string>
     <string name="onboarding_image_desc3">Inhaler Image</string>
     <string name="onboarding_image_desc4">Shield Image</string>
-
-    <!-- PB screen strings -->
-    <string name="pb_title">Enter Your Childs PEF</string>
-    <string name="pb_subtitle">Manually enter PEF readings, including optional pre and post medication values.</string>
-    <string name="choose_child">Select Child</string>
-    <string name="pb_entry_label">Enter PEF Readings</string>
-    <string name="pre_med_hint">Pre-medication (optional)</string>
-    <string name="post_med_hint">Post-medication (optional)</string>
-    <string name="save_button">Save</string>
-    <string name="unit_lmin">L/min</string>
-
-    <!-- Children list (for dynamic selection) -->
-    <string-array name="children_list">
-        <item>Ali</item>
-        <item>Sara</item>
-        <item>Zayd</item>
-    </string-array>
 </resources>
