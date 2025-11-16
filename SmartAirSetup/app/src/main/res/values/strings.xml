@@ -1,49 +1,23 @@
 <resources>
     <string name="app_name">SmartAirSetup</string>
 
-    <!-- Login / Signup -->
-    <string name="title_activity_login">LoginActivity</string>
-    <string name="prompt_email">Email</string>
-    <string name="prompt_password">Password</string>
-    <string name="action_sign_in">Sign in or register</string>
-    <string name="action_sign_in_short">Sign in</string>
-    <string name="welcome">"Welcome !"</string>
-    <string name="invalid_username">Not a valid username</string>
-    <string name="invalid_password">Password must be >5 characters</string>
-    <string name="login_failed">"Login failed"</string>
-    <string name="title_activity_signup">SignupActivity</string>
-    <string name="forgot_password">Forgot password?</string>
-
     <!-- Onboarding texts -->
     <string name="onboarding_heading">Welcome to SmartAir!</string>
     <string name="onboarding_subtitle">Your personalized asthma assistance</string>
-    <string name="onboarding_description">
-        Click next to learn more about the purpose of the app\nClick skip to signup
-    </string>
+    <string name="onboarding_description">Click next to learn more about the purpose of the app&#10;Click skip to signup</string>
 
+    <string name="forgot_password">Forgot password?</string>
     <string name="onboarding_heading2">Breathe With Confidence!</string>
-    <string name="onboarding_subtitle2">
-        SmartAir teaches childre...fely while helping families and providers stay informed
-    </string>
-    <string name="onboarding_description2">
-        Click next to learn m... to return to the previous screen\nClick skip to signup
-    </string>
+    <string name="onboarding_subtitle2">SmartAir teaches children how to manage asthma safely while helping families and providers stay informed</string>
+    <string name="onboarding_description2">Click next to learn more about rescue vs controller&#10;Click back to return to the previous screen&#10;Click skip to signup</string>
 
     <string name="onboarding_heading3">Quick Relief, Daily Protection!</string>
-    <string name="onboarding_subtitle3">
-        Make sure to log the rig...Rescue for emergencies, Controller for daily protection
-    </string>
-    <string name="onboarding_description3">
-        Click next to learn m... to return to the previous screen\nClick skip to signup
-    </string>
+    <string name="onboarding_subtitle3">Make sure to log the right inhaler:&#10;Rescue for emergencies, Controller for daily protection</string>
+    <string name="onboarding_description3">Click next to learn more about data security&#10;Click back to return to the previous screen&#10;Click skip to signup</string>
 
     <string name="onboarding_heading4">Your Data, Your Safety!</string>
-    <string name="onboarding_subtitle4">
-        By default your health d...althcare providers, so your data stays safe and private
-    </string>
-    <string name="onboarding_description4">
-        Click next to get started!\nClick back to return to the previous screen
-    </string>
+    <string name="onboarding_subtitle4">By default your health data is private, parents control what information is shared with healthcare providers, so your data stays safe and private</string>
+    <string name="onboarding_description4">Click next to get started!&#10;Click back to return to the previous screen</string>
 
     <string name="onboarding_speak">Onboarding slides</string>
 
@@ -57,4 +31,24 @@
     <string name="onboarding_image_desc2">Family/Provider Image</string>
     <string name="onboarding_image_desc3">Inhaler Image</string>
     <string name="onboarding_image_desc4">Shield Image</string>
+
+    <!-- Titles -->
+    <string name="pb_title">Peak Expiratory Flow</string>
+    <string name="pb_subtitle">Enter your childs PEF readings below</string>
+
+    <!-- Child selection -->
+    <string name="choose_child">Choose a child</string>
+
+    <!-- Entry labels / hints -->
+    <string name="pb_entry_label">PEF Entry</string>
+    <string name="hint_daily_pef">Daily</string>
+    <string name="pre_med_hint">Pre-medication</string>
+    <string name="post_med_hint">Post-medication</string>
+
+    <!-- Units -->
+    <string name="unit_lmin">L/min</string>
+
+    <!-- Buttons -->
+    <string name="save_button">Save</string>
+
 </resources>

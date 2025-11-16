@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools">
+<manifest xmlns:android="http://schemas.android.com/apk/res/android">
 
     <application
         android:allowBackup="true"
@@ -12,9 +11,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.SmartAirSetup">
 
-        <!-- Onboarding screens -->
+        <!-- PEF Activity (app start) -->
         <activity
-            android:name=".OnboardingActivity"
+            android:name=".PEFActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -22,31 +21,14 @@
             </intent-filter>
         </activity>
 
-        <activity
-            android:name=".OnboardingActivity2"
-            android:exported="true" />
-
-        <activity
-            android:name=".OnboardingActivity3"
-            android:exported="true" />
-
-        <activity
-            android:name=".OnboardingActivity4"
-            android:exported="true" />
-
-        <!-- Authentication screens -->
-        <activity
-            android:name=".SignupActivity" />
-
-        <activity
-            android:name=".LoginActivity"
-            android:exported="false"
-            android:label="@string/title_activity_login" />
+        <!-- Onboarding screens -->
+        <activity android:name=".OnboardingActivity" android:exported="true" />
+        <activity android:name=".OnboardingActivity2" android:exported="true" />
+        <activity android:name=".OnboardingActivity3" android:exported="true" />
+        <activity android:name=".OnboardingActivity4" android:exported="true" />
 
         <!-- Main Activity (app home) -->
-        <activity
-            android:name=".MainActivity"
-            android:exported="true" />
+        <activity android:name=".MainActivity" android:exported="true" />
 
     </application>
 
