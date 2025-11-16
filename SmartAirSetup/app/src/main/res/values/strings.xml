@@ -1,52 +1,25 @@
 <resources>
     <string name="app_name">SmartAirSetup</string>
 
-    <!-- Login / Signup -->
-    <string name="title_activity_login">LoginActivity</string>
-    <string name="prompt_email">Email</string>
-    <string name="prompt_password">Password</string>
-    <string name="action_sign_in">Sign in or register</string>
-    <string name="action_sign_in_short">Sign in</string>
-    <string name="welcome">"Welcome !"</string>
-    <string name="invalid_username">Not a valid username</string>
-    <string name="invalid_password">Password must be >5 characters</string>
-    <string name="login_failed">"Login failed"</string>
-    <string name="title_activity_signup">SignupActivity</string>
-    <string name="forgot_password">Forgot password?</string>
-
     <!-- Onboarding texts -->
     <string name="onboarding_heading">Welcome to SmartAir!</string>
     <string name="onboarding_subtitle">Your personalized asthma assistance</string>
-    <string name="onboarding_description">
-        Click next to learn more about the purpose of the app\nClick skip to signup
-    </string>
+    <string name="onboarding_description">Click next to learn more about the purpose of the app\nClick skip to signup</string>
 
     <string name="onboarding_heading2">Breathe With Confidence!</string>
-    <string name="onboarding_subtitle2">
-        SmartAir teaches childre...fely while helping families and providers stay informed
-    </string>
-    <string name="onboarding_description2">
-        Click next to learn m... to return to the previous screen\nClick skip to signup
-    </string>
+    <string name="onboarding_subtitle2">SmartAir teaches children how to manage asthma safely while helping families and providers stay informed</string>
+    <string name="onboarding_description2">Click next to learn more about rescue vs controller\nClick back to return to the previous screen\nClick skip to signup</string>
 
     <string name="onboarding_heading3">Quick Relief, Daily Protection!</string>
-    <string name="onboarding_subtitle3">
-        Make sure to log the rig...Rescue for emergencies, Controller for daily protection
-    </string>
-    <string name="onboarding_description3">
-        Click next to learn m... to return to the previous screen\nClick skip to signup
-    </string>
+    <string name="onboarding_subtitle3">Make sure to log the right inhaler:\nRescue for emergencies, Controller for daily protection</string>
+    <string name="onboarding_description3">Click next to learn more about data security\nClick back to return to the previous screen\nClick skip to signup</string>
 
     <string name="onboarding_heading4">Your Data, Your Safety!</string>
-    <string name="onboarding_subtitle4">
-        By default your health d...althcare providers, so your data stays safe and private
-    </string>
-    <string name="onboarding_description4">
-        Click next to get started!\nClick back to return to the previous screen
-    </string>
+    <string name="onboarding_subtitle4">By default your health data is private, parents control what information is shared with healthcare providers, so your data stays safe and private</string>
+    <string name="onboarding_description4">Click next to get started!\nClick back to return to the previous screen</string>
+
 
     <string name="onboarding_speak">Onboarding slides</string>
-
     <!-- Button texts -->
     <string name="back_button">Back</string>
     <string name="skip_button">Skip</string>
