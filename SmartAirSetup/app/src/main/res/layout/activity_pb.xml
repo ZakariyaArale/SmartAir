@@ -13,7 +13,7 @@
         android:id="@+id/pbTitle"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:text="@string/pef_title"
+        android:text="Set Personal Best"
         android:textSize="26sp"
         android:textColor="#2E7D32"
         android:fontFamily="@font/nunito_regular"
@@ -28,7 +28,7 @@
         android:id="@+id/pbSubtitle"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:text="@string/pef_subtitle"
+        android:text="Choose a child and enter their PB value."
         android:textColor="#666666"
         android:textSize="16sp"
         android:fontFamily="@font/nunito_medium"
@@ -38,7 +38,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"/>
 
-    <!-- Select Child Section -->
+    <!-- Select Child -->
     <LinearLayout
         android:id="@+id/childSection"
         android:layout_width="0dp"
@@ -59,7 +59,7 @@
             android:id="@+id/chooseChildLabel"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/choose_child"
+            android:text="Choose Child"
             android:textColor="#000000"
             android:textSize="16sp"
             android:fontFamily="@font/nunito_medium"
@@ -78,7 +78,7 @@
             android:textSize="18sp" />
     </LinearLayout>
 
-    <!-- Enter PEF Section -->
+    <!-- PB Entry Section -->
     <LinearLayout
         android:id="@+id/pbInputSection"
         android:layout_width="0dp"
@@ -90,6 +90,7 @@
         android:layout_marginStart="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginBottom="16dp"
+        android:layout_marginTop="24dp"
         app:layout_constraintTop_toBottomOf="@id/childSection"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent">
@@ -98,77 +99,13 @@
             android:id="@+id/pbEntryLabel"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/pef_entry_label"
+            android:text="Enter Personal Best"
             android:textColor="#000000"
             android:textSize="16sp"
             android:fontFamily="@font/nunito_medium"
             android:layout_marginBottom="8dp"/>
 
-        <!-- Daily PEF section -->
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:orientation="horizontal"
-            android:backgroundTint="#E6F7FF"
-            android:elevation="2dp"
-            android:paddingStart="12dp"
-            android:paddingEnd="12dp"
-            android:gravity="center_vertical"
-            android:layout_marginBottom="12dp">
-
-            <EditText
-                android:id="@+id/dailyPEFInput"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:hint="Daily"
-                android:inputType="number"
-                android:background="@android:color/transparent"
-                android:textSize="16sp"/>
-
-            <TextView
-                android:id="@+id/dailyUnit"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/unit_lmin"
-                android:textColor="#666666"
-                android:textSize="16sp"
-                android:layout_marginStart="8dp"/>
-        </LinearLayout>
-
-        <!-- Pre-medication PEF section -->
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:orientation="horizontal"
-            android:backgroundTint="#E6F7FF"
-            android:elevation="2dp"
-            android:paddingStart="12dp"
-            android:paddingEnd="12dp"
-            android:gravity="center_vertical"
-            android:layout_marginBottom="12dp">
-
-            <EditText
-                android:id="@+id/preMedicationPB"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:hint="@string/pre_med_hint"
-                android:inputType="number"
-                android:background="@android:color/transparent"
-                android:textSize="16sp"/>
-
-            <TextView
-                android:id="@+id/preUnit"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/unit_lmin"
-                android:textColor="#666666"
-                android:textSize="16sp"
-                android:layout_marginStart="8dp"/>
-        </LinearLayout>
-
-        <!-- Post-medication PEF section -->
+        <!-- PB input -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="50dp"
@@ -180,20 +117,20 @@
             android:gravity="center_vertical">
 
             <EditText
-                android:id="@+id/postMedicationPB"
+                android:id="@+id/pbInput"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:hint="@string/post_med_hint"
+                android:hint="Enter PB"
                 android:inputType="number"
                 android:background="@android:color/transparent"
                 android:textSize="16sp"/>
 
             <TextView
-                android:id="@+id/postUnit"
+                android:id="@+id/pbUnit"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/unit_lmin"
+                android:text="L/min"
                 android:textColor="#666666"
                 android:textSize="16sp"
                 android:layout_marginStart="8dp"/>
@@ -213,7 +150,7 @@
         android:elevation="4dp"
         android:layout_marginStart="40dp"
         android:layout_marginEnd="40dp"
-        android:layout_marginTop="32dp"
+        android:layout_marginTop="12dp"
         app:layout_constraintTop_toBottomOf="@id/pbInputSection"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"/>
@@ -226,7 +163,7 @@
         android:layout_marginBottom="24dp"
         android:background="@android:color/transparent"
         android:fontFamily="@font/nunito_medium"
-        android:text="@string/back_button"
+        android:text="Back"
         android:textColor="#2E7D32"
         android:textSize="22sp"
         app:layout_constraintBottom_toBottomOf="parent"

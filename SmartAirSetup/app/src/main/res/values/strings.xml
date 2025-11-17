@@ -33,14 +33,14 @@
     <string name="onboarding_image_desc4">Shield Image</string>
 
     <!-- Titles -->
-    <string name="pb_title">Peak Expiratory Flow</string>
-    <string name="pb_subtitle">Enter your childs PEF readings below</string>
+    <string name="pef_title">Peak Expiratory Flow</string>
+    <string name="pef_subtitle">Enter your childs PEF readings below</string>
 
     <!-- Child selection -->
-    <string name="choose_child">Choose a child</string>
+    <string name="choose_child">Select child</string>
 
     <!-- Entry labels / hints -->
-    <string name="pb_entry_label">PEF Entry</string>
+    <string name="pef_entry_label">PEF Entry</string>
     <string name="hint_daily_pef">Daily</string>
     <string name="pre_med_hint">Pre-medication</string>
     <string name="post_med_hint">Post-medication</string>
@@ -50,5 +50,11 @@
 
     <!-- Buttons -->
     <string name="save_button">Save</string>
+
+    <string name="pb_title">Set Personal Best</string>
+    <string name="pb_subtitle">Choose a child and enter their PB value.</string>
+
+    <string name="pb_entry_label">Enter Personal Best</string>
+    <string name="pb_hint">Enter PB</string>
 
 </resources>

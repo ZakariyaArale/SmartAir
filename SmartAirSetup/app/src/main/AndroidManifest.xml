@@ -13,7 +13,7 @@
 
         <!-- PEF Activity (app start) -->
         <activity
-            android:name=".PEFActivity"
+            android:name=".PBActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
