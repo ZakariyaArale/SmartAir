@@ -7,8 +7,6 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageButton;
 
-import com.example.smartairsetup.ParentHomeActivity;
-import com.example.smartairsetup.R;
 
 public class ChildFamilyActivity extends AppCompatActivity {
 
