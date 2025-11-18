@@ -145,7 +145,7 @@ public class LoginActivity extends AppCompatActivity {
     private void goToRoleHome(String role) {
         // TODO: replace with real Activities when your team adds them
         Intent intent = new Intent(this, MainActivity.class);
-        /*
+
         if ("child".equals(role)) {
             intent = new Intent(this, ChildHomeActivity.class);
         } else if ("parent".equals(role)) {
@@ -155,7 +155,7 @@ public class LoginActivity extends AppCompatActivity {
         } else {
             intent = new Intent(this, MainActivity.class);
         }
-        */
+
         startActivity(intent);
         finish();
     }

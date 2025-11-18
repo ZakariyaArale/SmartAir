@@ -13,7 +13,7 @@
 
         <!-- PEF Activity (app start) -->
         <activity
-            android:name=".PBActivity"
+            android:name=".LoginActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -27,8 +27,21 @@
         <activity android:name=".OnboardingActivity3" android:exported="true" />
         <activity android:name=".OnboardingActivity4" android:exported="true" />
 
+        <!-- Log in/ Sign up -->
+
+        <activity android:name=".SignupActivity" android:exported="true" />
+
         <!-- Main Activity (app home) -->
         <activity android:name=".MainActivity" android:exported="true" />
+        <activity android:name=".ChildHomeActivity" android:exported="true" />
+        <activity android:name=".ParentHomeActivity" android:exported="true" />
+        <activity android:name=".ProviderHomeActivity" android:exported="true" />
+        <!-- Familiy Activity -->
+        <activity android:name=".ParentFamilyActivity" android:exported="true" />
+        <activity android:name=".ChildFamilyActivity" android:exported="true" />
+
+
+
 
     </application>
 
