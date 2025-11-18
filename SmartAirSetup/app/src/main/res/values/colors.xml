@@ -2,4 +2,8 @@
 <resources>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+    <!-- Menu Button Color (Grey) -->
+    <color name="button_icon_color">#424242</color>
+    <color name="active_button_icon_color">#3395C4</color>
+
 </resources>
