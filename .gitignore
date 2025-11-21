@@ -1,0 +1,5 @@
+# Android build outputs
+SmartAirSetup/app/build/
+
+# Local Google services config (contains API keys)
+SmartAirSetup/app/google-services.json
