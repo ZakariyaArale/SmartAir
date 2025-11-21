@@ -3,14 +3,31 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:padding="24dp">
+    android:gravity="center_horizontal"
+    android:padding="24dp"
+    android:background="#DFF3FF">
+
+    <!-- Optional heading -->
+    <TextView
+        android:id="@+id/textLoginTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Sign in to Smart Air"
+        android:textSize="24sp"
+        android:textColor="#2E7D32"
+        android:fontFamily="@font/nunito_regular"
+        android:layout_marginTop="48dp"
+        android:layout_marginBottom="24dp"
+        android:gravity="center" />
 
     <EditText
         android:id="@+id/editTextEmail"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="Email"
-        android:inputType="textEmailAddress" />
+        android:inputType="textEmailAddress"
+        android:background="@android:color/white"
+        android:padding="12dp" />
 
     <EditText
         android:id="@+id/editTextPassword"
@@ -18,21 +35,26 @@
         android:layout_height="wrap_content"
         android:hint="Password"
         android:inputType="textPassword"
-        android:layout_marginTop="12dp" />
+        android:layout_marginTop="12dp"
+        android:background="@android:color/white"
+        android:padding="12dp" />
 
     <Button
         android:id="@+id/buttonSignIn"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Sign In"
-        android:layout_marginTop="24dp" />
+        android:layout_marginTop="24dp"
+        android:backgroundTint="#2E7D32"
+        android:textColor="@android:color/white" />
 
     <TextView
         android:id="@+id/textViewForgotPassword"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/forgot_password"
-        android:textColor="@android:color/holo_blue_dark"
+        android:textColor="#2E7D32"
+        android:fontFamily="@font/nunito_medium"
         android:layout_marginTop="12dp" />
 
     <TextView

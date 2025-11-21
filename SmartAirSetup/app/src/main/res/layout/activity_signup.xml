@@ -1,19 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="#DFF3FF">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
+        android:gravity="center_horizontal"
         android:padding="24dp">
+
+        <!-- Heading -->
+        <TextView
+            android:id="@+id/textSignupTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Create your Smart Air account"
+            android:textSize="24sp"
+            android:textColor="#2E7D32"
+            android:fontFamily="@font/nunito_regular"
+            android:layout_marginTop="48dp"
+            android:layout_marginBottom="24dp"
+            android:gravity="center" />
 
         <EditText
             android:id="@+id/signupEmail"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="Email"
-            android:inputType="textEmailAddress" />
+            android:inputType="textEmailAddress"
+            android:background="@android:color/white"
+            android:padding="12dp" />
 
         <EditText
             android:id="@+id/signupPassword"
@@ -21,36 +39,48 @@
             android:layout_height="wrap_content"
             android:hint="Password"
             android:inputType="textPassword"
-            android:layout_marginTop="12dp" />
+            android:layout_marginTop="12dp"
+            android:background="@android:color/white"
+            android:padding="12dp" />
 
         <TextView
+            android:id="@+id/textRoleLabel"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="I am a:"
+            android:textColor="#2E7D32"
+            android:fontFamily="@font/nunito_medium"
             android:layout_marginTop="16dp" />
 
         <RadioGroup
             android:id="@+id/radioGroupRole"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp">
 
             <RadioButton
                 android:id="@+id/radioChild"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Child" />
+                android:text="Child"
+                android:fontFamily="@font/nunito_regular"
+                android:textColor="#000000" />
 
             <RadioButton
                 android:id="@+id/radioParent"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Parent" />
+                android:text="Parent"
+                android:fontFamily="@font/nunito_regular"
+                android:textColor="#000000" />
 
             <RadioButton
                 android:id="@+id/radioProvider"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Provider" />
+                android:text="Provider"
+                android:fontFamily="@font/nunito_regular"
+                android:textColor="#000000" />
         </RadioGroup>
 
         <Button
@@ -58,7 +88,9 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Create account"
-            android:layout_marginTop="24dp" />
+            android:layout_marginTop="24dp"
+            android:backgroundTint="#2E7D32"
+            android:textColor="@android:color/white" />
 
         <TextView
             android:id="@+id/signupError"
