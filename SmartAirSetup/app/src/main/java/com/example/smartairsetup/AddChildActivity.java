@@ -167,6 +167,16 @@ public class AddChildActivity extends AppCompatActivity {
         childData.put("pre-med", DEFAULT_PMED);
         childData.put("post-med", DEFAULT_PMED);
 
+        // Share-with-provider defaults for local children as well
+        childData.put("shareRescueLogs", false);
+        childData.put("shareControllerSummary", false);
+        childData.put("shareSymptoms", false);
+        childData.put("shareTriggers", false);
+        childData.put("sharePEF", false);
+        childData.put("shareTriageIncidents", false);
+        childData.put("shareSummaryCharts", false);
+
+
         // Auto-generate a document ID for this local child
         childrenRef.add(childData)
                 .addOnSuccessListener(docRef -> {
@@ -210,6 +220,15 @@ public class AddChildActivity extends AppCompatActivity {
         childData.put("pef", DEFAULT_PEF);
         childData.put("pre-med", DEFAULT_PMED);
         childData.put("post-med", DEFAULT_PMED);
+
+        // Share-with-provider defaults: everything OFF at first
+        childData.put("shareRescueLogs", false);
+        childData.put("shareControllerSummary", false);
+        childData.put("shareSymptoms", false);
+        childData.put("shareTriggers", false);
+        childData.put("sharePEF", false);
+        childData.put("shareTriageIncidents", false);
+        childData.put("shareSummaryCharts", false);
 
         // Use childUid as the document ID so you can't link the same child twice for this parent
         childrenRef.document(childUid)
