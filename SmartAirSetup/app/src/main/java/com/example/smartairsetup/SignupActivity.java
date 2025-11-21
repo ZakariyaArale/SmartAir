@@ -136,17 +136,29 @@ public class SignupActivity extends AppCompatActivity {
         userData.put("email", email);
         userData.put("role", role);
 
+        if ("child".equals(role)) {
+            userData.put("name", "");              // default name
+            userData.put("dateOfBirth", "");       // default DOB
+            userData.put("notes", "");             // default notes
+            userData.put("pb", 0);                 // default PB
+            userData.put("pef", 0);                // default PEF
+            userData.put("pre-med", 0);            // default pre-med
+            userData.put("post-med", 0);           // default post-med
+        }
+
         db.collection("users")
                 .document(uid)
                 .set(userData, SetOptions.merge())
                 .addOnSuccessListener(unused -> {
-                    // optional: log or toast
-                    // Toast.makeText(this, "Role saved", Toast.LENGTH_SHORT).show();
+                    // optional: debug toast/log only
+                    // Toast.makeText(this, "User doc saved", Toast.LENGTH_SHORT).show();
                 })
                 .addOnFailureListener(e -> {
-                    // don't block UX, just surface the problem
-                    signupError.setText("Saved account, but failed to save role: " + e.getMessage());
-                    signupError.setVisibility(View.VISIBLE);
+                    // don't block navigation here, just surface the problem
+                    // you already navigate right after Auth success
+                    // so just show an error if you want
+                    // signupError.setText("Failed to save user data: " + e.getMessage());
+                    // signupError.setVisibility(View.VISIBLE);
                 });
     }
 

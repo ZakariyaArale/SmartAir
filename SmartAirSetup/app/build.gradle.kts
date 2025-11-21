@@ -69,6 +69,7 @@ dependencies {
     implementation(libs.ui.graphics)
     implementation(libs.ui.tooling.preview)
     implementation(libs.material3)
+    implementation(libs.activity)
 
     // --- Tests (from origin/main + compose tests) ---
     testImplementation(libs.junit)
