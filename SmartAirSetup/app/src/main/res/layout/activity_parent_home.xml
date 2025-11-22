@@ -54,6 +54,18 @@
         android:text="View History"
         android:layout_marginTop="12dp" />
     <Button
+        android:id="@+id/buttonSetPB"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Set Personal Best"
+        android:layout_marginTop="12dp" />
+    <Button
+        android:id="@+id/buttonEnterPEF"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Enter PEF"
+        android:layout_marginTop="12dp" />
+    <Button
         android:id="@+id/buttonAddChild"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

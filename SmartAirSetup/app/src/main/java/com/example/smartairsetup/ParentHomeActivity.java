@@ -48,6 +48,32 @@ public class ParentHomeActivity extends AppCompatActivity {
             startActivity(intent);
         });
 
+        Button buttonSetPB = findViewById(R.id.buttonSetPB);
+        buttonSetPB.setOnClickListener(v -> {
+            if (childIds.isEmpty()) {
+                Toast.makeText(ParentHomeActivity.this,
+                        "Please add a child first.",
+                        Toast.LENGTH_SHORT).show();
+                return;
+            }
+            // PBActivity has its own child picker, so just open it
+            Intent intent = new Intent(ParentHomeActivity.this, PBActivity.class);
+            startActivity(intent);
+        });
+
+        Button buttonEnterPEF = findViewById(R.id.buttonEnterPEF);
+        buttonEnterPEF.setOnClickListener(v -> {
+            if (childIds.isEmpty()) {
+                Toast.makeText(ParentHomeActivity.this,
+                        "Please add a child first.",
+                        Toast.LENGTH_SHORT).show();
+                return;
+            }
+            // PEFActivity also shows its own child picker
+            Intent intent = new Intent(ParentHomeActivity.this, PEFActivity.class);
+            startActivity(intent);
+        });
+
         Button buttonDailyCheckIn = findViewById(R.id.buttonDailyCheckIn);
         buttonDailyCheckIn.setOnClickListener(v -> {
             if (childIds.isEmpty()) {

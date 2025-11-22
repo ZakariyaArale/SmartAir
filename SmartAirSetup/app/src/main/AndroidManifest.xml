@@ -44,6 +44,12 @@
             android:name=".HistoryActivity"
             android:exported="false" />
         <activity
+            android:name=".PBActivity"
+            android:exported="false" />
+        <activity
+            android:name=".PEFActivity"
+            android:exported="false" />
+        <activity
             android:name=".MainActivity"
             android:exported="true">
             <intent-filter>
