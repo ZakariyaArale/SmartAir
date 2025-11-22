@@ -10,9 +10,11 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.SmartAirSetup">
         <activity
-            android:name=".DailyCheckIn"
+            android:name=".AddMedicationActivity"
             android:exported="false" />
-        <!-- Add-child screen (parent-only) -->
+        <activity
+            android:name=".DailyCheckIn"
+            android:exported="false" /> <!-- Add-child screen (parent-only) -->
         <activity
             android:name=".AddChildActivity"
             android:exported="false" /> <!-- Signup screen -->

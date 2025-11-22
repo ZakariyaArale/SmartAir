@@ -1,0 +1,195 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#DFF3FF">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="24dp">
+
+        <!-- Back button -->
+        <Button
+            android:id="@+id/buttonBack"
+            android:layout_width="107dp"
+            android:layout_height="48dp"
+            android:background="@android:color/transparent"
+            android:text="@string/back_button"
+            android:textColor="#2E7D32"
+            android:textSize="22sp"
+            android:fontFamily="@font/nunito_medium" />
+
+        <!-- Title -->
+        <TextView
+            android:id="@+id/textAddMedicationTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Add medication"
+            android:textSize="24sp"
+            android:textColor="#2E7D32"
+            android:fontFamily="@font/nunito_regular"
+            android:layout_marginTop="16dp"
+            android:layout_marginBottom="24dp" />
+
+        <!-- Name -->
+        <EditText
+            android:id="@+id/editMedName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Medication name"
+            android:inputType="textCapWords"
+            android:background="@android:color/white"
+            android:padding="12dp" />
+
+        <!-- Purchase date -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Purchase date"
+            android:layout_marginTop="16dp"
+            android:textColor="#2E7D32"
+            android:fontFamily="@font/nunito_medium" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="8dp">
+
+            <EditText
+                android:id="@+id/editPurchaseDay"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:hint="DD"
+                android:inputType="number"
+                android:background="@android:color/white"
+                android:padding="12dp" />
+
+            <EditText
+                android:id="@+id/editPurchaseMonth"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:hint="MM"
+                android:inputType="number"
+                android:layout_marginStart="8dp"
+                android:background="@android:color/white"
+                android:padding="12dp" />
+
+            <EditText
+                android:id="@+id/editPurchaseYear"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:hint="YYYY"
+                android:inputType="number"
+                android:layout_marginStart="8dp"
+                android:background="@android:color/white"
+                android:padding="12dp" />
+        </LinearLayout>
+
+        <!-- Expiry date -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Expiry date"
+            android:layout_marginTop="16dp"
+            android:textColor="#2E7D32"
+            android:fontFamily="@font/nunito_medium" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="8dp">
+
+            <EditText
+                android:id="@+id/editExpiryDay"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:hint="DD"
+                android:inputType="number"
+                android:background="@android:color/white"
+                android:padding="12dp" />
+
+            <EditText
+                android:id="@+id/editExpiryMonth"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:hint="MM"
+                android:inputType="number"
+                android:layout_marginStart="8dp"
+                android:background="@android:color/white"
+                android:padding="12dp" />
+
+            <EditText
+                android:id="@+id/editExpiryYear"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:hint="YYYY"
+                android:inputType="number"
+                android:layout_marginStart="8dp"
+                android:background="@android:color/white"
+                android:padding="12dp" />
+        </LinearLayout>
+
+        <!-- Puffs left -->
+        <EditText
+            android:id="@+id/editPuffsLeft"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Puffs left"
+            android:inputType="number"
+            android:layout_marginTop="16dp"
+            android:background="@android:color/white"
+            android:padding="12dp" />
+
+        <!-- Reminder days -->
+        <EditText
+            android:id="@+id/editReminderDays"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Reminder days before expiry (e.g. 30,7,1)"
+            android:inputType="text"
+            android:layout_marginTop="16dp"
+            android:background="@android:color/white"
+            android:padding="12dp" />
+
+        <!-- Near empty threshold -->
+        <EditText
+            android:id="@+id/editThreshold"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Near-empty threshold (puffs, e.g. 20)"
+            android:inputType="number"
+            android:layout_marginTop="16dp"
+            android:background="@android:color/white"
+            android:padding="12dp" />
+
+        <!-- Error -->
+        <TextView
+            android:id="@+id/textMedicationError"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="@android:color/holo_red_dark"
+            android:visibility="gone"
+            android:layout_marginTop="8dp" />
+
+        <!-- Save -->
+        <Button
+            android:id="@+id/buttonSaveMedication"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Save medication"
+            android:layout_marginTop="24dp"
+            android:backgroundTint="#2E7D32"
+            android:textColor="@android:color/white" />
+
+    </LinearLayout>
+</ScrollView>
