@@ -11,6 +11,21 @@
         android:gravity="center_horizontal"
         android:padding="24dp">
 
+        <!-- Back button -->
+        <Button
+            android:id="@+id/backButton"
+            android:layout_width="107dp"
+            android:layout_height="48dp"
+            android:layout_marginStart="24dp"
+            android:layout_marginTop="24dp"
+            android:layout_marginBottom="8dp"
+            android:layout_gravity="start"
+            android:background="@android:color/transparent"
+            android:fontFamily="@font/nunito_medium"
+            android:text="@string/back_button"
+            android:textColor="#2E7D32"
+            android:textSize="22sp" />
+
         <!-- Heading -->
         <TextView
             android:id="@+id/textAddChildTitle"
@@ -20,17 +35,36 @@
             android:textSize="24sp"
             android:textColor="#2E7D32"
             android:fontFamily="@font/nunito_regular"
-            android:layout_marginTop="48dp"
+            android:layout_marginTop="24dp"
             android:layout_marginBottom="24dp"
             android:gravity="center" />
 
         <EditText
-            android:id="@+id/editChildEmail"
+            android:id="@+id/editChildUsername"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Child email (optional)"
-            android:inputType="textEmailAddress"
-            android:maxLines="2"
+            android:hint="Child username"
+            android:inputType="text"
+            android:background="@android:color/white"
+            android:padding="12dp" />
+
+        <EditText
+            android:id="@+id/editChildPassword"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Child password"
+            android:inputType="textPassword"
+            android:layout_marginTop="12dp"
+            android:background="@android:color/white"
+            android:padding="12dp" />
+
+        <EditText
+            android:id="@+id/editChildConfirmPassword"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Confirm child password"
+            android:inputType="textPassword"
+            android:layout_marginTop="12dp"
             android:background="@android:color/white"
             android:padding="12dp" />
 

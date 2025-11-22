@@ -7,7 +7,22 @@
     android:padding="24dp"
     android:background="#DFF3FF">
 
-    <!-- Optional heading -->
+    <!-- Back button -->
+    <Button
+        android:id="@+id/backButton"
+        android:layout_width="107dp"
+        android:layout_height="48dp"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="24dp"
+        android:layout_marginBottom="8dp"
+        android:layout_gravity="start"
+        android:background="@android:color/transparent"
+        android:fontFamily="@font/nunito_medium"
+        android:text="@string/back_button"
+        android:textColor="#2E7D32"
+        android:textSize="22sp" />
+
+    <!-- Heading -->
     <TextView
         android:id="@+id/textLoginTitle"
         android:layout_width="wrap_content"
@@ -16,16 +31,17 @@
         android:textSize="24sp"
         android:textColor="#2E7D32"
         android:fontFamily="@font/nunito_regular"
-        android:layout_marginTop="48dp"
+        android:layout_marginTop="24dp"
         android:layout_marginBottom="24dp"
         android:gravity="center" />
 
+    <!-- Email (parent/provider) OR username (child) -->
     <EditText
-        android:id="@+id/editTextEmail"
+        android:id="@+id/editTextIdentifier"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Email"
-        android:inputType="textEmailAddress"
+        android:hint="Email (parent/provider) or child username"
+        android:inputType="textEmailAddress|textPersonName"
         android:background="@android:color/white"
         android:padding="12dp" />
 
@@ -64,4 +80,5 @@
         android:textColor="#FF0000"
         android:visibility="gone"
         android:layout_marginTop="12dp" />
+
 </LinearLayout>

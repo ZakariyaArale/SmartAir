@@ -27,11 +27,5 @@ public class MainActivity extends AppCompatActivity {
             Intent intent = new Intent(MainActivity.this, LoginActivity.class);
             startActivity(intent);
         });
-
-        Button buttonDebugAddChild = findViewById(R.id.buttonDebugAddChild);
-        buttonDebugAddChild.setOnClickListener(v -> {
-            Intent intent = new Intent(MainActivity.this, AddChildActivity.class);
-            startActivity(intent);
-        });
     }
 }

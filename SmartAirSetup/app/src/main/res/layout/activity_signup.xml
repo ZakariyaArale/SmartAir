@@ -11,6 +11,21 @@
         android:gravity="center_horizontal"
         android:padding="24dp">
 
+        <!-- Back button -->
+        <Button
+            android:id="@+id/backButton"
+            android:layout_width="107dp"
+            android:layout_height="48dp"
+            android:layout_marginStart="24dp"
+            android:layout_marginTop="24dp"
+            android:layout_marginBottom="8dp"
+            android:layout_gravity="start"
+            android:background="@android:color/transparent"
+            android:fontFamily="@font/nunito_medium"
+            android:text="@string/back_button"
+            android:textColor="#2E7D32"
+            android:textSize="22sp" />
+
         <!-- Heading -->
         <TextView
             android:id="@+id/textSignupTitle"
@@ -20,7 +35,7 @@
             android:textSize="24sp"
             android:textColor="#2E7D32"
             android:fontFamily="@font/nunito_regular"
-            android:layout_marginTop="48dp"
+            android:layout_marginTop="24dp"
             android:layout_marginBottom="24dp"
             android:gravity="center" />
 
@@ -44,44 +59,41 @@
             android:padding="12dp" />
 
         <TextView
-            android:id="@+id/textRoleLabel"
+            android:id="@+id/textSignupRoleLabel"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="I am a:"
-            android:textColor="#2E7D32"
-            android:fontFamily="@font/nunito_medium"
-            android:layout_marginTop="16dp" />
+            android:layout_marginTop="16dp"
+            android:fontFamily="@font/nunito_regular"
+            android:textColor="#333333" />
 
         <RadioGroup
             android:id="@+id/radioGroupRole"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="4dp">
-
-            <RadioButton
-                android:id="@+id/radioChild"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Child"
-                android:fontFamily="@font/nunito_regular"
-                android:textColor="#000000" />
+            android:orientation="vertical"
+            android:layout_marginTop="8dp">
 
             <RadioButton
                 android:id="@+id/radioParent"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Parent"
-                android:fontFamily="@font/nunito_regular"
-                android:textColor="#000000" />
+                android:text="Parent" />
 
             <RadioButton
                 android:id="@+id/radioProvider"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Provider"
-                android:fontFamily="@font/nunito_regular"
-                android:textColor="#000000" />
+                android:text="Provider" />
         </RadioGroup>
+
+        <TextView
+            android:id="@+id/signupError"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="@android:color/holo_red_dark"
+            android:visibility="gone"
+            android:layout_marginTop="8dp" />
 
         <Button
             android:id="@+id/buttonSignup"
@@ -92,12 +104,5 @@
             android:backgroundTint="#2E7D32"
             android:textColor="@android:color/white" />
 
-        <TextView
-            android:id="@+id/signupError"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textColor="@android:color/holo_red_dark"
-            android:visibility="gone"
-            android:layout_marginTop="8dp" />
     </LinearLayout>
 </ScrollView>

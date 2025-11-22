@@ -5,7 +5,6 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
 import android.text.TextUtils;
-import android.util.Patterns;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -14,8 +13,8 @@ import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.CollectionReference;
-import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.DocumentReference;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -26,12 +25,15 @@ public class AddChildActivity extends AppCompatActivity {
     private static final int DEFAULT_PEF = 0;
     private static final int DEFAULT_PMED = 0;
 
-    private EditText editChildEmail;
+    private EditText editChildUsername;
+    private EditText editChildPassword;
+    private EditText editChildConfirmPassword;
     private EditText editChildName;
     private EditText editChildDob;
     private EditText editChildNotes;
     private TextView textChildError;
     private Button buttonSaveChild;
+    private Button backButton;
 
     private FirebaseAuth mAuth;
     private FirebaseFirestore db;
@@ -44,7 +46,12 @@ public class AddChildActivity extends AppCompatActivity {
         mAuth = FirebaseAuth.getInstance();
         db = FirebaseFirestore.getInstance();
 
-        editChildEmail = findViewById(R.id.editChildEmail);
+        backButton = findViewById(R.id.backButton);
+        backButton.setOnClickListener(v -> onBackPressed());
+
+        editChildUsername = findViewById(R.id.editChildUsername);
+        editChildPassword = findViewById(R.id.editChildPassword);
+        editChildConfirmPassword = findViewById(R.id.editChildConfirmPassword);
         editChildName = findViewById(R.id.editChildName);
         editChildDob = findViewById(R.id.editChildDob);
         editChildNotes = findViewById(R.id.editChildNotes);
@@ -58,30 +65,46 @@ public class AddChildActivity extends AppCompatActivity {
         textChildError.setVisibility(View.GONE);
         textChildError.setText("");
 
-        String childEmail = editChildEmail.getText().toString().trim();
+        String username = editChildUsername.getText().toString().trim();
+        String password = editChildPassword.getText().toString();
+        String confirmPassword = editChildConfirmPassword.getText().toString();
         String name = editChildName.getText().toString().trim();
         String dob = editChildDob.getText().toString().trim();
         String notes = editChildNotes.getText().toString().trim();
 
-        // Basic validation for fields that are ALWAYS required
+        if (TextUtils.isEmpty(username)) {
+            editChildUsername.setError("Username is required");
+            editChildUsername.requestFocus();
+            return;
+        }
+
+        if (TextUtils.isEmpty(password)) {
+            editChildPassword.setError("Password is required");
+            editChildPassword.requestFocus();
+            return;
+        }
+
+        if (password.length() < 6) {
+            editChildPassword.setError("Password must be at least 6 characters");
+            editChildPassword.requestFocus();
+            return;
+        }
+
+        if (!password.equals(confirmPassword)) {
+            editChildConfirmPassword.setError("Passwords do not match");
+            editChildConfirmPassword.requestFocus();
+            return;
+        }
+
         if (TextUtils.isEmpty(name)) {
             editChildName.setError("Child name is required");
             editChildName.requestFocus();
             return;
         }
+
         if (TextUtils.isEmpty(dob)) {
             editChildDob.setError("Date of birth is required");
             editChildDob.requestFocus();
-            return;
-        }
-
-        // Email is OPTIONAL now:
-        // - If provided → must be valid format and must match an existing child account
-        // - If empty → we'll create a "local" child profile with no login
-        boolean hasEmail = !TextUtils.isEmpty(childEmail);
-        if (hasEmail && !Patterns.EMAIL_ADDRESS.matcher(childEmail).matches()) {
-            editChildEmail.setError("Enter a valid email address");
-            editChildEmail.requestFocus();
             return;
         }
 
@@ -97,66 +120,40 @@ public class AddChildActivity extends AppCompatActivity {
 
         buttonSaveChild.setEnabled(false);
 
-        if (hasEmail) {
-            // 🔹 OLDER CHILD FLOW: child has their own account
-            linkExistingChildAccount(parentUid, childEmail, name, dob, notes);
-        } else {
-            // 🔹 YOUNGER CHILD FLOW: no email / no account
-            createLocalChildProfile(parentUid, name, dob, notes);
-        }
-    }
-
-    /**
-     * Flow 1: child already has an account (email provided).
-     * We look up the child in `users` by email + role='child' and link using their uid.
-     */
-    private void linkExistingChildAccount(@NonNull String parentUid,
-                                          @NonNull String childEmail,
-                                          @NonNull String name,
-                                          @NonNull String dob,
-                                          @NonNull String notes) {
-
-        db.collection("users")
-                .whereEqualTo("email", childEmail)
-                .whereEqualTo("role", "child")
-                .limit(1)
+        // Check if username already exists in childAccounts
+        db.collection("childAccounts")
+                .document(username)
                 .get()
-                .addOnSuccessListener(querySnapshot -> {
-                    if (querySnapshot.isEmpty()) {
-                        textChildError.setText("No child account found with this email.");
+                .addOnSuccessListener(doc -> {
+                    if (doc.exists()) {
+                        textChildError.setText("This username is already taken. Choose another one.");
                         textChildError.setVisibility(View.VISIBLE);
                         buttonSaveChild.setEnabled(true);
-                        return;
+                    } else {
+                        // Safe to create a new child
+                        createChild(parentUid, username, password, name, dob, notes);
                     }
-
-                    DocumentSnapshot childDoc = querySnapshot.getDocuments().get(0);
-                    String childUid = childDoc.getId();
-
-                    linkChildToParent(parentUid, childUid, childEmail, name, dob, notes);
                 })
                 .addOnFailureListener(e -> {
-                    textChildError.setText("Failed to look up child: " + e.getMessage());
+                    textChildError.setText("Failed to check username: " + e.getMessage());
                     textChildError.setVisibility(View.VISIBLE);
                     buttonSaveChild.setEnabled(true);
                 });
     }
 
-    /**
-     * Flow 2: child does NOT have an account (no email).
-     * We just create a child profile under the parent with an auto-generated ID.
-     */
-    private void createLocalChildProfile(@NonNull String parentUid,
-                                         @NonNull String name,
-                                         @NonNull String dob,
-                                         @NonNull String notes) {
+    private void createChild(@NonNull String parentUid,
+                             @NonNull String username,
+                             @NonNull String password,
+                             @NonNull String name,
+                             @NonNull String dob,
+                             @NonNull String notes) {
 
         CollectionReference childrenRef = db.collection("users")
                 .document(parentUid)
                 .collection("children");
 
         Map<String, Object> childData = new HashMap<>();
-        childData.put("childUid", null);          // no linked auth account
-        childData.put("email", null);             // no email
+        childData.put("username", username);
         childData.put("name", name);
         childData.put("dateOfBirth", dob);
         if (!TextUtils.isEmpty(notes)) {
@@ -167,7 +164,7 @@ public class AddChildActivity extends AppCompatActivity {
         childData.put("pre-med", DEFAULT_PMED);
         childData.put("post-med", DEFAULT_PMED);
 
-        // Share-with-provider defaults for local children as well
+        // Sharing options default
         childData.put("shareRescueLogs", false);
         childData.put("shareControllerSummary", false);
         childData.put("shareSymptoms", false);
@@ -176,72 +173,36 @@ public class AddChildActivity extends AppCompatActivity {
         childData.put("shareTriageIncidents", false);
         childData.put("shareSummaryCharts", false);
 
-
-        // Auto-generate a document ID for this local child
+        // First create the child under the parent so we get the childDocId
         childrenRef.add(childData)
-                .addOnSuccessListener(docRef -> {
-                    Toast.makeText(AddChildActivity.this,
-                            "Child added successfully",
-                            Toast.LENGTH_SHORT).show();
-                    buttonSaveChild.setEnabled(true);
-                    finish();
+                .addOnSuccessListener(childDocRef -> {
+                    String childDocId = childDocRef.getId();
+
+                    // Now create top-level childAccounts/{username}
+                    Map<String, Object> accountData = new HashMap<>();
+                    accountData.put("username", username);
+                    accountData.put("password", password); // Plaintext for now (hackathon level)
+                    accountData.put("parentUid", parentUid);
+                    accountData.put("childDocId", childDocId);
+
+                    db.collection("childAccounts")
+                            .document(username)
+                            .set(accountData)
+                            .addOnSuccessListener(unused -> {
+                                Toast.makeText(AddChildActivity.this,
+                                        "Child added successfully",
+                                        Toast.LENGTH_SHORT).show();
+                                buttonSaveChild.setEnabled(true);
+                                finish();
+                            })
+                            .addOnFailureListener(e -> {
+                                textChildError.setText("Failed to save child account: " + e.getMessage());
+                                textChildError.setVisibility(View.VISIBLE);
+                                buttonSaveChild.setEnabled(true);
+                            });
                 })
                 .addOnFailureListener(e -> {
                     textChildError.setText("Failed to add child: " + e.getMessage());
-                    textChildError.setVisibility(View.VISIBLE);
-                    buttonSaveChild.setEnabled(true);
-                });
-    }
-
-    /**
-     * Shared logic for linking to an existing child user (has account).
-     * Uses childUid as the document ID so the same child can't be linked twice.
-     */
-    private void linkChildToParent(@NonNull String parentUid,
-                                   @NonNull String childUid,
-                                   @NonNull String childEmail,
-                                   @NonNull String name,
-                                   @NonNull String dob,
-                                   @NonNull String notes) {
-
-        CollectionReference childrenRef = db.collection("users")
-                .document(parentUid)
-                .collection("children");
-
-        Map<String, Object> childData = new HashMap<>();
-        childData.put("childUid", childUid);
-        childData.put("email", childEmail);
-        childData.put("name", name);
-        childData.put("dateOfBirth", dob);
-        if (!TextUtils.isEmpty(notes)) {
-            childData.put("notes", notes);
-        }
-        childData.put("pb", DEFAULT_PB);
-        childData.put("pef", DEFAULT_PEF);
-        childData.put("pre-med", DEFAULT_PMED);
-        childData.put("post-med", DEFAULT_PMED);
-
-        // Share-with-provider defaults: everything OFF at first
-        childData.put("shareRescueLogs", false);
-        childData.put("shareControllerSummary", false);
-        childData.put("shareSymptoms", false);
-        childData.put("shareTriggers", false);
-        childData.put("sharePEF", false);
-        childData.put("shareTriageIncidents", false);
-        childData.put("shareSummaryCharts", false);
-
-        // Use childUid as the document ID so you can't link the same child twice for this parent
-        childrenRef.document(childUid)
-                .set(childData)
-                .addOnSuccessListener(unused -> {
-                    Toast.makeText(AddChildActivity.this,
-                            "Child linked successfully",
-                            Toast.LENGTH_SHORT).show();
-                    buttonSaveChild.setEnabled(true);
-                    finish(); // go back to parent screen
-                })
-                .addOnFailureListener(e -> {
-                    textChildError.setText("Failed to link child: " + e.getMessage());
                     textChildError.setVisibility(View.VISIBLE);
                     buttonSaveChild.setEnabled(true);
                 });
