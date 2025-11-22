@@ -3,9 +3,11 @@ package com.example.smartairsetup;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
@@ -15,6 +17,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -32,19 +35,54 @@ public class DailyCheckIn extends AppCompatActivity {
     private FirebaseAuth mAuth;
     private FirebaseFirestore db;
 
+    // Triggers
+    private CheckBox checkTriggerExercise;
+    private CheckBox checkTriggerColdAir;
+    private CheckBox checkTriggerDustPets;
+    private CheckBox checkTriggerSmoke;
+    private CheckBox checkTriggerIllness;
+    private CheckBox checkTriggerOdors;
+    private String currentAuthorLabel = null; // "Parent-entered" or "Child-entered"
+    private String currentRole = null;        // "parent" / "child" / "provider"
+    public static final String EXTRA_CHILD_ID = "extra_child_id";
+    public static final String EXTRA_CHILD_NAME = "extra_child_name";
+    private String childId;
+    private String childName;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_daily_check_in);
+        Intent intent = getIntent();
+        childId = intent.getStringExtra(EXTRA_CHILD_ID);
+        childName = intent.getStringExtra(EXTRA_CHILD_NAME);
+
+        if (childId == null) {
+            Toast.makeText(this, "No child selected for check-in.", Toast.LENGTH_LONG).show();
+            finish();
+            return;
+        }
+        TextView childNameText = findViewById(R.id.textChildNameForCheckin);
+        if (childNameText != null && childName != null) {
+            childNameText.setText("Check-in for " + childName);
+        }
 
         mAuth = FirebaseAuth.getInstance();
         db = FirebaseFirestore.getInstance();
+        loadUserRole();
 
         radioNightWaking = findViewById(R.id.radioNightWaking);
         radioActivityLimits = findViewById(R.id.radioActivityLimits);
         radioCoughWheeze = findViewById(R.id.radioCoughWheeze);
         textCheckInError = findViewById(R.id.textCheckInError);
         buttonSubmit = findViewById(R.id.buttonSubmitCheckIn);
+        checkTriggerExercise = findViewById(R.id.checkTriggerExercise);
+        checkTriggerColdAir = findViewById(R.id.checkTriggerColdAir);
+        checkTriggerDustPets = findViewById(R.id.checkTriggerDustPets);
+        checkTriggerSmoke = findViewById(R.id.checkTriggerSmoke);
+        checkTriggerIllness = findViewById(R.id.checkTriggerIllness);
+        checkTriggerOdors = findViewById(R.id.checkTriggerOdors);
+
 
         buttonSubmit.setOnClickListener(v -> submitCheckIn());
     }
@@ -82,12 +120,32 @@ public class DailyCheckIn extends AppCompatActivity {
         data.put("activityLimits", activityLimits);
         data.put("coughWheeze", coughWheeze);
         data.put("createdAt", new Date());
+        data.put("childId", childId);
+        data.put("childName", childName);
+
+        String authorLabel = currentAuthorLabel;
+        if (authorLabel == null) {
+            // Fallback if Firestore doc hasn't loaded yet
+            authorLabel = "Unknown";
+        }
+
+        data.put("authorLabel", authorLabel);
+        data.put("authorRole", currentRole); // optional, might be useful later
+
+        List<String> triggers = new ArrayList<>();
+        if (checkTriggerExercise.isChecked()) triggers.add("exercise");
+        if (checkTriggerColdAir.isChecked()) triggers.add("cold_air");
+        if (checkTriggerDustPets.isChecked()) triggers.add("dust_pets");
+        if (checkTriggerSmoke.isChecked()) triggers.add("smoke");
+        if (checkTriggerIllness.isChecked()) triggers.add("illness");
+        if (checkTriggerOdors.isChecked()) triggers.add("strong_odors");
+
+        data.put("triggers", triggers);
 
         db.collection("users")
                 .document(uid)
                 .collection("dailyCheckins")
-                .document(dateId) // one check-in per day per user
-                .set(data)
+                .add(data)
                 .addOnSuccessListener(unused -> {
                     Toast.makeText(this,
                             "Check-in saved",
@@ -100,7 +158,30 @@ public class DailyCheckIn extends AppCompatActivity {
                     textCheckInError.setVisibility(View.VISIBLE);
                     buttonSubmit.setEnabled(true);
                 });
+
     }
+
+    private void loadUserRole() {
+        if (mAuth.getCurrentUser() == null) return;
+        String uid = mAuth.getCurrentUser().getUid();
+
+        db.collection("users")
+                .document(uid)
+                .get()
+                .addOnSuccessListener(snapshot -> {
+                    if (snapshot != null && snapshot.exists()) {
+                        currentRole = snapshot.getString("role");
+                        if ("parent".equals(currentRole)) {
+                            currentAuthorLabel = "Parent-entered";
+                        } else if ("child".equals(currentRole)) {
+                            currentAuthorLabel = "Child-entered";
+                        } else {
+                            currentAuthorLabel = "Unknown";
+                        }
+                    }
+                });
+    }
+
 
     private @Nullable String getSelectedValue(RadioGroup group) {
         int id = group.getCheckedRadioButtonId();

@@ -23,6 +23,17 @@
             android:layout_marginBottom="24dp"
             android:gravity="center" />
 
+        <TextView
+            android:id="@+id/textChildNameForCheckin"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Check-in for ..."
+            android:textSize="16sp"
+            android:textColor="#1B4F72"
+            android:fontFamily="@font/nunito_medium"
+            android:layout_marginBottom="24dp"
+            android:gravity="center" />
+
         <!-- Night waking -->
         <TextView
             android:layout_width="match_parent"
@@ -120,6 +131,61 @@
                 android:layout_height="wrap_content"
                 android:text="A lot" />
         </RadioGroup>
+
+        <!-- Triggers -->
+        <TextView
+            android:id="@+id/textTriggersLabel"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Triggers (check all that apply)"
+            android:textColor="#2E7D32"
+            android:fontFamily="@font/nunito_medium"
+            android:layout_marginTop="16dp" />
+
+        <LinearLayout
+            android:id="@+id/layoutTriggers"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_marginTop="8dp">
+
+            <CheckBox
+                android:id="@+id/checkTriggerExercise"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Exercise" />
+
+            <CheckBox
+                android:id="@+id/checkTriggerColdAir"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Cold air" />
+
+            <CheckBox
+                android:id="@+id/checkTriggerDustPets"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Dust / pets" />
+
+            <CheckBox
+                android:id="@+id/checkTriggerSmoke"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Smoke" />
+
+            <CheckBox
+                android:id="@+id/checkTriggerIllness"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Illness" />
+
+            <CheckBox
+                android:id="@+id/checkTriggerOdors"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Strong odors / perfumes" />
+        </LinearLayout>
+
 
         <TextView
             android:id="@+id/textCheckInError"
