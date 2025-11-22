@@ -4,7 +4,6 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
-import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
 import android.widget.RadioButton;
@@ -18,6 +17,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
@@ -114,5 +114,10 @@ public class DailyCheckIn extends AppCompatActivity {
         if (text.contains("some")) return "some";
         if (text.contains("lot"))  return "a_lot";
         return text;
+    }
+
+    public static interface ChildFetchListener {
+        void onChildrenLoaded(List<UserID> children);
+        void onError(Exception e);
     }
 }
