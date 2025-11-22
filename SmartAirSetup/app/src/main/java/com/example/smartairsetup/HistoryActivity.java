@@ -219,6 +219,9 @@ public class HistoryActivity extends AppCompatActivity {
                             "Days with cough/wheeze: " + coughProblemDays
             );
 
+            // Also load zone change events into the same list
+            loadZoneHistory(uid, filterChildId, start, end, hasDateRange);
+
         }).addOnFailureListener(e ->
                 Toast.makeText(this, "Failed to load history: " + e.getMessage(),
                         Toast.LENGTH_LONG).show()
@@ -299,6 +302,69 @@ public class HistoryActivity extends AppCompatActivity {
             );
             childAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
             spinnerChild.setAdapter(childAdapter);
+        });
+    }
+
+    private void loadZoneHistory(String uid,
+                                 @Nullable String filterChildId,
+                                 String start,
+                                 String end,
+                                 boolean hasDateRange) {
+
+        CollectionReference zoneRef = db.collection("users")
+                .document(uid)
+                .collection("zoneHistory");
+
+        zoneRef.get().addOnSuccessListener(snapshot -> {
+
+            for (QueryDocumentSnapshot doc : snapshot) {
+                String date = doc.getString("date");
+                if (hasDateRange && date != null) {
+                    // Same date filter logic as daily check-ins
+                    if (date.compareTo(start) < 0 || date.compareTo(end) > 0) {
+                        continue;
+                    }
+                }
+
+                String docChildId = doc.getString("childId");
+                if (filterChildId != null && docChildId != null && !filterChildId.equals(docChildId)) {
+                    continue;
+                }
+
+                String childName = doc.getString("childName");
+                if (childName == null) childName = "Child";
+
+                String oldZone = doc.getString("oldZone");
+                String newZone = doc.getString("newZone");
+                Long dailyPEF = doc.getLong("dailyPEF");
+                Long pb = doc.getLong("pb");
+
+                String nightLine = "Zone changed from " +
+                        (oldZone != null ? oldZone : "?") +
+                        " to " +
+                        (newZone != null ? newZone : "?");
+
+                String triggersLine = "PEF " +
+                        (dailyPEF != null ? dailyPEF : 0) +
+                        ", PB " +
+                        (pb != null ? pb : 0);
+
+                // Reuse HistoryEntry to display this
+                HistoryEntry entry = new HistoryEntry(
+                        childName,
+                        date != null ? date : "",
+                        nightLine,   // goes in the "Night:" row
+                        "-",         // Activity
+                        "-",         // Cough/wheeze
+                        triggersLine,
+                        "zone change"
+                );
+
+                historyItems.add(entry);
+            }
+
+            // Append to whatever is already shown
+            historyAdapter.notifyDataSetChanged();
         });
     }
 }
