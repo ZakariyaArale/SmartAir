@@ -2,6 +2,7 @@ package com.example.smartairsetup;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.app.AlertDialog;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -40,6 +41,41 @@ public class ParentHomeActivity extends AppCompatActivity {
 
         mAuth = FirebaseAuth.getInstance();
         db = FirebaseFirestore.getInstance();
+
+        Button buttonViewHistory = findViewById(R.id.buttonViewHistory);
+        buttonViewHistory.setOnClickListener(v -> {
+            Intent intent = new Intent(ParentHomeActivity.this, HistoryActivity.class);
+            startActivity(intent);
+        });
+
+        Button buttonDailyCheckIn = findViewById(R.id.buttonDailyCheckIn);
+        buttonDailyCheckIn.setOnClickListener(v -> {
+            if (childIds.isEmpty()) {
+                Toast.makeText(ParentHomeActivity.this,
+                        "Please add a child first.",
+                        Toast.LENGTH_SHORT).show();
+                return;
+            }
+
+            if (childIds.size() == 1) {
+                // Only one child – go straight to DailyCheckIn
+                launchDailyCheckIn(childIds.get(0), childNames.get(0));
+            } else {
+                // Multiple children – show a picker dialog
+                String[] namesArray = childNames.toArray(new String[0]);
+
+                new AlertDialog.Builder(ParentHomeActivity.this)
+                        .setTitle("Select a child")
+                        .setItems(namesArray, (dialog, which) -> {
+                            if (which >= 0 && which < childIds.size()) {
+                                String childId = childIds.get(which);
+                                String childName = childNames.get(which);
+                                launchDailyCheckIn(childId, childName);
+                            }
+                        })
+                        .show();
+            }
+        });
 
         listChildren = findViewById(R.id.listChildren);
         textNoChildren = findViewById(R.id.textNoChildren);
@@ -124,4 +160,12 @@ public class ParentHomeActivity extends AppCompatActivity {
                                 Toast.LENGTH_LONG).show()
                 );
     }
+
+    private void launchDailyCheckIn(String childId, String childName) {
+        Intent intent = new Intent(ParentHomeActivity.this, DailyCheckIn.class);
+        intent.putExtra(DailyCheckIn.EXTRA_CHILD_ID, childId);
+        intent.putExtra(DailyCheckIn.EXTRA_CHILD_NAME, childName);
+        startActivity(intent);
+    }
+
 }

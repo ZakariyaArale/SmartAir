@@ -41,7 +41,18 @@
         android:layout_height="0dp"
         android:layout_weight="1"
         android:dividerHeight="1dp" />
-
+    <Button
+        android:id="@+id/buttonDailyCheckIn"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Daily Check-in"
+        android:layout_marginTop="12dp" />
+    <Button
+        android:id="@+id/buttonViewHistory"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="View History"
+        android:layout_marginTop="12dp" />
     <Button
         android:id="@+id/buttonAddChild"
         android:layout_width="match_parent"

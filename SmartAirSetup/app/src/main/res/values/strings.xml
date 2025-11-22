@@ -62,4 +62,22 @@
     <string name="pb_subtitle">Choose a child and enter their PB value.</string>
     <string name="pb_entry_label">Enter Personal Best</string>
     <string name="pb_hint">Enter PB</string>
+
+    <string-array name="trigger_filter_options">
+        <item>Any trigger</item>
+        <item>Exercise</item>
+        <item>Cold air</item>
+        <item>Dust / pets</item>
+        <item>Smoke</item>
+        <item>Illness</item>
+        <item>Strong odors / perfumes</item>
+    </string-array>
+
+    <string-array name="symptom_filter_options">
+        <item>Any symptom</item>
+        <item>Night waking (some/a lot)</item>
+        <item>Activity limits (some/a lot)</item>
+        <item>Cough / wheeze (some/a lot)</item>
+    </string-array>
+
 </resources>
