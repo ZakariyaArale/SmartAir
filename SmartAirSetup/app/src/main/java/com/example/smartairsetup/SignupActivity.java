@@ -50,6 +50,13 @@ public class SignupActivity extends AppCompatActivity {
         signupError = findViewById(R.id.signupError);
 
         buttonSignup.setOnClickListener(v -> handleSignup());
+        Button backButton = findViewById(R.id.backButton);
+        backButton.setOnClickListener(v -> {
+            Intent intent = new Intent(SignupActivity.this, MainActivity.class);
+            // Avoid stacking multiple copies of Welcome
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+            startActivity(intent);
+        });
     }
 
     private String getSelectedRole() {

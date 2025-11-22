@@ -8,6 +8,7 @@ import android.widget.CompoundButton;
 import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.widget.Button;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentReference;
@@ -70,6 +71,8 @@ public class ShareWithProviderActivity extends AppCompatActivity {
         switchPEF = findViewById(R.id.switchPEF);
         switchTriageIncidents = findViewById(R.id.switchTriageIncidents);
         switchSummaryCharts = findViewById(R.id.switchSummaryCharts);
+        Button backButton = findViewById(R.id.backButton);
+        backButton.setOnClickListener(v -> finish());
 
         // One listener for all switches -> update the corresponding Firestore field
         CompoundButton.OnCheckedChangeListener toggleListener = (button, isChecked) -> {

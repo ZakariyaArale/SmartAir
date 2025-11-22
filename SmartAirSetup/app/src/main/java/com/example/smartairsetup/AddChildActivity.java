@@ -59,6 +59,8 @@ public class AddChildActivity extends AppCompatActivity {
         buttonSaveChild = findViewById(R.id.buttonSaveChild);
 
         buttonSaveChild.setOnClickListener(v -> saveChild());
+        Button backButton = findViewById(R.id.backButton);
+        backButton.setOnClickListener(v -> finish());
     }
 
     private void saveChild() {

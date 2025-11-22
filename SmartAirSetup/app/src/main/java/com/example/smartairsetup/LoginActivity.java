@@ -46,6 +46,8 @@ public class LoginActivity extends AppCompatActivity {
 
         buttonSignIn.setOnClickListener(v -> handleSignIn());
         textViewForgotPassword.setOnClickListener(v -> handleForgotPassword());
+        Button backButton = findViewById(R.id.backButton);
+        backButton.setOnClickListener(v -> finish());
     }
 
     private void handleSignIn() {

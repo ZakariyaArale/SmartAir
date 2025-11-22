@@ -2,25 +2,11 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:gravity="center_horizontal"
     android:padding="24dp"
     android:background="#DFF3FF">
-
-    <!-- Back button -->
-    <Button
-        android:id="@+id/backButton"
-        android:layout_width="107dp"
-        android:layout_height="48dp"
-        android:layout_marginStart="24dp"
-        android:layout_marginTop="24dp"
-        android:layout_marginBottom="8dp"
-        android:layout_gravity="start"
-        android:background="@android:color/transparent"
-        android:fontFamily="@font/nunito_medium"
-        android:text="@string/back_button"
-        android:textColor="#2E7D32"
-        android:textSize="22sp" />
 
     <!-- Heading -->
     <TextView
@@ -80,5 +66,21 @@
         android:textColor="#FF0000"
         android:visibility="gone"
         android:layout_marginTop="12dp" />
+
+    <Button
+        android:id="@+id/backButton"
+        android:layout_width="wrap_content"
+        android:layout_height="48dp"
+        android:layout_marginBottom="24dp"
+        android:background="@android:color/transparent"
+        android:fontFamily="@font/nunito_medium"
+        android:text="@string/back_button"
+        android:textColor="#2E7D32"
+        android:textSize="22sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5" />
+
 
 </LinearLayout>

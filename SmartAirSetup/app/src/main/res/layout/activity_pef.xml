@@ -221,7 +221,7 @@
     <!-- Back Button -->
     <Button
         android:id="@+id/backButton"
-        android:layout_width="107dp"
+        android:layout_width="wrap_content"
         android:layout_height="48dp"
         android:layout_marginBottom="24dp"
         android:background="@android:color/transparent"
@@ -230,6 +230,9 @@
         android:textColor="#2E7D32"
         android:textSize="22sp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5" />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -114,5 +114,19 @@
             android:fontFamily="@font/nunito_regular"
             android:padding="8dp" />
 
+        <!-- Back Button -->
+        <Button
+            android:id="@+id/backButton"
+            android:layout_width="107dp"
+            android:layout_height="48dp"
+            android:layout_marginTop="24dp"
+            android:layout_marginBottom="24dp"
+            android:layout_gravity="center_horizontal"
+            android:background="@android:color/transparent"
+            android:fontFamily="@font/nunito_medium"
+            android:text="@string/back_button"
+            android:textColor="#2E7D32"
+            android:textSize="22sp" />
+
     </LinearLayout>
 </ScrollView>
