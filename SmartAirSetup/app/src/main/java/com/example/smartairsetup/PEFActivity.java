@@ -9,6 +9,7 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.SetOptions;
 
@@ -46,7 +47,15 @@ public class PEFActivity extends AppCompatActivity {
         Button saveButton = findViewById(R.id.savePBButton);
 
         db = FirebaseFirestore.getInstance();
-        parentID = "qGVzsSb3PMaI3D0UumcwJpuMgMG2";
+
+        FirebaseAuth auth = FirebaseAuth.getInstance();
+        if (auth.getCurrentUser() != null) {
+            parentID = auth.getCurrentUser().getUid();
+        } else {
+            Toast.makeText(this, "Not logged in", Toast.LENGTH_SHORT).show();
+            finish();
+            return;
+        }
 
         // Child selection dialog
         ProcessChildren provider = new FireBaseProcessChild();
@@ -56,6 +65,9 @@ public class PEFActivity extends AppCompatActivity {
                 childDiaglog.showSelectionDialog(chooseChildButton));
 
         saveButton.setOnClickListener(v -> savePEF());
+
+        Button backButton = findViewById(R.id.backButton);
+        backButton.setOnClickListener(v -> finish());
     }
 
     @androidx.annotation.Nullable

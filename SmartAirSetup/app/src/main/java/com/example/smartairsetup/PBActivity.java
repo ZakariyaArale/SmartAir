@@ -7,6 +7,7 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.HashMap;
@@ -36,13 +37,23 @@ public class PBActivity extends AppCompatActivity {
         Button saveButton = findViewById(R.id.savePBButton);
 
         db = FirebaseFirestore.getInstance();
-        parentID = "qGVzsSb3PMaI3D0UumcwJpuMgMG2"; // replace later with FirebaseAuth.getInstance().getUid()
+        FirebaseAuth auth = FirebaseAuth.getInstance();
+        if (auth.getCurrentUser() != null) {
+            parentID = auth.getCurrentUser().getUid();
+        } else {
+            Toast.makeText(this, "Not logged in", Toast.LENGTH_SHORT).show();
+            finish();
+            return;
+        }
 
         ProcessChildren provider = new FireBaseProcessChild();
         ChildDiaglog childDiaglog = new ChildDiaglog(this, provider);
 
         chooseChildButton.setOnClickListener(v -> childDiaglog.showSelectionDialog(chooseChildButton));
         saveButton.setOnClickListener(v -> savePB());
+
+        Button backButton = findViewById(R.id.backButton);
+        backButton.setOnClickListener(v -> finish());
     }
 
     public void savePB() {
