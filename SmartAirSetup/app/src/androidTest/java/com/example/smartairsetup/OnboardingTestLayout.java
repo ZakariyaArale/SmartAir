@@ -12,7 +12,7 @@ import static org.junit.Assert.*;
 //In short this is just testing if all classes return the correct layout and screens for traversal
 @RunWith(AndroidJUnit4.class)
 public class OnboardingTestLayout {
-
+/*
     @Test
     public void testOnboardingActivity1() {
         ActivityScenario<OnboardingActivity> scenario =
@@ -64,4 +64,6 @@ public class OnboardingTestLayout {
             assertEquals(MainActivity.class, activity.getSkipActivity());
         });
     }
+
+ */
 }

@@ -3,11 +3,13 @@ package com.example.smartairsetup;
 import android.graphics.Color;
 import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.Button;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 public class ZoneActivityChild extends AppCompatActivity {
@@ -15,9 +17,9 @@ public class ZoneActivityChild extends AppCompatActivity {
     private Button chooseChildButton;
     private FirebaseFirestore db;
 
-    // Forced child selection
-    private final String childUid = "sUjssxQr1fYWZ8UaevXU5FV0vY03";
-    private final String parentID = "qGVzsSb3PMaI3D0UumcwJpuMgMG2";
+    // Get current logged-in child UID
+    private final String childUid = FirebaseAuth.getInstance().getCurrentUser().getUid();
+    private String parentID;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,12 +35,34 @@ public class ZoneActivityChild extends AppCompatActivity {
 
         db = FirebaseFirestore.getInstance();
 
-        // Load child info immediately when screen loads
-        loadChildInfo(background);
+        // Step 1: Fetch parent UID from childAccounts
+        db.collection("childAccounts")
+                .document(childUid)
+                .get()
+                .addOnSuccessListener(documentSnapshot -> {
+                    if (documentSnapshot.exists()) {
+                        parentID = documentSnapshot.getString("parentUid");
+                        Log.d("Firestore", "Parent UID: " + parentID);
+
+                        // Step 2: Now that we have parentID, load child info
+                        loadChildInfo(background);
+                    } else {
+                        Log.d("Firestore", "Child not found in childAccounts");
+                        chooseChildButton.setText("Invalid child");
+                        background.setColor(Color.parseColor("#808080")); // Grey
+                    }
+                })
+                .addOnFailureListener(e -> {
+                    Log.e("Firestore", "Error fetching parent UID", e);
+                    chooseChildButton.setText("Error");
+                    background.setColor(Color.parseColor("#808080")); // Grey
+                });
     }
 
     private void loadChildInfo(GradientDrawable background) {
-        // First fetch the child document for the name
+        if (parentID == null) return;
+
+        // Fetch child document for the name
         db.collection("users")
                 .document(parentID)
                 .collection("children")
@@ -49,15 +73,18 @@ public class ZoneActivityChild extends AppCompatActivity {
                         String childName = childDoc.getString("name");
                         if (childName != null) {
                             chooseChildButton.setText(childName);
-                        }
-                        else{
+                        } else {
                             chooseChildButton.setText("Invalid child");
                             background.setColor(Color.parseColor("#808080")); // Grey
-                            return; // Stop processing
+                            return;
                         }
+                    } else {
+                        chooseChildButton.setText("Invalid child");
+                        background.setColor(Color.parseColor("#808080")); // Grey
+                        return;
                     }
 
-                    // Now fetch latest PEF for dailyPEF / pb
+                    // Fetch latest PEF
                     db.collection("users")
                             .document(parentID)
                             .collection("children")
@@ -74,7 +101,6 @@ public class ZoneActivityChild extends AppCompatActivity {
                                 Long dailyPEF = latestDoc.getLong("dailyPEF");
                                 Long pb = latestDoc.getLong("pb");
 
-
                                 if (dailyPEF == null || dailyPEF <= 0 || pb == null || pb <= 0) {
                                     background.setColor(Color.parseColor("#808080")); // Grey
                                     return;
@@ -90,7 +116,11 @@ public class ZoneActivityChild extends AppCompatActivity {
                                     background.setColor(Color.parseColor("#F44336")); // Red
                                 }
                             });
+                })
+                .addOnFailureListener(e -> {
+                    Log.e("Firestore", "Error loading child info", e);
+                    chooseChildButton.setText("Error");
+                    background.setColor(Color.parseColor("#808080")); // Grey
                 });
     }
-
 }

@@ -1,0 +1,182 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#DFF3FF">
+
+    <!-- Scrollable content -->
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:padding="24dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:gravity="center_horizontal">
+
+            <!-- Title -->
+            <TextView
+                android:id="@+id/textRedFlagTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Check for Red Flags"
+                android:textSize="26sp"
+                android:textColor="#D32F2F"
+                android:fontFamily="@font/nunito_regular"
+                android:layout_marginTop="48dp"
+                android:layout_marginBottom="16dp"
+                android:gravity="center"/>
+
+            <TextView
+                android:id="@+id/textRedFlagInstructions"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Select the options that apply for yourself or your child"
+                android:textSize="18sp"
+                android:textColor="#1B4F72"
+                android:fontFamily="@font/nunito_medium"
+                android:layout_marginBottom="24dp"
+                android:gravity="center"/>
+
+            <!-- Question 1 -->
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Can your child speak full sentences?"
+                android:textColor="#D32F2F"
+                android:textSize="18sp"
+                android:fontFamily="@font/nunito_medium"
+                android:layout_marginTop="16dp"/>
+
+            <RadioGroup
+                android:id="@+id/radioSpeakFullSentences"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <RadioButton
+                    android:id="@+id/radioSpeakYes"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Yes"
+                    android:textSize="16sp"/>
+
+                <RadioButton
+                    android:id="@+id/radioSpeakNo"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="No"
+                    android:textSize="16sp"/>
+            </RadioGroup>
+
+            <!-- Question 2 -->
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Chest pulling in / retractions?"
+                android:textColor="#D32F2F"
+                android:textSize="18sp"
+                android:fontFamily="@font/nunito_medium"
+                android:layout_marginTop="16dp"/>
+
+            <RadioGroup
+                android:id="@+id/radioChestRetractions"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <RadioButton
+                    android:id="@+id/radioChestYes"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Yes"
+                    android:textSize="16sp"/>
+
+                <RadioButton
+                    android:id="@+id/radioChestNo"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="No"
+                    android:textSize="16sp"/>
+            </RadioGroup>
+
+            <!-- Question 3 -->
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Blue or gray lips / nails?"
+                android:textColor="#D32F2F"
+                android:textSize="18sp"
+                android:fontFamily="@font/nunito_medium"
+                android:layout_marginTop="16dp"/>
+
+            <RadioGroup
+                android:id="@+id/radioBlueLipsNails"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <RadioButton
+                    android:id="@+id/radioBlueYes"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Yes"
+                    android:textSize="16sp"/>
+
+                <RadioButton
+                    android:id="@+id/radioBlueNo"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="No"
+                    android:textSize="16sp"/>
+            </RadioGroup>
+
+            <!-- Error message -->
+            <TextView
+                android:id="@+id/textRedFlagError"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="@android:color/holo_red_dark"
+                android:visibility="gone"
+                android:textSize="16sp"
+                android:layout_marginTop="8dp"/>
+
+        </LinearLayout>
+    </ScrollView>
+
+    <!-- Bottom Buttons -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center"
+        android:padding="16dp">
+
+        <Button
+            android:id="@+id/backButton"
+            android:layout_width="120dp"
+            android:layout_height="48dp"
+            android:text="Back"
+            android:textColor="#D32F2F"
+            android:textSize="20sp"
+            android:fontFamily="@font/nunito_medium"
+            android:background="@android:color/transparent"/>
+
+        <View
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_weight="1"/>
+
+        <Button
+            android:id="@+id/nextButton"
+            android:layout_width="120dp"
+            android:layout_height="48dp"
+            android:text="Next"
+            android:textColor="#D32F2F"
+            android:textSize="20sp"
+            android:fontFamily="@font/nunito_medium"
+            android:background="@android:color/transparent"/>
+    </LinearLayout>
+
+</LinearLayout>

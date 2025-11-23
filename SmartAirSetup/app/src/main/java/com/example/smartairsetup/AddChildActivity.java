@@ -165,6 +165,11 @@ public class AddChildActivity extends AppCompatActivity {
         childData.put("pef", DEFAULT_PEF);
         childData.put("pre-med", DEFAULT_PMED);
         childData.put("post-med", DEFAULT_PMED);
+        childData.put("rescue-triage", DEFAULT_PMED);
+        childData.put("pef-triage", DEFAULT_PMED);
+        childData.put("message-triage", "None");
+
+
 
         // Sharing options default
         childData.put("shareRescueLogs", false);

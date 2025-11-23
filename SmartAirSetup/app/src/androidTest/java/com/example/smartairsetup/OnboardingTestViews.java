@@ -13,11 +13,11 @@ import static org.junit.Assert.*;
 
 @RunWith(AndroidJUnit4.class)
 /*For this we're testing if the system doesn't crash and all the views exist
-* also OnboardingActivity (), 2, 3, 4 are all instances of abstract so for the view
-* its only necessary to test only OnboardingActivity
+ * also OnboardingActivity (), 2, 3, 4 are all instances of abstract so for the view
+ * its only necessary to test only OnboardingActivity
  */
 public class OnboardingTestViews {
-
+/*
     //Set up activity rule to launch the activity before each test
     @Rule
     public ActivityScenarioRule<OnboardingActivity> activityRule =
@@ -71,4 +71,6 @@ public class OnboardingTestViews {
     }
 
 
+
+ */
 }

@@ -9,6 +9,7 @@ import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 public class ZoneActivity extends AppCompatActivity {
@@ -28,7 +29,7 @@ public class ZoneActivity extends AppCompatActivity {
         GradientDrawable background = (GradientDrawable) zoneLabel.getBackground();
 
         db = FirebaseFirestore.getInstance();
-        parentID = "qGVzsSb3PMaI3D0UumcwJpuMgMG2";
+        parentID =  FirebaseAuth.getInstance().getCurrentUser().getUid();
 
         ProcessChildren provider = new FireBaseProcessChild();
         ChildDiaglog childDiaglog = new ChildDiaglog(this, provider);
@@ -48,12 +49,8 @@ public class ZoneActivity extends AppCompatActivity {
                 .document(parentID)
                 .collection("children")
                 .document(childUid)
-                .collection("PEF")
-                .document("latest")
                 .get()
                 .addOnSuccessListener(latestDoc -> {
-
-                    Log.d("ZONE", "Firestore callback triggered");
 
                     if (!latestDoc.exists()) {
                         Log.d("ZONE", "No latest doc -> setting GREY");
@@ -64,24 +61,19 @@ public class ZoneActivity extends AppCompatActivity {
                     Long dailyPEF = latestDoc.getLong("dailyPEF");
                     Long pb = latestDoc.getLong("pb");
 
-                    Log.d("ZONE", "dailyPEF=" + dailyPEF + ", pb=" + pb);
                     if (dailyPEF == null || pb == null || dailyPEF <= 0 || pb <= 0) {
-                        Log.d("ZONE", "Invalid values -> setting GREY");
                         background.setColor(Color.parseColor("#808080"));
                         return;
                     }
 
                     double percentage = (double) dailyPEF / pb;
-                    Log.d("ZONE", "percentage=" + percentage);
 
                     if (percentage >= 0.8) {
-                        Log.d("ZONE", "Setting GREEN");
+
                         background.setColor(Color.parseColor("#4CAF50"));
                     } else if (percentage >= 0.5) {
-                        Log.d("ZONE", "Setting YELLOW");
                         background.setColor(Color.parseColor("#FFC107"));
                     } else {
-                        Log.d("ZONE", "Setting RED");
                         background.setColor(Color.parseColor("#F44336"));
                     }
                 });
