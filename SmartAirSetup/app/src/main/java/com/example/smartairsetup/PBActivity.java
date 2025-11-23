@@ -37,23 +37,13 @@ public class PBActivity extends AppCompatActivity {
         Button saveButton = findViewById(R.id.savePBButton);
 
         db = FirebaseFirestore.getInstance();
-        FirebaseAuth auth = FirebaseAuth.getInstance();
-        if (auth.getCurrentUser() != null) {
-            parentID = auth.getCurrentUser().getUid();
-        } else {
-            Toast.makeText(this, "Not logged in", Toast.LENGTH_SHORT).show();
-            finish();
-            return;
-        }
+        parentID = FirebaseAuth.getInstance().getCurrentUser().getUid(); // replace later with FirebaseAuth.getInstance().getUid()
 
         ProcessChildren provider = new FireBaseProcessChild();
         ChildDiaglog childDiaglog = new ChildDiaglog(this, provider);
 
         chooseChildButton.setOnClickListener(v -> childDiaglog.showSelectionDialog(chooseChildButton));
         saveButton.setOnClickListener(v -> savePB());
-
-        Button backButton = findViewById(R.id.backButton);
-        backButton.setOnClickListener(v -> finish());
     }
 
     public void savePB() {
@@ -87,8 +77,6 @@ public class PBActivity extends AppCompatActivity {
                 .document(parentID)
                 .collection("children")
                 .document(childUid)
-                .collection("PEF")
-                .document("latest")
                 .get()
                 .addOnSuccessListener(latest -> {
 

@@ -52,6 +52,27 @@
             android:name=".PEFActivity"
             android:exported="false" />
         <activity
+            android:name=".EmergencySelectorActivity"
+            android:exported="false" />
+        <activity
+            android:name=".GreenCardActivity"
+            android:exported="false" />
+        <activity
+            android:name=".YellowCardActivity"
+            android:exported="false" />
+        <activity
+            android:name=".RedCardActivity"
+            android:exported="false" />
+        <activity
+            android:name=".OptionalDataActivity"
+            android:exported="false" />
+        <activity
+            android:name=".RedFlagsActivity"
+            android:exported="false" />
+        <activity
+            android:name=".EmergencyActivity"
+            android:exported="false" />
+        <activity
             android:name=".MainActivity"
             android:exported="true">
             <intent-filter>
