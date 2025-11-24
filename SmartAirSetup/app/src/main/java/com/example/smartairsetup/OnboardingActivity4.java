@@ -1,8 +1,11 @@
 package com.example.smartairsetup;
 
 import android.app.Activity;
+import android.content.Intent;
+import android.os.Bundle;
+import android.widget.Button;
 
-public class OnboardingActivity4 extends AbstractOnboarding<MainActivity> {
+public class OnboardingActivity4 extends AbstractOnboarding {
 
     @Override
     protected int getLayoutId() {
@@ -10,13 +13,41 @@ public class OnboardingActivity4 extends AbstractOnboarding<MainActivity> {
     }
 
     @Override
-    protected Class<? extends Activity> getPreviousActivity() {
-        return OnboardingActivity3.class;
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        setNextButton();
+        setBackButton();
+        setSkipButton();
     }
 
-    //TODO: Fix when main menus are fixed
-    @Override
-    protected Class<MainActivity> getNextActivity() {
-        return MainActivity.class;
+    private void setNextButton() {
+        Button nextButton = findViewById(R.id.nextButton);
+        if (nextButton != null) {
+            nextButton.setOnClickListener(v -> {
+                Intent intent = new Intent(this, SignupActivity.class);
+                startActivity(intent);
+            });
+        }
+    }
+
+    private void setBackButton() {
+        Button backButton = findViewById(R.id.backButton);
+        if (backButton != null) {
+            backButton.setOnClickListener(v -> {
+                Intent intent = new Intent(this, OnboardingActivity3.class);
+                startActivity(intent);
+            });
+        }
+    }
+
+    private void setSkipButton() {
+        Button skipButton = findViewById(R.id.skipButton);
+        if (skipButton != null) {
+            skipButton.setOnClickListener(v -> {
+                Intent intent = new Intent(this, SignupActivity.class);
+                startActivity(intent);
+            });
+        }
     }
 }

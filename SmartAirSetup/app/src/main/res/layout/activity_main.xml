@@ -3,8 +3,22 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:gravity="center"
-    android:padding="24dp">
+    android:gravity="center_horizontal"
+    android:padding="24dp"
+    android:background="#DFF3FF">
+
+    <!-- Welcome heading -->
+    <TextView
+        android:id="@+id/textWelcome"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Welcome to Smart Air"
+        android:textSize="24sp"
+        android:textColor="#2E7D32"
+        android:fontFamily="@font/nunito_regular"
+        android:layout_marginTop="48dp"
+        android:layout_marginBottom="24dp"
+        android:gravity="center" />
 
     <ImageView
         android:id="@+id/imageLogo"
@@ -18,13 +32,17 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="I'm a new user"
-        android:layout_marginTop="32dp" />
+        android:layout_marginTop="32dp"
+        android:backgroundTint="#2E7D32"
+        android:textColor="@android:color/white" />
 
     <Button
         android:id="@+id/buttonExistingUser"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="I'm an existing user"
-        android:layout_marginTop="16dp" />
+        android:layout_marginTop="16dp"
+        android:backgroundTint="#2E7D32"
+        android:textColor="@android:color/white" />
 
 </LinearLayout>

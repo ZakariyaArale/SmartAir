@@ -7,7 +7,7 @@
     android:background="@color/background_colour"
     tools:context=".ParentHomeActivity">
 
-    <!-- Notification Button -->
+    <!-- Top right: Notification -->
     <ImageButton
         android:id="@+id/notificationButton"
         android:layout_width="48dp"
@@ -23,184 +23,132 @@
         app:tint="@color/button_icon_color"
         app:srcCompat="@drawable/menu_notifications_button_logo" />
 
-    <!-- ============================================= -->
-    <!-- ==        TOP HEADER SECTION (NEW)         == -->
-    <!-- ============================================= -->
-
-    <TextView
-        android:id="@+id/greetingText"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="24dp"
-        android:layout_marginTop="64dp"
-        android:text="Hi,"
-        android:textColor="@android:color/white"
-        android:textSize="32sp"
-        android:textStyle="bold"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <TextView
-        android:id="@+id/tasksText"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:text="You have 0 tasks..."
-        android:textColor="@android:color/white"
-        android:textSize="16sp"
-        app:layout_constraintStart_toStartOf="@id/greetingText"
-        app:layout_constraintTop_toBottomOf="@id/greetingText" />
-
-    <com.google.android.material.imageview.ShapeableImageView
-        android:id="@+id/profileImage"
-        android:layout_width="60dp"
-        android:layout_height="60dp"
-        android:layout_marginEnd="24dp"
-        android:src="@drawable/person"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@id/greetingText" />
-
-    <!-- ============================================= -->
-    <!-- ==   WHITE MAIN CONTENT PANEL (UPDATED)    == -->
-    <!-- ============================================= -->
-
-    <!-- This FrameLayout is now our white panel and Fragment container. -->
+    <!-- CENTER: Main Parent Home + Shortcuts -->
     <FrameLayout
         android:id="@+id/shortcutContainer"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:layout_marginTop="32dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginBottom="16dp"
         android:background="@drawable/main_content_background"
+        android:backgroundTint="@color/white"
         android:elevation="4dp"
-        android:backgroundTint="#E9E9E9"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/notificationButton"
+        app:layout_constraintBottom_toTopOf="@id/bottomNavBackground"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/tasksText">
+        app:layout_constraintEnd_toEndOf="parent">
 
-        <!--
-            Shortcuts and other content should now be placed INSIDE this FrameLayout
-            or inside the layout file of a Fragment that is shown INSIDE this FrameLayout.
-            For now, I am placing them directly here.
-        -->
-        <androidx.constraintlayout.widget.ConstraintLayout
+        <!-- Parent Home content in Main + Shortcuts title -->
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:padding="24dp"
+            android:background="@android:color/transparent">
 
-            <!-- "Shortcuts" Title -->
+            <!-- Main Parent Home Title -->
+            <TextView
+                android:id="@+id/textParentTitle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Parent Home"
+                android:textSize="24sp"
+                android:textStyle="bold"
+                android:textColor="#1B4F72"
+                android:paddingBottom="8dp" />
+
+            <TextView
+                android:id="@+id/textParentSubtitle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Tap a child to manage what their provider can see."
+                android:textSize="14sp"
+                android:textColor="#4F4F4F"
+                android:paddingBottom="16dp" />
+
+            <TextView
+                android:id="@+id/textNoChildren"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="You don't have any children added yet. Use the button below to add one."
+                android:textSize="14sp"
+                android:textColor="#4F4F4F"
+                android:visibility="gone"
+                android:paddingBottom="8dp" />
+
+            <!-- Child list -->
+            <ListView
+                android:id="@+id/listChildren"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:dividerHeight="1dp" />
+
+            <!-- Shortcuts title -->
             <TextView
                 android:id="@+id/shortcutsTitle"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="24dp"
-                android:layout_marginTop="24dp"
-                android:text="Shortcuts"
-                android:textColor="@android:color/black"
-                android:textSize="20sp"
-                android:textStyle="bold"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <!-- GridLayout for shortcut buttons -->
-            <GridLayout
-                android:id="@+id/shortcutsGrid"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
                 android:layout_marginTop="16dp"
-                android:layout_marginEnd="16dp"
-                android:columnCount="2"
-                android:rowCount="2"
-                android:useDefaultMargins="true"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/shortcutsTitle">
+                android:text="Shortcuts"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                android:textColor="@android:color/black" />
 
-                <!-- Shortcut Card: Calculate PEF -->
-                <FrameLayout
-                    android:id="@+id/cardCalculatePef"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_columnWeight="1"
-                    android:background="@drawable/shortcut_button_background"
-                    android:padding="16dp"
-                    android:clickable="true"
-                    android:focusable="true"
-                    android:foreground="?attr/selectableItemBackgroundBorderless">
+            <!-- Buttons in Main: Shortcuts area -->
+            <Button
+                android:id="@+id/buttonDailyCheckIn"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Daily Check-in"
+                android:backgroundTint="@color/button_icon_color"
+                android:layout_marginTop="12dp" />
 
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="vertical">
+            <Button
+                android:id="@+id/buttonViewHistory"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="View History"
+                android:backgroundTint="@color/button_icon_color"
+                android:layout_marginTop="12dp" />
 
-                        <ImageButton
-                            android:id="@+id/buttonCalculatePef"
-                            android:layout_width="48dp"
-                            android:layout_height="48dp"
-                            android:background="@android:color/transparent"
-                            android:contentDescription="Calculate PEF"
-                            android:src="@drawable/family"
-                            app:tint="#00BCD4" />
+            <Button
+                android:id="@+id/buttonSetPB"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Set Personal Best"
+                android:backgroundTint="@color/button_icon_color"
+                android:layout_marginTop="12dp" />
 
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="8dp"
-                            android:text="Calculate PEF" />
-                    </LinearLayout>
-                </FrameLayout>
+            <Button
+                android:id="@+id/buttonEnterPEF"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Enter PEF"
+                android:backgroundTint="@color/button_icon_color"
+                android:layout_marginTop="12dp" />
 
-                <!-- Shortcut Card: Set Personal Best -->
-                <FrameLayout
-                    android:id="@+id/cardSetPersonalBest"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_columnWeight="1"
-                    android:background="@drawable/shortcut_button_background"
-                    android:padding="16dp"
-                    android:clickable="true"
-                    android:focusable="true"
-                    android:foreground="?attr/selectableItemBackgroundBorderless">
+            <Button
+                android:id="@+id/buttonAddChild"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Add Child"
+                android:backgroundTint="@color/button_icon_color"
+                android:layout_marginTop="12dp" />
+            <Button
+                android:id="@+id/buttonAddBadges"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Add Badges"
+                android:backgroundTint="@color/button_icon_color"
+                android:layout_marginTop="12dp" />
 
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="vertical">
-
-                        <ImageButton
-                            android:id="@+id/buttonSetPersonalBest"
-                            android:layout_width="48dp"
-                            android:layout_height="48dp"
-                            android:background="@android:color/transparent"
-                            android:contentDescription="Set Personal Best"
-                            android:src="@drawable/family"
-                            app:tint="#00BCD4" />
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="8dp"
-                            android:text="Set Personal Best" />
-                    </LinearLayout>
-                </FrameLayout>
-
-            </GridLayout>
-
-        </androidx.constraintlayout.widget.ConstraintLayout>
-
+        </LinearLayout>
     </FrameLayout>
 
-    <!-- Main Layout (for navigation container / fragments if needed) -->
-    <FrameLayout
-        android:id="@+id/navigatorContainer"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toTopOf="@+id/bottomNavBackground"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
-
-    <!-- Navigator menu -->
+    <!-- BOTTOM NAV BACKGROUND -->
     <View
         android:id="@+id/bottomNavBackground"
         android:layout_width="0dp"
@@ -214,7 +162,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
 
-    <!-- Home Button and Text-->
+    <!-- Home Button + Text -->
     <ImageButton
         android:id="@+id/homeButton"
         android:layout_width="0dp"
@@ -246,7 +194,7 @@
         app:layout_constraintHorizontal_chainStyle="spread"
         app:layout_constraintStart_toStartOf="@id/bottomNavBackground" />
 
-    <!-- Family Button and Text-->
+    <!-- Family Button + Text -->
     <ImageButton
         android:id="@+id/familyButton"
         android:layout_width="0dp"
@@ -277,7 +225,7 @@
         app:layout_constraintEnd_toStartOf="@+id/profileText"
         app:layout_constraintStart_toEndOf="@+id/homeText" />
 
-    <!-- Profile Button and Text-->
+    <!-- Profile Button + Text -->
     <ImageButton
         android:id="@+id/profileButton"
         android:layout_width="0dp"
@@ -308,7 +256,7 @@
         app:layout_constraintEnd_toStartOf="@+id/settingsText"
         app:layout_constraintStart_toEndOf="@+id/familyText" />
 
-    <!-- Settings Button and Text -->
+    <!-- Settings Button + Text -->
     <ImageButton
         android:id="@+id/settingsButton"
         android:layout_width="0dp"

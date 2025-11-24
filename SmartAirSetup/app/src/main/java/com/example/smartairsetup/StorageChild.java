@@ -12,9 +12,11 @@ public class StorageChild {
     }
 
     public int getDailyPEF() {
+
         return dailyPEF;
     }
     public int getPrePEF() {
+
         return prePEF;
     }
     public int getPostPEF() {

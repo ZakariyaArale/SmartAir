@@ -1,48 +1,104 @@
 <?xml version="1.0" encoding="utf-8"?>
-<manifest xmlns:android="http://schemas.android.com/apk/res/android">
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.example.smartairsetup">
 
     <application
         android:allowBackup="true"
-        android:dataExtractionRules="@xml/data_extraction_rules"
-        android:fullBackupContent="@xml/backup_rules"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.SmartAirSetup">
-
-        <!-- PEF Activity (app start) -->
+        <activity
+            android:name=".AddMedicationActivity"
+            android:exported="false" />
+        <activity
+            android:name=".DailyCheckIn"
+            android:exported="false" /> <!-- Add-child screen (parent-only) -->
+        <activity
+            android:name=".AddChildActivity"
+            android:exported="false" /> <!-- Signup screen -->
+        <activity
+            android:name=".SignupActivity"
+            android:exported="false" /> <!-- Login screen -->
+        <activity
+            android:name=".LoginActivity"
+            android:exported="false" />
+        <activity
+            android:name=".OnboardingActivity"
+            android:exported="false" />
+        <activity
+            android:name=".OnboardingActivity2"
+            android:exported="false" />
+        <activity
+            android:name=".OnboardingActivity3"
+            android:exported="false" />
+        <activity
+            android:name=".OnboardingActivity4"
+            android:exported="false" /> <!-- Main launcher screen -->
+        <activity
+            android:name=".ShareWithProviderActivity"
+            android:exported="false" />
+        <!-- Parent -->
+        <activity
+            android:name=".ParentHomeActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ParentFamilyActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ParentBadgeSettingsActivity"
+            android:exported="false" />
+        <!-- Child -->
+        <activity
+            android:name=".ChildHomeActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ChildFamilyActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ChildBadgesActivity"
+            android:exported="false" />
+        <!---->
+        <activity
+            android:name=".HistoryActivity"
+            android:exported="false" />
+        <activity
+            android:name=".PBActivity"
+            android:exported="false" />
+        <activity
+            android:name=".PEFActivity"
+            android:exported="false" />
+        <activity
+            android:name=".EmergencySelectorActivity"
+            android:exported="false" />
+        <activity
+            android:name=".GreenCardActivity"
+            android:exported="false" />
+        <activity
+            android:name=".YellowCardActivity"
+            android:exported="false" />
+        <activity
+            android:name=".RedCardActivity"
+            android:exported="false" />
+        <activity
+            android:name=".OptionalDataActivity"
+            android:exported="false" />
+        <activity
+            android:name=".RedFlagsActivity"
+            android:exported="false" />
+        <activity
+            android:name=".EmergencyActivity"
+            android:exported="false" />
         <activity
             android:name=".MainActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
-        <!-- Onboarding screens -->
-        <activity android:name=".OnboardingActivity" android:exported="true" />
-        <activity android:name=".OnboardingActivity2" android:exported="true" />
-        <activity android:name=".OnboardingActivity3" android:exported="true" />
-        <activity android:name=".OnboardingActivity4" android:exported="true" />
-
-        <!-- Log in/ Sign up -->
-        <activity android:name=".SignupActivity" android:exported="true" />
-        <activity android:name=".LoginActivity" android:exported="true" />
-
-        <!-- Main Activity (app home) -->
-
-        <activity android:name=".ParentHomeActivity" android:exported="true" />
-        <activity android:name=".ChildHomeActivity" android:exported="true" />
-        <activity android:name=".ProviderHomeActivity" android:exported="true" />
-        <!-- Familiy Activity -->
-        <activity android:name=".ParentFamilyActivity" android:exported="true" />
-        <activity android:name=".ChildFamilyActivity" android:exported="true" />
-
-
-
-
     </application>
 
 </manifest>

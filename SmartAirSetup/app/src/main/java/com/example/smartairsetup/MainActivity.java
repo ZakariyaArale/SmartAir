@@ -19,9 +19,7 @@ public class MainActivity extends AppCompatActivity {
         buttonExistingUser = findViewById(R.id.buttonExistingUser);
 
         buttonNewUser.setOnClickListener(v -> {
-            // For now, I have it so that it just goes straight to SignUp.
-            // Zack, you can then insert your onboarding stuff here
-            Intent intent = new Intent(MainActivity.this, SignupActivity.class);
+            Intent intent = new Intent(MainActivity.this, OnboardingActivity.class);
             startActivity(intent);
         });
 

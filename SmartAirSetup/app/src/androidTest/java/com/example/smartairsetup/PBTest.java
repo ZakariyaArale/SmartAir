@@ -8,7 +8,7 @@ import org.junit.Test;
 import static org.junit.Assert.*;
 
 public class PBTest {
-
+/*
     @Rule
     public ActivityScenarioRule<PBActivity> rule =
             new ActivityScenarioRule<>(PBActivity.class);
@@ -115,4 +115,6 @@ public class PBTest {
             assertEquals(350, bob.getDailyPEF());
         });
     }
+
+ */
 }

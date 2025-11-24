@@ -27,6 +27,7 @@ public class SignupActivity extends AppCompatActivity {
     private RadioGroup radioGroupRole;
     private Button buttonSignup;
     private TextView signupError;
+    private Button backButton;
 
     private FirebaseAuth mAuth;
     private FirebaseFirestore db;
@@ -39,6 +40,9 @@ public class SignupActivity extends AppCompatActivity {
         mAuth = FirebaseAuth.getInstance();
         db = FirebaseFirestore.getInstance();
 
+        backButton = findViewById(R.id.backButton);
+        backButton.setOnClickListener(v -> onBackPressed());
+
         signupEmail = findViewById(R.id.signupEmail);
         signupPassword = findViewById(R.id.signupPassword);
         radioGroupRole = findViewById(R.id.radioGroupRole);
@@ -46,18 +50,23 @@ public class SignupActivity extends AppCompatActivity {
         signupError = findViewById(R.id.signupError);
 
         buttonSignup.setOnClickListener(v -> handleSignup());
+        Button backButton = findViewById(R.id.backButton);
+        backButton.setOnClickListener(v -> {
+            Intent intent = new Intent(SignupActivity.this, MainActivity.class);
+            // Avoid stacking multiple copies of Welcome
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+            startActivity(intent);
+        });
     }
 
     private String getSelectedRole() {
         int checkedId = radioGroupRole.getCheckedRadioButtonId();
-        if (checkedId == R.id.radioChild) return "child";
         if (checkedId == R.id.radioParent) return "parent";
         if (checkedId == R.id.radioProvider) return "provider";
         return null;
     }
 
     private void handleSignup() {
-        // Clear previous error
         signupError.setVisibility(View.GONE);
         signupError.setText("");
 
@@ -66,8 +75,6 @@ public class SignupActivity extends AppCompatActivity {
         String email = signupEmail.getText().toString().trim();
         String password = signupPassword.getText().toString();
         String role = getSelectedRole();
-
-        // ---- Client-side validation ----
 
         if (TextUtils.isEmpty(email)) {
             signupEmail.setError("Email is required");
@@ -98,19 +105,17 @@ public class SignupActivity extends AppCompatActivity {
         }
 
         if (role == null) {
-            signupError.setText("Please select whether you are a Child, Parent, or Provider");
+            signupError.setText("Please select whether you are a Parent or Provider");
             signupError.setVisibility(View.VISIBLE);
             buttonSignup.setEnabled(true);
             return;
         }
 
-        // If we got here, input looks valid – go to Firebase
         mAuth.createUserWithEmailAndPassword(email, password)
                 .addOnCompleteListener(this, task -> {
                     if (task.isSuccessful() && mAuth.getCurrentUser() != null) {
                         String uid = mAuth.getCurrentUser().getUid();
 
-                        // 🔥 FIRE & FORGET: save role but DON'T block navigation
                         saveUserDocument(uid, email, role);
 
                         Toast.makeText(SignupActivity.this,
@@ -118,7 +123,7 @@ public class SignupActivity extends AppCompatActivity {
                                 Toast.LENGTH_SHORT).show();
 
                         buttonSignup.setEnabled(true);
-                        goToRoleHome(role);   // ✅ ALWAYS navigate after signup
+                        goToRoleHome(role);
                     } else {
                         buttonSignup.setEnabled(true);
                         String message = "Signup failed";
@@ -140,19 +145,25 @@ public class SignupActivity extends AppCompatActivity {
                 .document(uid)
                 .set(userData, SetOptions.merge())
                 .addOnSuccessListener(unused -> {
-                    // optional: log or toast
-                    // Toast.makeText(this, "Role saved", Toast.LENGTH_SHORT).show();
+                    // No-op
                 })
                 .addOnFailureListener(e -> {
-                    // don't block UX, just surface the problem
-                    signupError.setText("Saved account, but failed to save role: " + e.getMessage());
-                    signupError.setVisibility(View.VISIBLE);
+                    // Don't block navigation
                 });
     }
 
     private void goToRoleHome(String role) {
-        // For now: just go to LoginActivity so they can sign in
-        Intent intent = new Intent(SignupActivity.this, LoginActivity.class);
+        Intent intent;
+
+        if ("parent".equals(role)) {
+            intent = new Intent(SignupActivity.this, ParentHomeActivity.class);
+        } else if ("provider".equals(role)) {
+            // for now just redirect to login
+            intent = new Intent(SignupActivity.this, LoginActivity.class);
+        } else {
+            intent = new Intent(SignupActivity.this, MainActivity.class);
+        }
+
         startActivity(intent);
         finish();
     }
