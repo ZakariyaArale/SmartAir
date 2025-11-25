@@ -35,7 +35,7 @@
                 android:id="@+id/textRedFlagInstructions"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Select the options that apply for your child"
+                android:text="Select the options that apply for yourself"
                 android:textSize="18sp"
                 android:textColor="#1B4F72"
                 android:fontFamily="@font/nunito_medium"
