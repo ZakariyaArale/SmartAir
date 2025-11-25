@@ -127,7 +127,7 @@
             android:layout_height="48dp"
             android:background="@android:color/transparent"
             android:fontFamily="@font/nunito_medium"
-            android:text="Next"
+            android:text="Main"
             android:textColor="#2E7D32"
             android:textSize="22sp" />
     </LinearLayout>

@@ -9,7 +9,6 @@ import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 public class ZoneActivity extends AppCompatActivity {
@@ -29,53 +28,61 @@ public class ZoneActivity extends AppCompatActivity {
         GradientDrawable background = (GradientDrawable) zoneLabel.getBackground();
 
         db = FirebaseFirestore.getInstance();
-        parentID =  FirebaseAuth.getInstance().getCurrentUser().getUid();
+        parentID = "VfB95gwXXyWFAqdajTHJBgyeYfB3"; // hardcoded parent for testing
 
         ProcessChildren provider = new FireBaseProcessChild();
         ChildDiaglog childDiaglog = new ChildDiaglog(this, provider);
 
-        // If a child is already selected, update color
+        chooseChildButton.setOnClickListener(v -> {
+            childDiaglog.showSelectionDialog(chooseChildButton);
+        });
+
+        // If a child is already selected, update the zone color
         Object tag = chooseChildButton.getTag();
         if (tag != null) {
             updateZoneColor(tag.toString(), background);
         }
-
-        chooseChildButton.setOnClickListener(v -> childDiaglog.showSelectionDialog(chooseChildButton));
     }
 
-    // Called when a child is selected or already set
     public void updateZoneColor(String childUid, GradientDrawable background) {
         db.collection("users")
                 .document(parentID)
                 .collection("children")
                 .document(childUid)
+                .collection("PEF")
+                .document("latest")
                 .get()
                 .addOnSuccessListener(latestDoc -> {
-
                     if (!latestDoc.exists()) {
-                        Log.d("ZONE", "No latest doc -> setting GREY");
-                        background.setColor(Color.parseColor("#808080"));
+                        background.setColor(Color.parseColor("#808080")); // grey
                         return;
                     }
 
-                    Long dailyPEF = latestDoc.getLong("dailyPEF");
-                    Long pb = latestDoc.getLong("pb");
+                    String zone = latestDoc.getString("zone");
 
-                    if (dailyPEF == null || pb == null || dailyPEF <= 0 || pb <= 0) {
-                        background.setColor(Color.parseColor("#808080"));
+                    if (zone == null) {
+                        background.setColor(Color.parseColor("#808080")); // grey
                         return;
                     }
 
-                    double percentage = (double) dailyPEF / pb;
-
-                    if (percentage >= 0.8) {
-
-                        background.setColor(Color.parseColor("#4CAF50"));
-                    } else if (percentage >= 0.5) {
-                        background.setColor(Color.parseColor("#FFC107"));
-                    } else {
-                        background.setColor(Color.parseColor("#F44336"));
+                    switch (zone.toUpperCase()) {
+                        case "GREEN":
+                            background.setColor(Color.parseColor("#4CAF50"));
+                            break;
+                        case "YELLOW":
+                            background.setColor(Color.parseColor("#FFC107"));
+                            break;
+                        case "RED":
+                            background.setColor(Color.parseColor("#F44336"));
+                            break;
+                        default:
+                            background.setColor(Color.parseColor("#808080")); // grey
+                            break;
                     }
+                })
+                .addOnFailureListener(e -> {
+                    Log.e("ZoneActivity", "Error fetching latest zone", e);
+                    background.setColor(Color.parseColor("#808080")); // grey on error
                 });
     }
 }

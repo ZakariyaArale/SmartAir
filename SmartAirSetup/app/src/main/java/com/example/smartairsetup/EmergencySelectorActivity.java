@@ -2,27 +2,32 @@ package com.example.smartairsetup;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.SetOptions;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
 
 public class EmergencySelectorActivity extends AppCompatActivity {
+
+    private static final String TAG = "EmergencyTriage";
 
     private Button chooseChildButton, saveButton, backButton, nextButton;
     private EditText followUpInput;
 
     private FirebaseFirestore db;
     private String selectedChildUid;
-    private String parentUid = "VfB95gwXXyWFAqdajTHJBgyeYfB3"; // hardcoded parent UID
-    private Intent intent;
+    private final String parentUid = "VfB95gwXXyWFAqdajTHJBgyeYfB3"; // hardcoded for testing
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,26 +42,16 @@ public class EmergencySelectorActivity extends AppCompatActivity {
 
         db = FirebaseFirestore.getInstance();
 
-        // Child selection dialog
         ProcessChildren provider = new FireBaseProcessChild();
-        ChildDiaglog childDiaglog = new ChildDiaglog(this, provider);
+        ChildDiaglog dialog = new ChildDiaglog(this, provider);
 
-        // If a child is already selected via button tag
-        Object tag = chooseChildButton.getTag();
-        if (tag != null) {
-            selectedChildUid = tag.toString();
-            chooseChildButton.setText(selectedChildUid);
-        }
+        chooseChildButton.setOnClickListener(v -> dialog.showSelectionDialog(chooseChildButton));
 
-        chooseChildButton.setOnClickListener(v -> {
-            childDiaglog.showSelectionDialog(chooseChildButton);
-            // ChildDiaglog must set chooseChildButton.setTag(selectedChild.uid) when selected
+        saveButton.setOnClickListener(v -> {
+            saveTriageLog();
         });
-
-        saveButton.setOnClickListener(v -> saveFollowUp());
-
         backButton.setOnClickListener(v -> {
-            intent = new Intent(this, RedFlagsActivity.class);
+            Intent intent = new Intent(this, EmergencyActivity.class);
             startActivity(intent);
         });
 
@@ -65,11 +60,10 @@ public class EmergencySelectorActivity extends AppCompatActivity {
         );
     }
 
-    private void saveFollowUp() {
+    private void saveTriageLog() {
+        // Read selected child UID from button tag
         Object tag = chooseChildButton.getTag();
-        if (tag != null) {
-            selectedChildUid = tag.toString();
-        }
+        if (tag != null) selectedChildUid = tag.toString();
 
         if (selectedChildUid == null) {
             Toast.makeText(this, "Please select a child first", Toast.LENGTH_SHORT).show();
@@ -82,22 +76,36 @@ public class EmergencySelectorActivity extends AppCompatActivity {
             return;
         }
 
-        Map<String, Object> data = new HashMap<>();
-        data.put("triage-zone", "Emergency");
-        data.put("message-triage", message);  // <-- now it's a field
-        data.put("timestamp", System.currentTimeMillis());
+        // Format today's date as document ID
+        String dateId = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
+                .format(new Date());
 
-        db.collection("users")
+        DocumentReference logRef = db.collection("users")
                 .document(parentUid)
                 .collection("children")
                 .document(selectedChildUid)
-                .set(data, SetOptions.merge())
-                .addOnSuccessListener(aVoid -> {
-                    Toast.makeText(this, "Follow-up saved", Toast.LENGTH_SHORT).show();
-                    followUpInput.setText("");
-                })
-                .addOnFailureListener(e ->
-                        Toast.makeText(this, "Error saving: " + e.getMessage(), Toast.LENGTH_SHORT).show());
-    }
+                .collection("triage")
+                .document("logs")
+                .collection("entries")
+                .document(dateId);
 
+        Map<String, Object> data = new HashMap<>();
+        data.put("triage-zone", "Emergency");
+        data.put("message-triage", message);
+        data.put("timestamp", System.currentTimeMillis());
+
+        // Overwrite if today's log already exists — same logic as PEF
+        logRef.get().addOnSuccessListener(doc -> {
+            logRef.set(data)
+                    .addOnSuccessListener(aVoid -> {
+                        Toast.makeText(this, "Emergency triage logged", Toast.LENGTH_SHORT).show();
+                        followUpInput.setText("");
+                        Log.d(TAG, "Logged triage under " + dateId);
+                    })
+                    .addOnFailureListener(e -> {
+                        Toast.makeText(this, "Save failed: " + e.getMessage(), Toast.LENGTH_LONG).show();
+                        Log.e(TAG, "Error writing triage", e);
+                    });
+        });
+    }
 }

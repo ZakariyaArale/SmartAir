@@ -1,5 +1,4 @@
 package com.example.smartairsetup;
-// PARENT ONLY PARENT ONLY
 
 import android.os.Bundle;
 import android.util.Log;
@@ -9,8 +8,8 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.SetOptions;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -26,7 +25,7 @@ public class PEFActivity extends AppCompatActivity {
     public EditText postMedicationPB;
 
     private FirebaseFirestore db;
-    private String parentID;
+    private String parentID = "VfB95gwXXyWFAqdajTHJBgyeYfB3"; // hardcoded for testing
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,27 +42,34 @@ public class PEFActivity extends AppCompatActivity {
         Button saveButton = findViewById(R.id.savePBButton);
 
         db = FirebaseFirestore.getInstance();
-        parentID = FirebaseAuth.getInstance().getCurrentUser().getUid();
 
         // Child selection dialog
         ProcessChildren provider = new FireBaseProcessChild();
         ChildDiaglog childDiaglog = new ChildDiaglog(this, provider);
-
-        chooseChildButton.setOnClickListener(v ->
-                childDiaglog.showSelectionDialog(chooseChildButton));
-
+        chooseChildButton.setOnClickListener(v -> childDiaglog.showSelectionDialog(chooseChildButton));
         saveButton.setOnClickListener(v -> savePEF());
+
+        Button backButton = findViewById(R.id.backButton);
+        backButton.setOnClickListener(v -> finish());
+    }
+
+    private String computeZone(long dailyPEF, long pb) {
+        if (dailyPEF <= 0 || pb <= 0) return null;
+        double percentage = (double) dailyPEF / pb;
+        if (percentage >= 0.8) return "GREEN";
+        else if (percentage >= 0.5) return "YELLOW";
+        else return "RED";
     }
 
     public void savePEF() {
         Object tag = chooseChildButton.getTag();
-
         if (tag == null) {
             Toast.makeText(this, "Please choose a child", Toast.LENGTH_SHORT).show();
             return;
         }
 
         String childUid = tag.toString();
+        String childName = chooseChildButton.getText().toString();
 
         int dailyPEF = pefParser.parsePEF(dailyPEFInput);
         int prePEF = pefParser.parsePEF(preMedicationPB);
@@ -77,42 +83,62 @@ public class PEFActivity extends AppCompatActivity {
         StorageChild entry = new StorageChild(dailyPEF, prePEF, postPEF);
         pefStorage.save(childUid, entry);
 
-        saveChildPEFToFirebase(childUid, entry);
+        saveChildPEFToFirebase(childUid, childName, entry);
     }
 
-    private void saveChildPEFToFirebase(String childUid, StorageChild entry) {
+    private void saveChildPEFToFirebase(String childUid, String childName, StorageChild entry) {
 
-        db.collection("users")
-                .document(parentID)
-                .collection("children")
-                .document(childUid)
-                .get()
-                .addOnSuccessListener(latestDoc -> {
+        // Hardcoded test date
+        String testDate = "2025-11-25";
 
-                    long oldDaily = latestDoc.getLong("dailyPEF") != null ? latestDoc.getLong("dailyPEF") : 0;
-                    long oldPre = latestDoc.getLong("prePEF") != null ? latestDoc.getLong("prePEF") : 0;
-                    long oldPost = latestDoc.getLong("postPEF") != null ? latestDoc.getLong("postPEF") : 0;
+        var childRef = db.collection("users").document(parentID).collection("children").document(childUid);
+        var logsCollection = childRef.collection("PEF").document("logs").collection("daily");
+        var latestRef = childRef.collection("PEF").document("latest");
 
-                    long finalDaily = Math.max(oldDaily, entry.getDailyPEF());
-                    long finalPre = Math.max(oldPre, entry.getPrePEF());
-                    long finalPost = Math.max(oldPost, entry.getPostPEF());
+        // --- STEP 0: Get PB from child document ---
+        childRef.get().addOnSuccessListener(childDoc -> {
+            Long pbValue = childDoc.getLong("pb");
+            long pb = pbValue != null ? pbValue : 0;
 
-                    Map<String, Object> data = new HashMap<>();
-                    data.put("dailyPEF", finalDaily);
-                    data.put("prePEF", finalPre);
-                    data.put("postPEF", finalPost);
+            if (pb == 0) {
+                Toast.makeText(this, "PB not set for child", Toast.LENGTH_SHORT).show();
+                return;
+            }
 
-                    db.collection("users")
-                            .document(parentID)
-                            .collection("children")
-                            .document(childUid)
-                            .collection("PEF")
-                            .document("latest")
-                            .set(data)
-                            .addOnSuccessListener(aVoid ->
-                                    Toast.makeText(this, "PEF saved successfully", Toast.LENGTH_SHORT).show())
-                            .addOnFailureListener(e ->
-                                    Log.e("PEFActivity", "Error saving PEF", e));
-                });
+            // --- STEP 1: Check if log for testDate exists ---
+            var todayLogRef = logsCollection.document(testDate);
+            todayLogRef.get().addOnSuccessListener(todayDoc -> {
+                long oldDaily = todayDoc.getLong("dailyPEF") != null ? todayDoc.getLong("dailyPEF") : 0;
+
+                // Only overwrite if new dailyPEF is greater
+                if (entry.getDailyPEF() >= oldDaily) {
+                    String zone = computeZone(entry.getDailyPEF(), pb);
+
+                    Map<String, Object> logData = new HashMap<>();
+                    logData.put("date", testDate);
+                    logData.put("dailyPEF", entry.getDailyPEF());
+                    logData.put("prePEF", entry.getPrePEF());
+                    logData.put("postPEF", entry.getPostPEF());
+                    logData.put("pb", pb);
+                    logData.put("zone", zone);
+                    logData.put("timestamp", System.currentTimeMillis());
+
+                    todayLogRef.set(logData, SetOptions.merge())
+                            .addOnSuccessListener(a -> Toast.makeText(this, "PEF log updated", Toast.LENGTH_SHORT).show())
+                            .addOnFailureListener(e -> Log.e("PEFActivity", "Error updating log", e));
+
+                    // --- STEP 2: Update latest ---
+                    Map<String, Object> latestData = new HashMap<>();
+                    latestData.put("dailyPEF", entry.getDailyPEF());
+                    latestData.put("prePEF", entry.getPrePEF());
+                    latestData.put("postPEF", entry.getPostPEF());
+                    latestData.put("pb", pb);
+                    latestData.put("zone", zone);
+                    latestData.put("timestamp", System.currentTimeMillis());
+
+                    latestRef.set(latestData, SetOptions.merge());
+                }
+            });
+        });
     }
 }

@@ -6,6 +6,8 @@ import android.widget.Button;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+//FIX FOR CHILD VERIFY THAT THE USER IS CHILD
+
 public class YellowCardActivity extends AppCompatActivity {
     private Intent intent;
 
