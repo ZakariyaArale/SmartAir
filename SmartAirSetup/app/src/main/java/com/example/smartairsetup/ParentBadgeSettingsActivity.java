@@ -72,6 +72,7 @@ public class ParentBadgeSettingsActivity extends AppCompatActivity {
         setupChildrenSpinner();
         setupSaveButton();
 
+        // Load children into spinner (same path as ParentHomeActivity)
         loadChildrenForParent();
     }
 
@@ -85,7 +86,7 @@ public class ParentBadgeSettingsActivity extends AppCompatActivity {
             public void onClick(View view) {
                 Intent intent = new Intent(
                         ParentBadgeSettingsActivity.this,
-                        ParentHomeActivity.class  // Kendi parent home activity'nin adı neyse bunu değiştir
+                        ParentHomeActivity.class
                 );
                 startActivity(intent);
                 finish();
@@ -107,6 +108,7 @@ public class ParentBadgeSettingsActivity extends AppCompatActivity {
             public void onItemSelected(AdapterView<?> parentView, View view, int position, long id) {
                 if (position >= 0 && position < childIds.size()) {
                     selectedChildId = childIds.get(position);
+                    // When a child is selected from spinner, load their badge settings
                     loadBadgeSettingsForChild(selectedChildId);
                 }
             }
@@ -128,67 +130,57 @@ public class ParentBadgeSettingsActivity extends AppCompatActivity {
     }
 
     // ------------------------------
-    // Firestore: Children
+    // Firestore: Children (SAME PATH as ParentHomeActivity)
     // ------------------------------
 
     private void loadChildrenForParent() {
         FirebaseUser currentUser = mAuth.getCurrentUser();
         if (currentUser == null) {
             Toast.makeText(this, "You must be signed in as a parent.", Toast.LENGTH_SHORT).show();
+            spinnerChildren.setEnabled(false);
             return;
         }
 
         String parentUid = currentUser.getUid();
 
-        /*
-         * VARSAYIM:
-         * - Tüm kullanıcılar "users" koleksiyonunda.
-         * - Çocuk dokümanlarında: "role" = "child", "parentId" = parentUid.
-         * Eğer senin yapın farklıysa, buradaki sorguyu kendi path'ine göre değiştir:
-         *   Örneğin: db.collection("users").document(parentUid).collection("children")...
-         */
-        db.collection("users")
-                .whereEqualTo("role", "child")
-                .whereEqualTo("parentId", parentUid)
-                .get()
-                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                        if (!task.isSuccessful()) {
-                            Toast.makeText(ParentBadgeSettingsActivity.this,
-                                    "Failed to load children.",
-                                    Toast.LENGTH_SHORT).show();
-                            return;
+        // users/{parentUid}/children
+        CollectionReference childrenRef = db.collection("users")
+                .document(parentUid)
+                .collection("children");
+
+        childrenRef.get()
+                .addOnSuccessListener(querySnapshot -> {
+                    childNames.clear();
+                    childIds.clear();
+
+                    for (QueryDocumentSnapshot doc : querySnapshot) {
+                        String name = doc.getString("name");
+                        if (name == null || name.trim().isEmpty()) {
+                            name = "(Unnamed child)";
                         }
-
-                        childIds.clear();
-                        childNames.clear();
-
-                        for (QueryDocumentSnapshot doc : task.getResult()) {
-                            String childId = doc.getId();
-                            String name = doc.getString("name");
-
-                            if (name == null || name.isEmpty()) {
-                                name = childId;
-                            }
-
-                            childIds.add(childId);
-                            childNames.add(name);
-                        }
-
-                        childrenAdapter.notifyDataSetChanged();
-
-                        if (childIds.isEmpty()) {
-                            Toast.makeText(ParentBadgeSettingsActivity.this,
-                                    "No children found for this parent.",
-                                    Toast.LENGTH_SHORT).show();
-                        } else {
-                            // Otomatik ilk çocuğu seç
-                            selectedChildId = childIds.get(0);
-                            spinnerChildren.setSelection(0);
-                            loadBadgeSettingsForChild(selectedChildId);
-                        }
+                        childNames.add(name);
+                        childIds.add(doc.getId());
                     }
+
+                    childrenAdapter.notifyDataSetChanged();
+
+                    if (childIds.isEmpty()) {
+                        spinnerChildren.setEnabled(false);
+                        Toast.makeText(ParentBadgeSettingsActivity.this,
+                                "No children found for this parent.",
+                                Toast.LENGTH_SHORT).show();
+                    } else {
+                        spinnerChildren.setEnabled(true);
+                        selectedChildId = childIds.get(0);
+                        spinnerChildren.setSelection(0);
+                        loadBadgeSettingsForChild(selectedChildId);
+                    }
+                })
+                .addOnFailureListener(e -> {
+                    Toast.makeText(ParentBadgeSettingsActivity.this,
+                            "Failed to load children: " + e.getMessage(),
+                            Toast.LENGTH_LONG).show();
+                    spinnerChildren.setEnabled(false);
                 });
     }
 
@@ -201,18 +193,19 @@ public class ParentBadgeSettingsActivity extends AppCompatActivity {
             return;
         }
 
-        /*
-         * VARSAYIM:
-         * - Badge hedefleri her child'ın altında:
-         *   users/{childId}/badges/{badgeId}
-         *   badgeId:
-         *      "perfect_controller_week"
-         *      "technique_sessions"
-         *      "low_rescue_month"
-         *   Her dokümanda: "target" (Number)
-         */
+        FirebaseUser currentUser = mAuth.getCurrentUser();
+        if (currentUser == null) {
+            Toast.makeText(this, "You must be signed in as a parent.", Toast.LENGTH_SHORT).show();
+            return;
+        }
 
+        String parentUid = currentUser.getUid();
+
+        // ARTIK BURADA:
+        // users/{parentUid}/children/{childId}/badges
         CollectionReference badgesRef = db.collection("users")
+                .document(parentUid)
+                .collection("children")
                 .document(childId)
                 .collection("badges");
 
@@ -226,8 +219,8 @@ public class ParentBadgeSettingsActivity extends AppCompatActivity {
                     return;
                 }
 
-                // Varsayılan değerler (hiç doküman yoksa)
-                int perfectDays = 7;
+                // Default values (if there are no documents)
+                int perfectDays = 1;
                 int techniqueTarget = 10;
                 int lowRescueThreshold = 4;
 
@@ -300,7 +293,19 @@ public class ParentBadgeSettingsActivity extends AppCompatActivity {
             return;
         }
 
+        FirebaseUser currentUser = mAuth.getCurrentUser();
+        if (currentUser == null) {
+            Toast.makeText(this, "You must be signed in as a parent.", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        String parentUid = currentUser.getUid();
+
+        // YİNE AYNI PATH:
+        // users/{parentUid}/children/{selectedChildId}/badges
         CollectionReference badgesRef = db.collection("users")
+                .document(parentUid)
+                .collection("children")
                 .document(selectedChildId)
                 .collection("badges");
 
@@ -313,7 +318,6 @@ public class ParentBadgeSettingsActivity extends AppCompatActivity {
         Map<String, Object> lowRescueData = new HashMap<String, Object>();
         lowRescueData.put("target", lowRescueThreshold);
 
-        // Üç dokümanı da kaydet
         badgesRef.document("perfect_controller_week").set(perfectData);
         badgesRef.document("technique_sessions").set(techniqueData);
         badgesRef.document("low_rescue_month").set(lowRescueData)
