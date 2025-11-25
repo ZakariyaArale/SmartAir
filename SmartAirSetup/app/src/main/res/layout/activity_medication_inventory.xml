@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:background="#DFF3FF"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MedicationInventoryActivity">
+
+
+    <Button
+        android:id="@+id/buttonNotif"
+        android:layout_width="170dp"
+        android:layout_height="85dp"
+        android:layout_marginStart="121dp"
+        android:layout_marginEnd="120dp"
+        android:layout_marginBottom="20dp"
+        android:text="Click Me for a Notification (add to values xml)"
+        android:backgroundTint="#2E7D32"
+        android:textColor="@android:color/white"
+        app:layout_constraintBottom_toTopOf="@+id/backButton"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <TextView
+        android:id="@+id/MedInventoryHeading"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:fontFamily="@font/nunito_regular"
+        android:gravity="center"
+        android:text="Medication Inventory (add to values xml)"
+        android:textColor="#2E7D32"
+        android:textSize="24sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/onboardingSubtitle"
+        android:layout_width="405dp"
+        android:layout_height="41dp"
+        android:layout_marginStart="3dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="3dp"
+        android:breakStrategy="simple"
+        android:ellipsize="none"
+        android:fontFamily="@font/nunito_medium"
+        android:gravity="center"
+        android:importantForAccessibility="yes"
+        android:scrollHorizontally="false"
+        android:singleLine="false"
+        android:text="List of all medications(add to values xml) "
+        android:textColor="#666666"
+        android:textSize="18sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/MedInventoryHeading" />
+
+    <Button
+        android:id="@+id/backButton"
+        android:layout_width="107dp"
+        android:layout_height="48dp"
+        android:layout_marginStart="30dp"
+        android:layout_marginEnd="274dp"
+        android:layout_marginBottom="30dp"
+        android:background="@android:color/transparent"
+        android:fontFamily="@font/nunito_medium"
+        android:text="Back (add to value xml)"
+        android:textColor="#2E7D32"
+        android:textSize="22sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <Button
+        android:id="@+id/newMedButton"
+        android:layout_width="283dp"
+        android:layout_height="53dp"
+        android:layout_marginStart="64dp"
+        android:layout_marginEnd="64dp"
+        android:layout_marginBottom="8dp"
+        android:backgroundTint="#2E7D32"
+        android:text="New Medication (add to values xml)"
+        android:textColor="@android:color/white"
+        android:textSize="20sp"
+        app:layout_constraintBottom_toTopOf="@+id/buttonNotif"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/medicineList"
+        android:layout_width="371dp"
+        android:layout_height="143dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="36dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="450dp"
+        android:background="@color/white"
+        android:scrollbars="vertical"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/onboardingSubtitle"
+        app:layout_constraintVertical_bias="0.0" />
+
+    <LinearLayout
+        android:id="@+id/medDetailsContainer"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="16dp"
+        android:visibility="gone"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/medicineList">
+
+        <TextView
+            android:id="@+id/tvMedName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="18sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/tvPurchaseDate"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <TextView
+            android:id="@+id/tvExpiryDate"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <TextView
+            android:id="@+id/tvPuffsLeft"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <TextView
+            android:id="@+id/tvReminders"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+    </LinearLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
+
