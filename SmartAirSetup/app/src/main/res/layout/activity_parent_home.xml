@@ -23,19 +23,69 @@
         app:tint="@color/button_icon_color"
         app:srcCompat="@drawable/menu_notifications_button_logo" />
 
-    <!-- CENTER: Main Parent Home + Shortcuts -->
+    <!-- NEW TOP CARD: Child selector + weekly rescue overview -->
+    <FrameLayout
+        android:id="@+id/overviewContainer"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginTop="16dp"
+        android:background="@drawable/main_content_background"
+        android:backgroundTint="@color/white"
+        android:elevation="4dp"
+        app:layout_constraintTop_toBottomOf="@id/notificationButton"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="20dp"
+            android:background="@android:color/transparent">
+
+            <TextView
+                android:id="@+id/textWeeklyOverviewTitle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Child overview"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                android:textColor="@android:color/black"
+                android:paddingBottom="4dp" />
+
+            <Spinner
+                android:id="@+id/spinnerChildSelector"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp" />
+
+            <TextView
+                android:id="@+id/textWeeklyRescue"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:text="Select a child to see this week's rescue medication count."
+                android:textSize="14sp"
+                android:textColor="#4F4F4F" />
+
+        </LinearLayout>
+    </FrameLayout>
+
+    <!-- CENTER: Main Parent Home + Shortcuts (UNCHANGED, just moved below overviewContainer) -->
     <FrameLayout
         android:id="@+id/shortcutContainer"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginStart="16dp"
         android:layout_marginEnd="16dp"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="8dp"
         android:layout_marginBottom="16dp"
         android:background="@drawable/main_content_background"
         android:backgroundTint="@color/white"
         android:elevation="4dp"
-        app:layout_constraintTop_toBottomOf="@id/notificationButton"
+        app:layout_constraintTop_toBottomOf="@id/overviewContainer"
         app:layout_constraintBottom_toTopOf="@id/bottomNavBackground"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent">
@@ -47,17 +97,6 @@
             android:orientation="vertical"
             android:padding="24dp"
             android:background="@android:color/transparent">
-
-            <!-- Main Parent Home Title -->
-            <TextView
-                android:id="@+id/textParentTitle"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Parent Home"
-                android:textSize="24sp"
-                android:textStyle="bold"
-                android:textColor="#1B4F72"
-                android:paddingBottom="8dp" />
 
             <TextView
                 android:id="@+id/textParentSubtitle"
@@ -137,6 +176,7 @@
                 android:text="Add Child"
                 android:backgroundTint="@color/button_icon_color"
                 android:layout_marginTop="12dp" />
+
             <Button
                 android:id="@+id/buttonAddBadges"
                 android:layout_width="match_parent"
@@ -286,5 +326,17 @@
         app:layout_constraintBottom_toBottomOf="@id/bottomNavBackground"
         app:layout_constraintEnd_toEndOf="@id/bottomNavBackground"
         app:layout_constraintStart_toEndOf="@+id/profileText" />
+
+    <TextView
+        android:id="@+id/textParentTitle"
+        android:layout_width="308dp"
+        android:layout_height="41dp"
+        android:paddingBottom="8dp"
+        android:text="Parent Home"
+        android:textColor="#1B4F72"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        tools:layout_editor_absoluteX="28dp"
+        tools:layout_editor_absoluteY="16dp" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
