@@ -80,4 +80,21 @@
         <item>Cough / wheeze (some/a lot)</item>
     </string-array>
 
+    <!--Home Screen -->
+        <!-- Navigation Buttons -->
+    <!-- Navigation Menu Texts -->
+    <string name="nav_home">Home</string>
+    <string name="nav_family">Family</string>
+    <string name="nav_profile">Profile</string>
+    <string name="nav_settings">Settings</string>
+
+    <!-- Family Screen Texts -->
+    <string name="family_members_title">Family Members</string>
+    <string name="add_member_button">Add Member</string>
+    <string name="role_parent">Parent</string>
+    <string name="role_child">Child</string>
+
+    <string name="desc_user_avatar">User Avatar</string>
+
+
 </resources>
