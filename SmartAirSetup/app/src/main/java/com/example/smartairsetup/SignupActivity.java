@@ -158,8 +158,7 @@ public class SignupActivity extends AppCompatActivity {
         if ("parent".equals(role)) {
             intent = new Intent(SignupActivity.this, ParentHomeActivity.class);
         } else if ("provider".equals(role)) {
-            // for now just redirect to login
-            intent = new Intent(SignupActivity.this, LoginActivity.class);
+            intent = new Intent(SignupActivity.this, ProviderHomeActivity.class);
         } else {
             intent = new Intent(SignupActivity.this, MainActivity.class);
         }

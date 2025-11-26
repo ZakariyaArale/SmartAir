@@ -4,34 +4,28 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
-import android.widget.CompoundButton;
-import android.widget.Switch;
-import android.widget.TextView;
-import android.widget.Toast;
-import android.widget.Button;
+import android.text.TextUtils;
+import android.view.View;
+import android.widget.*;
 
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.firestore.DocumentReference;
-import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.*;
 
 public class ShareWithProviderActivity extends AppCompatActivity {
 
     public static final String EXTRA_CHILD_ID = "extra_child_id";
     public static final String EXTRA_CHILD_NAME = "extra_child_name";
 
-    private Switch switchRescueLogs;
-    private Switch switchControllerSummary;
-    private Switch switchSymptoms;
-    private Switch switchTriggers;
-    private Switch switchPEF;
-    private Switch switchTriageIncidents;
-    private Switch switchSummaryCharts;
+    private Switch switchRescueLogs, switchControllerSummary, switchSymptoms, switchTriggers,
+            switchPEF, switchTriageIncidents, switchSummaryCharts;
+
+    private EditText editProviderEmail;
+    private Button buttonAddProvider;
 
     private FirebaseAuth mAuth;
     private FirebaseFirestore db;
     private DocumentReference childDocRef;
 
-    // Guard flag so we don't trigger updates when we are just syncing from Firestore
     private boolean updatingFromBackend = false;
 
     @Override
@@ -42,7 +36,6 @@ public class ShareWithProviderActivity extends AppCompatActivity {
         mAuth = FirebaseAuth.getInstance();
         db = FirebaseFirestore.getInstance();
 
-        // Get child info from Intent
         String childId = getIntent().getStringExtra(EXTRA_CHILD_ID);
         String childName = getIntent().getStringExtra(EXTRA_CHILD_NAME);
 
@@ -58,11 +51,8 @@ public class ShareWithProviderActivity extends AppCompatActivity {
                 .collection("children")
                 .document(childId);
 
-        // Bind views
         TextView textChildName = findViewById(R.id.textChildName);
-        if (childName != null) {
-            textChildName.setText(childName);
-        }
+        if (childName != null) textChildName.setText(childName);
 
         switchRescueLogs = findViewById(R.id.switchRescueLogs);
         switchControllerSummary = findViewById(R.id.switchControllerSummary);
@@ -71,47 +61,38 @@ public class ShareWithProviderActivity extends AppCompatActivity {
         switchPEF = findViewById(R.id.switchPEF);
         switchTriageIncidents = findViewById(R.id.switchTriageIncidents);
         switchSummaryCharts = findViewById(R.id.switchSummaryCharts);
+
         Button backButton = findViewById(R.id.backButton);
         backButton.setOnClickListener(v -> finish());
 
-        // One listener for all switches -> update the corresponding Firestore field
+        // NEW: provider binding
+        editProviderEmail = findViewById(R.id.editProviderEmail);
+        buttonAddProvider = findViewById(R.id.buttonAddProvider);
+
+        buttonAddProvider.setOnClickListener(v -> addProviderByEmail());
+
         CompoundButton.OnCheckedChangeListener toggleListener = (button, isChecked) -> {
-            if (updatingFromBackend) {
-                // We're just syncing UI from Firestore; don't write back
-                return;
-            }
+            if (updatingFromBackend) return;
 
             String field = null;
             int id = button.getId();
-            if (id == R.id.switchRescueLogs) {
-                field = "shareRescueLogs";
-            } else if (id == R.id.switchControllerSummary) {
-                field = "shareControllerSummary";
-            } else if (id == R.id.switchSymptoms) {
-                field = "shareSymptoms";
-            } else if (id == R.id.switchTriggers) {
-                field = "shareTriggers";
-            } else if (id == R.id.switchPEF) {
-                field = "sharePEF";
-            } else if (id == R.id.switchTriageIncidents) {
-                field = "shareTriageIncidents";
-            } else if (id == R.id.switchSummaryCharts) {
-                field = "shareSummaryCharts";
-            }
+            if (id == R.id.switchRescueLogs) field = "shareRescueLogs";
+            else if (id == R.id.switchControllerSummary) field = "shareControllerSummary";
+            else if (id == R.id.switchSymptoms) field = "shareSymptoms";
+            else if (id == R.id.switchTriggers) field = "shareTriggers";
+            else if (id == R.id.switchPEF) field = "sharePEF";
+            else if (id == R.id.switchTriageIncidents) field = "shareTriageIncidents";
+            else if (id == R.id.switchSummaryCharts) field = "shareSummaryCharts";
 
             if (field != null) {
                 childDocRef.update(field, isChecked)
                         .addOnFailureListener(e ->
-                                Toast.makeText(
-                                        ShareWithProviderActivity.this,
-                                        "Failed to update sharing: " + e.getMessage(),
-                                        Toast.LENGTH_SHORT
-                                ).show()
+                                Toast.makeText(this, "Failed to update sharing: " + e.getMessage(),
+                                        Toast.LENGTH_SHORT).show()
                         );
             }
         };
 
-        // Attach listeners
         switchRescueLogs.setOnCheckedChangeListener(toggleListener);
         switchControllerSummary.setOnCheckedChangeListener(toggleListener);
         switchSymptoms.setOnCheckedChangeListener(toggleListener);
@@ -120,30 +101,63 @@ public class ShareWithProviderActivity extends AppCompatActivity {
         switchTriageIncidents.setOnCheckedChangeListener(toggleListener);
         switchSummaryCharts.setOnCheckedChangeListener(toggleListener);
 
-        // Real-time sync from Firestore to UI
+        // Sync UI from Firestore
         childDocRef.addSnapshotListener((snapshot, error) -> {
-            if (error != null || snapshot == null || !snapshot.exists()) {
-                return;
-            }
+            if (error != null || snapshot == null || !snapshot.exists()) return;
 
             updatingFromBackend = true;
-            Boolean bRescue = snapshot.getBoolean("shareRescueLogs");
-            Boolean bController = snapshot.getBoolean("shareControllerSummary");
-            Boolean bSymptoms = snapshot.getBoolean("shareSymptoms");
-            Boolean bTriggers = snapshot.getBoolean("shareTriggers");
-            Boolean bPEF = snapshot.getBoolean("sharePEF");
-            Boolean bTriage = snapshot.getBoolean("shareTriageIncidents");
-            Boolean bCharts = snapshot.getBoolean("shareSummaryCharts");
 
-            switchRescueLogs.setChecked(Boolean.TRUE.equals(bRescue));
-            switchControllerSummary.setChecked(Boolean.TRUE.equals(bController));
-            switchSymptoms.setChecked(Boolean.TRUE.equals(bSymptoms));
-            switchTriggers.setChecked(Boolean.TRUE.equals(bTriggers));
-            switchPEF.setChecked(Boolean.TRUE.equals(bPEF));
-            switchTriageIncidents.setChecked(Boolean.TRUE.equals(bTriage));
-            switchSummaryCharts.setChecked(Boolean.TRUE.equals(bCharts));
+            switchRescueLogs.setChecked(Boolean.TRUE.equals(snapshot.getBoolean("shareRescueLogs")));
+            switchControllerSummary.setChecked(Boolean.TRUE.equals(snapshot.getBoolean("shareControllerSummary")));
+            switchSymptoms.setChecked(Boolean.TRUE.equals(snapshot.getBoolean("shareSymptoms")));
+            switchTriggers.setChecked(Boolean.TRUE.equals(snapshot.getBoolean("shareTriggers")));
+            switchPEF.setChecked(Boolean.TRUE.equals(snapshot.getBoolean("sharePEF")));
+            switchTriageIncidents.setChecked(Boolean.TRUE.equals(snapshot.getBoolean("shareTriageIncidents")));
+            switchSummaryCharts.setChecked(Boolean.TRUE.equals(snapshot.getBoolean("shareSummaryCharts")));
 
             updatingFromBackend = false;
         });
+    }
+
+    private void addProviderByEmail() {
+        String email = editProviderEmail.getText().toString().trim().toLowerCase();
+        if (TextUtils.isEmpty(email)) {
+            editProviderEmail.setError("Enter provider email");
+            editProviderEmail.requestFocus();
+            return;
+        }
+
+        buttonAddProvider.setEnabled(false);
+
+        db.collection("users")
+                .whereEqualTo("email", email)
+                .whereEqualTo("role", "provider")
+                .limit(1)
+                .get()
+                .addOnSuccessListener(qs -> {
+                    if (qs.isEmpty()) {
+                        Toast.makeText(this, "No provider found with that email.", Toast.LENGTH_SHORT).show();
+                        buttonAddProvider.setEnabled(true);
+                        return;
+                    }
+
+                    String providerUid = qs.getDocuments().get(0).getId();
+
+                    childDocRef.update("sharedProviderUids", FieldValue.arrayUnion(providerUid))
+                            .addOnSuccessListener(unused -> {
+                                Toast.makeText(this, "Provider added for this child.", Toast.LENGTH_SHORT).show();
+                                editProviderEmail.setText("");
+                                buttonAddProvider.setEnabled(true);
+                            })
+                            .addOnFailureListener(e -> {
+                                Toast.makeText(this, "Failed to add provider: " + e.getMessage(),
+                                        Toast.LENGTH_SHORT).show();
+                                buttonAddProvider.setEnabled(true);
+                            });
+                })
+                .addOnFailureListener(e -> {
+                    Toast.makeText(this, "Lookup failed: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                    buttonAddProvider.setEnabled(true);
+                });
     }
 }

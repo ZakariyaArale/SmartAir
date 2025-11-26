@@ -211,8 +211,7 @@ public class LoginActivity extends AppCompatActivity {
         if ("parent".equals(role)) {
             intent = new Intent(this, ParentHomeActivity.class);
         } else if ("provider".equals(role)) {
-            // for now just redirect to parent home screen
-            intent = new Intent(this, ParentHomeActivity.class);
+            intent = new Intent(this, ProviderHomeActivity.class);
         } else {
             intent = new Intent(this, MainActivity.class);
         }

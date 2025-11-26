@@ -33,6 +33,25 @@
             android:fontFamily="@font/nunito_regular"
             android:paddingBottom="16dp" />
 
+        <EditText
+            android:id="@+id/editProviderEmail"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Provider email"
+            android:inputType="textEmailAddress"
+            android:background="@android:color/white"
+            android:padding="12dp"
+            android:layout_marginTop="16dp"/>
+
+        <Button
+            android:id="@+id/buttonAddProvider"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Add provider"
+            android:layout_marginTop="12dp"
+            android:backgroundTint="#2E7D32"
+            android:textColor="@android:color/white"/>
+
         <!-- Info line -->
         <TextView
             android:id="@+id/textShareInfo"
