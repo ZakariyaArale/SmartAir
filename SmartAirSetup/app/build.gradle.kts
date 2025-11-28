@@ -53,6 +53,9 @@ dependencies {
     implementation(libs.material.v1120)
     implementation(libs.constraintlayout.v221)
 
+    implementation("com.tom-roush:pdfbox-android:2.0.27.0")
+    implementation("com.itextpdf:itextpdf:5.5.13.3")
+
     // --- Firebase ---
     implementation(platform(libs.firebase.bom))
     implementation(libs.firebase.auth)
