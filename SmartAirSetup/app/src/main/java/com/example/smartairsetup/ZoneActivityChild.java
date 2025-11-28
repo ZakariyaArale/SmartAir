@@ -1,10 +1,12 @@
 package com.example.smartairsetup;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -19,24 +21,34 @@ public class ZoneActivityChild extends AppCompatActivity {
     private final String childUid = "gifrbhr98mAAyv78MC80";
     private final String parentID = "VfB95gwXXyWFAqdajTHJBgyeYfB3";
 
+    // NEW
+    private String currentZone = null;
+    private TextView zoneLabel;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_zone_child);
 
-        // UI references
-        TextView zoneLabel = findViewById(R.id.zoneLabel);
+        zoneLabel = findViewById(R.id.zoneLabel);
         chooseChildButton = findViewById(R.id.chooseChildButton);
         GradientDrawable background = (GradientDrawable) zoneLabel.getBackground();
 
         db = FirebaseFirestore.getInstance();
 
-        // Load child info immediately
+        // NEW: click zone label to open decision card
+        zoneLabel.setOnClickListener(v -> {
+            if (currentZone == null) {
+                Toast.makeText(this, "Zone not available yet.", Toast.LENGTH_SHORT).show();
+                return;
+            }
+            openDecisionCard(true, parentID, childUid, currentZone);
+        });
+
         loadChildInfo(background);
     }
 
     private void loadChildInfo(GradientDrawable background) {
-        // Fetch child document via parent
         db.collection("users")
                 .document(parentID)
                 .collection("children")
@@ -45,15 +57,14 @@ public class ZoneActivityChild extends AppCompatActivity {
                 .addOnSuccessListener(childDoc -> {
                     if (!childDoc.exists()) {
                         chooseChildButton.setText("Unknown child");
-                        background.setColor(Color.parseColor("#808080")); // Grey
+                        currentZone = null;
+                        background.setColor(Color.parseColor("#808080"));
                         return;
                     }
 
-                    // Display child name
                     String childName = childDoc.getString("name");
                     chooseChildButton.setText(childName != null ? childName : "Invalid child");
 
-                    // Fetch latest PEF document
                     db.collection("users")
                             .document(parentID)
                             .collection("children")
@@ -63,16 +74,15 @@ public class ZoneActivityChild extends AppCompatActivity {
                             .get()
                             .addOnSuccessListener(latestDoc -> {
                                 if (!latestDoc.exists()) {
-                                    background.setColor(Color.parseColor("#808080")); // Grey
+                                    currentZone = null;
+                                    background.setColor(Color.parseColor("#808080"));
                                     return;
                                 }
 
-                                // Use stored zone if available
                                 String zone = latestDoc.getString("zone");
                                 if (zone != null) {
                                     setZoneColor(zone, background);
                                 } else {
-                                    // Compute zone if missing
                                     Long dailyPEF = latestDoc.getLong("dailyPEF");
                                     Long pb = latestDoc.getLong("pb");
 
@@ -82,7 +92,8 @@ public class ZoneActivityChild extends AppCompatActivity {
                                         else if (percentage >= 0.5) setZoneColor("YELLOW", background);
                                         else setZoneColor("RED", background);
                                     } else {
-                                        background.setColor(Color.parseColor("#808080")); // Grey
+                                        currentZone = null;
+                                        background.setColor(Color.parseColor("#808080"));
                                     }
                                 }
                             });
@@ -90,7 +101,9 @@ public class ZoneActivityChild extends AppCompatActivity {
     }
 
     private void setZoneColor(String zone, GradientDrawable background) {
-        switch (zone.toUpperCase()) {
+        currentZone = zone.toUpperCase();
+
+        switch (currentZone) {
             case "GREEN":
                 background.setColor(Color.parseColor("#4CAF50"));
                 break;
@@ -101,8 +114,27 @@ public class ZoneActivityChild extends AppCompatActivity {
                 background.setColor(Color.parseColor("#F44336"));
                 break;
             default:
-                background.setColor(Color.parseColor("#808080")); // Grey
+                currentZone = null;
+                background.setColor(Color.parseColor("#808080"));
                 break;
         }
+    }
+
+    private void openDecisionCard(boolean isChild, String parentId, String childUid, String zone) {
+        Class<?> target;
+        switch (zone) {
+            case "GREEN": target = GreenCardActivity.class; break;
+            case "YELLOW": target = YellowCardActivity.class; break;
+            case "RED": target = RedCardActivity.class; break;
+            default:
+                Toast.makeText(this, "Unknown zone.", Toast.LENGTH_SHORT).show();
+                return;
+        }
+
+        Intent i = new Intent(this, target);
+        i.putExtra(YellowCardActivity.EXTRA_IS_CHILD, isChild);
+        i.putExtra(YellowCardActivity.EXTRA_CHILD_UID, childUid);
+        i.putExtra("extra_parent_id", parentId);
+        startActivity(i);
     }
 }
