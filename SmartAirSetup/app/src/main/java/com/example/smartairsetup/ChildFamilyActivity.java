@@ -29,16 +29,16 @@ public class ChildFamilyActivity extends AbstractNavigation {
     }
 
     @Override
-    protected void onProfileClicked() {
-        // TODO: For a Parent, this would go to ParentProfileActivity
-        // Intent intent = new Intent(this, ParentProfileActivity.class);
+    protected void onEmergencyClicked() {
+        // TODO: For a Child, this would go to EmergencyActivity
+        // Intent intent = new Intent(this, EmergencyActivity.class);
         // startActivity(intent);
     }
 
     @Override
     protected void onSettingsClicked() {
-        // TODO: For a Parent, this would go to ParentSettingsActivity
-        // Intent intent = new Intent(this, ParentSettingsActivity.class);
+        // TODO: For a Child, this would go to ChildSettingsActivity
+        // Intent intent = new Intent(this, ChildSettingsActivity.class);
         // startActivity(intent);
     }
 }

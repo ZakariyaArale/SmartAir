@@ -6,7 +6,17 @@
     android:layout_height="match_parent"
     android:background="@color/background_colour"
     tools:context=".ParentHomeActivity">
-
+    <TextView
+        android:id="@+id/textParentTitle"
+        android:layout_width="308dp"
+        android:layout_height="41dp"
+        android:paddingBottom="8dp"
+        android:text="Parent Home"
+        android:textColor="#1B4F72"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        tools:layout_editor_absoluteX="28dp"
+        tools:layout_editor_absoluteY="16dp" />
     <!-- Top right: Notification -->
     <ImageButton
         android:id="@+id/notificationButton"
@@ -185,6 +195,14 @@
                 android:backgroundTint="@color/button_icon_color"
                 android:layout_marginTop="12dp" />
 
+            <Button
+                android:id="@+id/buttonMedicationInventory"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Medication Inventory"
+                android:backgroundTint="@color/button_icon_color"
+                android:layout_marginTop="12dp" />
+
         </LinearLayout>
     </FrameLayout>
 
@@ -262,34 +280,34 @@
         android:textColor="@color/button_icon_color"
         android:textSize="10sp"
         app:layout_constraintBottom_toBottomOf="@id/bottomNavBackground"
-        app:layout_constraintEnd_toStartOf="@+id/profileText"
+        app:layout_constraintEnd_toStartOf="@+id/emergencyText"
         app:layout_constraintStart_toEndOf="@+id/homeText" />
 
-    <!-- Profile Button + Text -->
+    <!-- Emergency Button + Text -->
     <ImageButton
-        android:id="@+id/profileButton"
+        android:id="@+id/emergencyButton"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:background="?attr/selectableItemBackgroundBorderless"
-        android:contentDescription="Profile"
+        android:contentDescription="Emergency"
         android:elevation="9dp"
         android:paddingTop="8dp"
         android:scaleType="fitCenter"
-        app:layout_constraintBottom_toTopOf="@id/profileText"
-        app:layout_constraintEnd_toEndOf="@id/profileText"
-        app:layout_constraintStart_toStartOf="@id/profileText"
+        app:layout_constraintBottom_toTopOf="@id/emergencyText"
+        app:layout_constraintEnd_toEndOf="@id/emergencyText"
+        app:layout_constraintStart_toStartOf="@id/emergencyText"
         app:layout_constraintTop_toTopOf="@id/bottomNavBackground"
-        app:srcCompat="@drawable/menu_profile_button_logo"
+        app:srcCompat="@drawable/menu_emergency_button_logo"
         app:tint="@color/button_icon_color" />
 
     <TextView
-        android:id="@+id/profileText"
+        android:id="@+id/emergencyText"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:elevation="9dp"
         android:gravity="center"
         android:paddingBottom="4dp"
-        android:text="Profile"
+        android:text="Emergency"
         android:textColor="@color/button_icon_color"
         android:textSize="10sp"
         app:layout_constraintBottom_toBottomOf="@id/bottomNavBackground"
@@ -325,18 +343,8 @@
         android:textSize="10sp"
         app:layout_constraintBottom_toBottomOf="@id/bottomNavBackground"
         app:layout_constraintEnd_toEndOf="@id/bottomNavBackground"
-        app:layout_constraintStart_toEndOf="@+id/profileText" />
+        app:layout_constraintStart_toEndOf="@+id/emergencyText" />
 
-    <TextView
-        android:id="@+id/textParentTitle"
-        android:layout_width="308dp"
-        android:layout_height="41dp"
-        android:paddingBottom="8dp"
-        android:text="Parent Home"
-        android:textColor="#1B4F72"
-        android:textSize="24sp"
-        android:textStyle="bold"
-        tools:layout_editor_absoluteX="28dp"
-        tools:layout_editor_absoluteY="16dp" />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>
