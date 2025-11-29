@@ -85,6 +85,15 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Apply filters"
+        android:backgroundTint="@color/button_icon_color"
+        android:layout_marginTop="12dp" />
+
+    <Button
+        android:id="@+id/buttonExportCSV"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:backgroundTint="@color/button_icon_color"
+        android:text="Export as CSV"
         android:layout_marginTop="12dp" />
 
     <TextView

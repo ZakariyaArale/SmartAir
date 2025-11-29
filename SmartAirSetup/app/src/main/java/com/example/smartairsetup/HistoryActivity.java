@@ -21,6 +21,24 @@ import com.google.firebase.firestore.QueryDocumentSnapshot;
 import java.util.ArrayList;
 import java.util.List;
 
+import android.content.Intent;
+import android.net.Uri;
+
+import androidx.core.content.FileProvider;
+
+import android.content.ContentValues;
+import android.os.Environment;
+import android.provider.MediaStore;
+
+import java.io.OutputStream;
+import java.nio.charset.StandardCharsets;
+
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.nio.charset.StandardCharsets;
+
+
 public class HistoryActivity extends AppCompatActivity {
 
     private FirebaseAuth mAuth;
@@ -85,6 +103,94 @@ public class HistoryActivity extends AppCompatActivity {
         listHistory.setAdapter(historyAdapter);
 
         buttonApply.setOnClickListener(v -> loadHistory());
+
+        Button buttonExportCSV = findViewById(R.id.buttonExportCSV);
+        buttonExportCSV.setOnClickListener(v -> exportCSV());
+    }
+    private void exportCSV() {
+        if (historyItems.isEmpty()) {
+            Toast.makeText(this, "No history to export.", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        // 1) Build CSV content from what is currently shown in historyItems
+        StringBuilder sb = new StringBuilder();
+        sb.append("Child, Date, Night waking, Activity limits, Cough/wheeze, Triggers, Author\n");
+
+        for (HistoryEntry entry : historyItems) {
+            String child = escapeCsv(entry.childName);
+            String date = escapeCsv(entry.date);
+            String night = escapeCsv(entry.night);
+            String activity = escapeCsv(entry.activity);
+            String cough = escapeCsv(entry.cough);
+            String triggers = escapeCsv(entry.triggers);
+            String author = escapeCsv(entry.author);
+
+            sb.append(child).append(", ");
+            sb.append(date).append(", ");
+            sb.append(night).append(", ");
+            sb.append(activity).append(", ");
+            sb.append(cough).append(", ");
+            sb.append(triggers).append(", ");
+            sb.append(author).append("\n");
+        }
+
+        String fileName = "history_" + System.currentTimeMillis() + ".csv";
+
+        // 2) Create file entry in public Downloads via MediaStore
+        ContentValues values = new ContentValues();
+        values.put(MediaStore.Downloads.DISPLAY_NAME, fileName);
+        values.put(MediaStore.Downloads.MIME_TYPE, "text/csv");
+        values.put(MediaStore.Downloads.RELATIVE_PATH, Environment.DIRECTORY_DOWNLOADS);
+
+        android.net.Uri uri = getContentResolver().insert(
+                MediaStore.Downloads.EXTERNAL_CONTENT_URI,
+                values
+        );
+
+        if (uri == null) {
+            Toast.makeText(this, "Could not create file in Downloads.", Toast.LENGTH_LONG).show();
+            return;
+        }
+
+        // 3) Write CSV data into that uri
+        try (OutputStream os = getContentResolver().openOutputStream(uri)) {
+            if (os == null) {
+                Toast.makeText(this, "Failed to open file output stream.", Toast.LENGTH_LONG).show();
+                return;
+            }
+            os.write(sb.toString().getBytes(StandardCharsets.UTF_8));
+            os.flush();
+
+            Toast.makeText(
+                    this,
+                    "CSV saved to Downloads as:\n" + fileName,
+                    Toast.LENGTH_LONG
+            ).show();
+
+        } catch (Exception e) {
+            Toast.makeText(this, "Failed to export: " + e.getMessage(), Toast.LENGTH_LONG).show();
+        }
+    }
+
+    private String escapeCsv(String value) {
+        if (value == null) {
+            return "";
+        }
+
+        boolean hasComma = value.contains(",");
+        boolean hasQuote = value.contains("\"");
+        boolean hasNewLine = value.contains("\n") || value.contains("\r");
+
+        if (hasQuote) {
+            value = value.replace("\"", "\"\"");
+        }
+
+        if (hasComma || hasQuote || hasNewLine) {
+            return "\"" + value + "\"";
+        }
+
+        return value;
     }
 
     private void loadHistory() {
