@@ -156,6 +156,7 @@ public class PrePostCheckActivity extends AppCompatActivity {
 
                 }else{
                     Intent intent = new Intent(this, RecordMedUsageActivity.class); ////Change this to next page
+                    intent.putExtra("CHILD_ID", childId);
                     intent.putExtra("PRE_FEELING", selected); //passes user choice
                     startActivity(intent);
                 }
@@ -174,6 +175,7 @@ public class PrePostCheckActivity extends AppCompatActivity {
             else if(opt4.isSelected()){selected = 4;}
             else if(opt5.isSelected()){selected = 5;}
             nextButton.setEnabled(true);
+            nextButton.setAlpha(1f);
 
         });
 
