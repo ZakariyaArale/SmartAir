@@ -198,7 +198,7 @@ public class MedicationInventoryActivity extends AppCompatActivity {
         backButton = findViewById(R.id.backButton);
         if (backButton != null) {
             backButton.setOnClickListener(v -> {
-                Intent intent = new Intent(this, MainActivity.class);
+                Intent intent = new Intent(this, ParentHomeActivity.class);
                 startActivity(intent);
             });
         }
