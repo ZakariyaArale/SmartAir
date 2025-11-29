@@ -52,6 +52,7 @@ dependencies {
     implementation(libs.appcompat.v170)
     implementation(libs.material.v1120)
     implementation(libs.constraintlayout.v221)
+    implementation("com.github.PhilJay:MPAndroidChart:v3.1.0")
 
     implementation("com.tom-roush:pdfbox-android:2.0.27.0")
     implementation("com.itextpdf:itextpdf:5.5.13.3")

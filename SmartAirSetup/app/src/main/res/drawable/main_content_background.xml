@@ -4,9 +4,6 @@
     <solid android:color="@android:color/white" />
 
     <!-- Sadece sol üst ve sağ üst köşeleri yuvarlaklaştır -->
-    <corners
-        android:topLeftRadius="32dp"
-        android:topRightRadius="32dp" />
+    <corners android:radius="32dp" />
 
 </shape>
-    
