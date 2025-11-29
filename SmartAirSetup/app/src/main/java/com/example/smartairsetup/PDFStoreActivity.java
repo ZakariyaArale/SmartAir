@@ -27,9 +27,9 @@ public class PDFStoreActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_pdf);
 
-        chooseChildButton = findViewById(R.id.chooseChildButton);
-        chooseDateButton = findViewById(R.id.chooseDateButton);
-        downloadPdfButton = findViewById(R.id.btnDownloadPdf);
+        // chooseChildButton = findViewById(R.id.chooseChildButton);
+        // chooseDateButton = findViewById(R.id.chooseDateButton);
+        // downloadPdfButton = findViewById(R.id.btnDownloadPdf);
 
         pdfGenerator = new PDFGenerator(this);
 

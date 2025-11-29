@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="#DFF3FF"
+    android:padding="16dp">
+
+    <TextView
+        android:id="@+id/textTrendTitle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Symptom trend"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        android:fontFamily="@font/nunito_regular" />
+
+    <TextView
+        android:id="@+id/textTrendChildName"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Child:"
+        android:layout_marginTop="4dp" />
+
+    <!-- Toggle: 7 days / 30 days -->
+    <RadioGroup
+        android:id="@+id/radioRange"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginTop="12dp">
+
+        <RadioButton
+            android:id="@+id/radio7days"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="7 days"
+            android:checked="true" />
+
+        <RadioButton
+            android:id="@+id/radio30days"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="30 days"
+            android:layout_marginStart="16dp" />
+    </RadioGroup>
+
+    <com.github.mikephil.charting.charts.LineChart
+        android:id="@+id/chartSymptoms"
+        android:layout_width="match_parent"
+        android:layout_height="260dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginBottom="16dp" />
+
+    <Button
+        android:id="@+id/backButton"
+        android:layout_width="wrap_content"
+        android:layout_height="48dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginBottom="16dp"
+        android:background="@android:color/transparent"
+        android:fontFamily="@font/nunito_medium"
+        android:text="@string/back_button"
+        android:textColor="#2E7D32"
+        android:textSize="22sp" />
+
+</LinearLayout>
