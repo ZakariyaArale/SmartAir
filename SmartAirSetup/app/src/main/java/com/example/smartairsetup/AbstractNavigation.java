@@ -14,8 +14,8 @@ import androidx.appcompat.app.AppCompatActivity;
  */
 public abstract class AbstractNavigation extends AppCompatActivity implements View.OnClickListener {
 
-    protected ImageButton homeButton, familyButton, profileButton, settingsButton;
-    protected TextView homeText, familyText, profileText, settingsText;
+    protected ImageButton homeButton, familyButton, emergencyButton, settingsButton;
+    protected TextView homeText, familyText, emergencyText, settingsText;
 
     // --- METHODS TO BE IMPLEMENTED BY SUBCLASSES ---
 
@@ -25,7 +25,7 @@ public abstract class AbstractNavigation extends AppCompatActivity implements Vi
     // The following methods force each subclass to define its own navigation logic.
     protected abstract void onHomeClicked();
     protected abstract void onFamilyClicked();
-    protected abstract void onProfileClicked();
+    protected abstract void onEmergencyClicked();
     protected abstract void onSettingsClicked();
 
     // --- ACTIVITY LIFECYCLE ---
@@ -45,8 +45,8 @@ public abstract class AbstractNavigation extends AppCompatActivity implements Vi
         homeText = findViewById(R.id.homeText);
         familyButton = findViewById(R.id.familyButton);
         familyText = findViewById(R.id.familyText);
-        profileButton = findViewById(R.id.profileButton);
-        profileText = findViewById(R.id.profileText);
+        emergencyButton = findViewById(R.id.emergencyButton);
+        emergencyText = findViewById(R.id.emergencyText);
         settingsButton = findViewById(R.id.settingsButton);
         settingsText = findViewById(R.id.settingsText);
     }
@@ -54,7 +54,7 @@ public abstract class AbstractNavigation extends AppCompatActivity implements Vi
     private void setupNavigationClickListeners() {
         homeButton.setOnClickListener(this);
         familyButton.setOnClickListener(this);
-        profileButton.setOnClickListener(this);
+        emergencyButton.setOnClickListener(this);
         settingsButton.setOnClickListener(this);
     }
 
@@ -69,8 +69,8 @@ public abstract class AbstractNavigation extends AppCompatActivity implements Vi
             onHomeClicked();
         } else if (viewId == R.id.familyButton) {
             onFamilyClicked();
-        } else if (viewId == R.id.profileButton) {
-            onProfileClicked();
+        } else if (viewId == R.id.emergencyButton) {
+            onEmergencyClicked();
         } else if (viewId == R.id.settingsButton) {
             onSettingsClicked();
         }
