@@ -13,6 +13,8 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.firebase.firestore.FirebaseFirestore;
 
+import java.util.Calendar;
+
 public class ZoneActivity extends AppCompatActivity {
 
     public Button chooseChildButton;
@@ -41,7 +43,6 @@ public class ZoneActivity extends AppCompatActivity {
 
         chooseChildButton.setOnClickListener(v -> {
             childDiaglog.showSelectionDialog(chooseChildButton);
-            // We don't know if dialog sets tag immediately, so we'll refresh in onResume()
         });
 
         // NEW: click zone label to open decision card for current zone
@@ -68,7 +69,6 @@ public class ZoneActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        // Best-effort: if dialog set the tag, pick it up here and refresh
         Object tag = chooseChildButton.getTag();
         if (tag != null) {
             String newUid = tag.toString();
@@ -81,7 +81,6 @@ public class ZoneActivity extends AppCompatActivity {
     }
 
     public void updateZoneColor(String childUid, GradientDrawable background) {
-        // NEW: store selected child
         selectedChildUid = childUid;
 
         db.collection("users")
@@ -92,16 +91,42 @@ public class ZoneActivity extends AppCompatActivity {
                 .document("latest")
                 .get()
                 .addOnSuccessListener(latestDoc -> {
+
                     if (!latestDoc.exists()) {
                         currentZone = null;
                         background.setColor(Color.parseColor("#808080")); // grey
                         return;
                     }
 
+                    // ⬇️ NEW: Check timestamp is today
+                    Long ts = latestDoc.getLong("timestamp"); // must be millis
+                    if (ts == null) {
+                        currentZone = null;
+                        background.setColor(Color.parseColor("#808080"));
+                        return;
+                    }
+
+                    Calendar recordCal = Calendar.getInstance();
+                    recordCal.setTimeInMillis(ts);
+
+                    Calendar todayCal = Calendar.getInstance();
+
+                    boolean sameDay =
+                            recordCal.get(Calendar.YEAR) == todayCal.get(Calendar.YEAR) &&
+                                    recordCal.get(Calendar.DAY_OF_YEAR) == todayCal.get(Calendar.DAY_OF_YEAR);
+
+                    if (!sameDay) {
+                        // Record is NOT from today → force grey
+                        currentZone = null;
+                        background.setColor(Color.parseColor("#808080"));
+                        return;
+                    }
+                    // ⬆️ END timestamp check
+
                     String zone = latestDoc.getString("zone");
                     if (zone == null) {
                         currentZone = null;
-                        background.setColor(Color.parseColor("#808080")); // grey
+                        background.setColor(Color.parseColor("#808080"));
                         return;
                     }
 
@@ -119,14 +144,14 @@ public class ZoneActivity extends AppCompatActivity {
                             break;
                         default:
                             currentZone = null;
-                            background.setColor(Color.parseColor("#808080")); // grey
+                            background.setColor(Color.parseColor("#808080"));
                             break;
                     }
                 })
                 .addOnFailureListener(e -> {
                     Log.e("ZoneActivity", "Error fetching latest zone", e);
                     currentZone = null;
-                    background.setColor(Color.parseColor("#808080")); // grey on error
+                    background.setColor(Color.parseColor("#808080"));
                 });
     }
 
@@ -144,7 +169,7 @@ public class ZoneActivity extends AppCompatActivity {
         Intent i = new Intent(this, target);
         i.putExtra(YellowCardActivity.EXTRA_IS_CHILD, isChild);
         i.putExtra(YellowCardActivity.EXTRA_CHILD_UID, childUid);
-        i.putExtra("extra_parent_id", parentId); // optional, useful for Firestore paths
+        i.putExtra("extra_parent_id", parentId);
         startActivity(i);
     }
 }

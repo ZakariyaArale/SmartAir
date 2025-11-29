@@ -12,6 +12,8 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.firebase.firestore.FirebaseFirestore;
 
+import java.util.Calendar;
+
 public class ZoneActivityChild extends AppCompatActivity {
 
     private Button chooseChildButton;
@@ -55,6 +57,7 @@ public class ZoneActivityChild extends AppCompatActivity {
                 .document(childUid)
                 .get()
                 .addOnSuccessListener(childDoc -> {
+
                     if (!childDoc.exists()) {
                         chooseChildButton.setText("Unknown child");
                         currentZone = null;
@@ -73,21 +76,50 @@ public class ZoneActivityChild extends AppCompatActivity {
                             .document("latest")
                             .get()
                             .addOnSuccessListener(latestDoc -> {
+
                                 if (!latestDoc.exists()) {
                                     currentZone = null;
                                     background.setColor(Color.parseColor("#808080"));
                                     return;
                                 }
 
+                                // ✅ NEW: Check that this record is from TODAY
+                                Long ts = latestDoc.getLong("timestamp");  // must be saved in millis
+                                if (ts == null) {
+                                    currentZone = null;
+                                    background.setColor(Color.parseColor("#808080"));
+                                    return;
+                                }
+
+                                Calendar recordCal = Calendar.getInstance();
+                                recordCal.setTimeInMillis(ts);
+
+                                Calendar todayCal = Calendar.getInstance();
+
+                                boolean sameDay =
+                                        recordCal.get(Calendar.YEAR) == todayCal.get(Calendar.YEAR) &&
+                                                recordCal.get(Calendar.DAY_OF_YEAR) == todayCal.get(Calendar.DAY_OF_YEAR);
+
+                                if (!sameDay) {
+                                    // NOT today's data → turn grey
+                                    currentZone = null;
+                                    background.setColor(Color.parseColor("#808080"));
+                                    return;
+                                }
+                                // ⬆️ END timestamp check
+
                                 String zone = latestDoc.getString("zone");
+
                                 if (zone != null) {
                                     setZoneColor(zone, background);
                                 } else {
+                                    // Fallback zone calculation
                                     Long dailyPEF = latestDoc.getLong("dailyPEF");
                                     Long pb = latestDoc.getLong("pb");
 
                                     if (dailyPEF != null && pb != null && dailyPEF > 0 && pb > 0) {
                                         double percentage = (double) dailyPEF / pb;
+
                                         if (percentage >= 0.8) setZoneColor("GREEN", background);
                                         else if (percentage >= 0.5) setZoneColor("YELLOW", background);
                                         else setZoneColor("RED", background);

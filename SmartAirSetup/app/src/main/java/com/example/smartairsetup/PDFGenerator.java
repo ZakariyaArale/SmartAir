@@ -25,7 +25,6 @@ import java.io.OutputStream;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
-import java.util.concurrent.ExecutionException;
 
 public class PDFGenerator {
 
@@ -59,6 +58,8 @@ public class PDFGenerator {
                                 .document(parentID)
                                 .get()
                 );
+
+                // Remove parent name field
                 String parentEmail = parentDoc.exists() ? parentDoc.getString("email") : "";
 
                 // PEF logs
@@ -74,12 +75,11 @@ public class PDFGenerator {
                 );
 
                 SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd", Locale.US);
-
                 StringBuilder zoneTable = new StringBuilder();
                 zoneTable.append("Date       |  PEF  | Zone\n");
                 zoneTable.append("--------------------------\n");
 
-                int greenCount = 0, yellowCount = 0, redCount = 0; // YOUR CHOICE
+                int greenCount = 0, yellowCount = 0, redCount = 0;
 
                 for (QueryDocumentSnapshot doc : pefSnapshot) {
                     Long timestamp = doc.getLong("timestamp");
@@ -132,9 +132,19 @@ public class PDFGenerator {
                     }
                 }
 
-                createPdf(childName, childDOB, parentEmail, zoneTable.toString(),
-                        triageEvents.toString(), greenCount, yellowCount, redCount,
-                        totalCount, startTimestamp, endTimestamp);
+                createPdf(
+                        childName,
+                        childDOB,
+                        parentEmail,
+                        zoneTable.toString(),
+                        triageEvents.toString(),
+                        greenCount,
+                        yellowCount,
+                        redCount,
+                        totalCount,
+                        startTimestamp,
+                        endTimestamp
+                );
 
             } catch (Exception e) {
                 e.printStackTrace();
@@ -145,7 +155,8 @@ public class PDFGenerator {
         }).start();
     }
 
-    private void createPdf(String childName, String dob, String parentEmail,
+    private void createPdf(String childName, String dob,
+                           String parentEmail,
                            String zoneTable, String triageEvents,
                            int greenCount, int yellowCount, int redCount, int totalCount,
                            long startTimestamp, long endTimestamp)
@@ -153,7 +164,6 @@ public class PDFGenerator {
 
         Document document = new Document();
         OutputStream output;
-
         File pdfFile = null;
         Uri pdfUri = null;
 
@@ -174,6 +184,7 @@ public class PDFGenerator {
         PdfWriter writer = PdfWriter.getInstance(document, output);
         document.open();
 
+        // Font
         Font font;
         try {
             InputStream is = context.getAssets().open("fonts/nunito_regular.ttf");
@@ -187,26 +198,37 @@ public class PDFGenerator {
             font = new Font(Font.FontFamily.HELVETICA, 16);
         }
 
+        // Report title + period
+        SimpleDateFormat sdfDisplay = new SimpleDateFormat("MM/dd/yyyy", Locale.US);
+        String startDateStr = sdfDisplay.format(new Date(startTimestamp));
+        String endDateStr = sdfDisplay.format(new Date(endTimestamp));
+
         document.add(new Paragraph("SMART AIR – Provider Medical Report", font));
+        document.add(new Paragraph("Report Period: " + startDateStr + " – " + endDateStr, font));
         document.add(new Paragraph("\n"));
 
+        // Child info
         document.add(new Paragraph("1. Child Information", font));
         document.add(new Paragraph("Name: " + childName));
         document.add(new Paragraph("Date of Birth: " + dob));
         document.add(new Paragraph("\n"));
 
+        // Parent info (only email)
         document.add(new Paragraph("2. Parent Information", font));
         document.add(new Paragraph("Email: " + parentEmail));
         document.add(new Paragraph("\n"));
 
+        // Zone Distribution
         document.add(new Paragraph("3. Zone Distribution (PEF)", font));
         document.add(new Paragraph(zoneTable));
         document.add(new Paragraph("\n"));
 
+        // Triage events
         document.add(new Paragraph("4. Noticeable Triage Events", font));
         document.add(new Paragraph(triageEvents.isEmpty() ? "No incidents recorded" : triageEvents));
         document.add(new Paragraph("\n"));
 
+        // Pie chart
         document.add(new Paragraph("5. Zone Distribution Pie Chart", font));
 
         PdfContentByte canvas = writer.getDirectContent();
@@ -220,8 +242,6 @@ public class PDFGenerator {
         BaseColor darkGray = new BaseColor(80, 80, 80);
 
         int totalDays = (int) ((endTimestamp - startTimestamp) / (1000L * 60 * 60 * 24)) + 1;
-        int greyCount = totalDays - totalCount;
-
         float greenFraction = greenCount / (float) totalDays;
         float yellowFraction = yellowCount / (float) totalDays;
         float redFraction = redCount / (float) totalDays;
@@ -231,12 +251,11 @@ public class PDFGenerator {
         float redAngle = redFraction * 360f;
         float greyAngle = 360f - (greenAngle + yellowAngle + redAngle);
 
-        float startAngle = -90; // 12 o’clock
+        float startAngle = -90;
 
         drawPieSlice(canvas, centerX, centerY, radius, startAngle, greenAngle, darkGreen);
         drawPieSlice(canvas, centerX, centerY, radius, startAngle + greenAngle, yellowAngle, darkYellow);
         drawPieSlice(canvas, centerX, centerY, radius, startAngle + greenAngle + yellowAngle, redAngle, darkRed);
-
         if (greyAngle > 0.01f)
             drawPieSlice(canvas, centerX, centerY, radius, startAngle + greenAngle + yellowAngle + redAngle, greyAngle, darkGray);
 
@@ -272,7 +291,6 @@ public class PDFGenerator {
                 startAngle, sweepAngle);
 
         canvas.lineTo(centerX, centerY);
-
         canvas.closePathFillStroke();
     }
 
