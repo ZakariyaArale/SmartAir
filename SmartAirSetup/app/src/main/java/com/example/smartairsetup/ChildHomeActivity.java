@@ -105,7 +105,7 @@ public class ChildHomeActivity extends AbstractNavigation {
                 ).show();
                 return;
             }
-            Intent new_intent = new Intent(ChildHomeActivity.this, ChildBadgesActivity.class);
+            Intent new_intent = new Intent(ChildHomeActivity.this, PrePostCheckActivity.class);
             new_intent.putExtra("CHILD_ID", childId);
             new_intent.putExtra("mode", "pre");
             startActivity(new_intent);
