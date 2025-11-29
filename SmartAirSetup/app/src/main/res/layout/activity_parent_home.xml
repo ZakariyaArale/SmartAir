@@ -49,26 +49,33 @@
                 android:id="@+id/textWeeklyOverviewTitle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Child overview"
+                android:text="Child Summary"
                 android:textSize="16sp"
                 android:textStyle="bold"
                 android:textColor="@android:color/black"
                 android:paddingBottom="4dp" />
 
-            <Spinner
-                android:id="@+id/spinnerChildSelector"
+            <Button
+                android:id="@+id/buttonOverviewSelectChild"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="4dp" />
+                android:layout_marginTop="4dp"
+                android:backgroundTint="#E6F7FF"
+                android:elevation="2dp"
+                android:fontFamily="@font/nunito_medium"
+                android:padding="12dp"
+                android:text="Select child"
+                android:textColor="#2E7D32"
+                android:textSize="18sp" />
 
             <TextView
                 android:id="@+id/textWeeklyRescue"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
-                android:text="Select a child to see this week's rescue medication count."
+                android:text="Rescue medication count this week: 0"
                 android:textSize="14sp"
-                android:textColor="#4F4F4F" />
+                android:textColor="@android:color/black" />
 
         </LinearLayout>
     </FrameLayout>

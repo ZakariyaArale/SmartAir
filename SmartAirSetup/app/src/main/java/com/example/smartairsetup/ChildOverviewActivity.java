@@ -2,13 +2,10 @@ package com.example.smartairsetup;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.View;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
+import androidx.appcompat.app.AlertDialog;
 
 import androidx.annotation.Nullable;
 
@@ -27,22 +24,20 @@ public class ChildOverviewActivity extends AbstractNavigation {
 
     private FirebaseAuth mAuth;
     private FirebaseFirestore db;
-
-    private Spinner spinnerChildSelector;
     private TextView textChildSummary;
-
     private Button buttonOpenSchedule;
     private Button buttonOpenSymptomTrend;
     private Button buttonOpenMedicationReport;
     private Button buttonWhatProviderSees;
-
+    private Button buttonSelectChild;
+    private Button backButton;
     private final List<String> childNames = new ArrayList<>();
     private final List<String> childIds = new ArrayList<>();
-    private ArrayAdapter<String> childAdapter;
-
     private String parentUid;
     private String selectedChildId;
     private String selectedChildName;
+    private Button buttonLogControllerDoseNow;
+    private MedicationLogRepository medicationLogRepository;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -51,42 +46,14 @@ public class ChildOverviewActivity extends AbstractNavigation {
         mAuth = FirebaseAuth.getInstance();
         db = FirebaseFirestore.getInstance();
 
-        spinnerChildSelector = findViewById(R.id.spinnerChildSelector);
         textChildSummary = findViewById(R.id.textChildSummary);
 
         buttonOpenSchedule = findViewById(R.id.buttonOpenSchedule);
         buttonOpenSymptomTrend = findViewById(R.id.buttonOpenSymptomTrend);
         buttonOpenMedicationReport = findViewById(R.id.buttonOpenMedicationReport);
         buttonWhatProviderSees = findViewById(R.id.buttonWhatProviderSees);
-
-        childAdapter = new ArrayAdapter<>(
-                this,
-                android.R.layout.simple_spinner_item,
-                childNames
-        );
-        childAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spinnerChildSelector.setAdapter(childAdapter);
-
-        spinnerChildSelector.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(
-                    AdapterView<?> parent,
-                    View view,
-                    int position,
-                    long id
-            ) {
-                if (position >= 0 && position < childIds.size()) {
-                    selectedChildId = childIds.get(position);
-                    selectedChildName = childNames.get(position);
-                    loadOverviewForChild(selectedChildId, selectedChildName);
-                }
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-                // no-op
-            }
-        });
+        backButton = findViewById(R.id.backButton);
+        backButton.setOnClickListener(v -> finish());
 
         buttonOpenSchedule.setOnClickListener(v -> {
             if (!ensureChildSelected()) return;
@@ -119,6 +86,39 @@ public class ChildOverviewActivity extends AbstractNavigation {
             intent.putExtra(ShareWithProviderActivity.EXTRA_CHILD_NAME, selectedChildName);
             startActivity(intent);
         });
+
+        medicationLogRepository = new MedicationLogRepository();
+
+        buttonLogControllerDoseNow = findViewById(R.id.buttonLogControllerDoseNow);
+        buttonLogControllerDoseNow.setOnClickListener(v -> {
+            if (!ensureChildSelected()) return;
+
+            // For now: assume each tap = 1 dose
+            medicationLogRepository.logControllerDose(
+                    selectedChildId,
+                    1,
+                    unused -> Toast.makeText(this,
+                            "Controller dose logged for " + selectedChildName,
+                            Toast.LENGTH_SHORT).show(),
+                    e -> Toast.makeText(this,
+                            "Failed to log controller dose: " + e.getMessage(),
+                            Toast.LENGTH_LONG).show()
+            );
+        });
+
+        buttonOpenMedicationReport.setOnClickListener(v -> {
+            if (!ensureChildSelected()) return;
+            Intent intent = new Intent(ChildOverviewActivity.this, MedicationReportActivity.class);
+            intent.putExtra(MedicationReportActivity.EXTRA_CHILD_ID, selectedChildId);
+            intent.putExtra(MedicationReportActivity.EXTRA_CHILD_NAME, selectedChildName);
+            startActivity(intent);
+        });
+
+        buttonSelectChild = findViewById(R.id.buttonSelectChild);
+        textChildSummary = findViewById(R.id.textChildSummary);
+
+        buttonSelectChild.setEnabled(false);
+        buttonSelectChild.setOnClickListener(v -> showChildSelectDialog());
     }
 
     @Override
@@ -161,20 +161,47 @@ public class ChildOverviewActivity extends AbstractNavigation {
                 childIds.add(doc.getId());
             }
 
-            childAdapter.notifyDataSetChanged();
-
             if (childIds.isEmpty()) {
-                spinnerChildSelector.setEnabled(false);
-                textChildSummary.setText("No children found. Add a child from the Parent Home screen.");
                 selectedChildId = null;
                 selectedChildName = null;
+                buttonSelectChild.setEnabled(false);
+                buttonSelectChild.setText("No children");
+                textChildSummary.setText("No children found. Add a child from the Parent Home screen.");
             } else {
-                spinnerChildSelector.setEnabled(true);
-                spinnerChildSelector.setSelection(0);
+                // DO NOT auto-select; require explicit selection
+                selectedChildId = null;
+                selectedChildName = null;
+
+                buttonSelectChild.setEnabled(true);
+                buttonSelectChild.setText("Select child");
+                textChildSummary.setText("Select a child to view their summary.");
             }
         }).addOnFailureListener(e -> {
             Toast.makeText(this, "Failed to load children: " + e.getMessage(), Toast.LENGTH_LONG).show();
+            buttonSelectChild.setEnabled(false);
+            buttonSelectChild.setText("Error loading");
         });
+    }
+
+    private void showChildSelectDialog() {
+        if (childIds.isEmpty()) {
+            Toast.makeText(this, "Please add a child first.", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        String[] namesArray = childNames.toArray(new String[0]);
+
+        new AlertDialog.Builder(this)
+                .setTitle("Select a child")
+                .setItems(namesArray, (dialog, which) -> {
+                    if (which >= 0 && which < childIds.size()) {
+                        selectedChildId = childIds.get(which);
+                        selectedChildName = childNames.get(which);
+                        buttonSelectChild.setText(selectedChildName);
+                        loadOverviewForChild(selectedChildId, selectedChildName);
+                    }
+                })
+                .show();
     }
 
     private void loadOverviewForChild(String childId, String childName) {

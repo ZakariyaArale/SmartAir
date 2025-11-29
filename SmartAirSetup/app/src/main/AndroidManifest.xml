@@ -119,6 +119,18 @@
             android:name=".RedFlagsActivity_Child"
             android:exported="false" />
         <activity
+            android:name=".MedicationReportActivity"
+            android:exported="false"/>
+        <activity
+            android:name=".ChildOverviewActivity"
+            android:exported="false"/>
+        <activity
+            android:name=".ControllerScheduleActivity"
+            android:exported="false"/>
+        <activity
+            android:name=".SymptomTrendActivity"
+            android:exported="false"/>
+        <activity
             android:name=".MainActivity"
             android:exported="true">
             <intent-filter>

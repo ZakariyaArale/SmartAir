@@ -3,11 +3,8 @@ package com.example.smartairsetup;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
-import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -32,11 +29,10 @@ public class ParentHomeActivity extends AbstractNavigation {
     private final List<String> childIds = new ArrayList<>();
 
     // Child overview UI
-    private Spinner spinnerChildSelector;
-    private TextView textWeeklyRescue;
-    private ArrayAdapter<String> childSelectorAdapter;
-    private ArrayAdapter<String> childrenAdapter;
     private String parentUid;
+    private TextView textWeeklyRescue;
+    private Button buttonOverviewSelectChild;
+    private String selectedOverviewChildId;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -127,41 +123,13 @@ public class ParentHomeActivity extends AbstractNavigation {
             startActivity(intent);
         });
 
-        // Child overview card (spinner + weekly text)
-        spinnerChildSelector = findViewById(R.id.spinnerChildSelector);
+        // Child summary card (button + weekly text)
+        buttonOverviewSelectChild = findViewById(R.id.buttonOverviewSelectChild);
         textWeeklyRescue = findViewById(R.id.textWeeklyRescue);
 
-        childSelectorAdapter = new ArrayAdapter<>(
-                this,
-                android.R.layout.simple_spinner_item,
-                childNames
-        );
-        childSelectorAdapter.setDropDownViewResource(
-                android.R.layout.simple_spinner_dropdown_item
-        );
-        spinnerChildSelector.setAdapter(childSelectorAdapter);
-
-        spinnerChildSelector.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(
-                    AdapterView<?> parent,
-                    View view,
-                    int position,
-                    long id
-            ) {
-                if (position >= 0 && position < childIds.size()) {
-                    String childId = childIds.get(position);
-                    loadWeeklyRescueForChild(childId);
-                }
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-                textWeeklyRescue.setText(
-                        "Select a child to see this week's rescue medication count."
-                );
-            }
-        });
+        // Disable until children are loaded
+        buttonOverviewSelectChild.setEnabled(false);
+        buttonOverviewSelectChild.setOnClickListener(v -> showOverviewChildDialog());
 
         loadChildren();
     }
@@ -175,8 +143,6 @@ public class ParentHomeActivity extends AbstractNavigation {
     private void loadChildren() {
         if (mAuth.getCurrentUser() == null) {
             Toast.makeText(this, "Not signed in", Toast.LENGTH_SHORT).show();
-            startActivity(new Intent(this, LoginActivity.class));
-            finish();
             return;
         }
 
@@ -201,26 +167,50 @@ public class ParentHomeActivity extends AbstractNavigation {
                         childIds.add(doc.getId());
                     }
 
-                    childrenAdapter.notifyDataSetChanged();
-                    childSelectorAdapter.notifyDataSetChanged();
-
                     if (childIds.isEmpty()) {
-                        // No list anymore; just disable spinner and show message.
-                        spinnerChildSelector.setEnabled(false);
+                        // No children for this parent
+                        selectedOverviewChildId = null;
+                        buttonOverviewSelectChild.setEnabled(false);
+                        buttonOverviewSelectChild.setText("No children");
                         textWeeklyRescue.setText("No children found for this parent.");
                     } else {
-                        spinnerChildSelector.setEnabled(true);
-                        spinnerChildSelector.setSelection(0);
+                        // At least one child – but DO NOT auto-select
+                        selectedOverviewChildId = null;
 
-                        String firstChildId = childIds.get(0);
-                        loadWeeklyRescueForChild(firstChildId);
+                        buttonOverviewSelectChild.setEnabled(true);
+                        buttonOverviewSelectChild.setText("Select child");
+                        textWeeklyRescue.setText("Select a child to view this week's rescue count.");
                     }
                 })
-                .addOnFailureListener(e ->
-                        Toast.makeText(this,
-                                "Failed to load children: " + e.getMessage(),
-                                Toast.LENGTH_LONG).show()
-                );
+                .addOnFailureListener(e -> {
+                    selectedOverviewChildId = null;
+                    buttonOverviewSelectChild.setEnabled(false);
+                    buttonOverviewSelectChild.setText("No children");
+                    textWeeklyRescue.setText("Error loading children.");
+                    Toast.makeText(this, "Failed to load children: " + e.getMessage(),
+                            Toast.LENGTH_LONG).show();
+                });
+    }
+
+    private void showOverviewChildDialog() {
+        if (childIds.isEmpty()) {
+            Toast.makeText(this, "Please add a child first.", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        String[] namesArray = childNames.toArray(new String[0]);
+
+        new AlertDialog.Builder(this)
+                .setTitle("Select a child")
+                .setItems(namesArray, (dialog, which) -> {
+                    if (which >= 0 && which < childIds.size()) {
+                        selectedOverviewChildId = childIds.get(which);
+                        String name = childNames.get(which);
+                        buttonOverviewSelectChild.setText(name);
+                        loadWeeklyRescueForChild(selectedOverviewChildId);
+                    }
+                })
+                .show();
     }
 
     private void loadWeeklyRescueForChild(String childId) {

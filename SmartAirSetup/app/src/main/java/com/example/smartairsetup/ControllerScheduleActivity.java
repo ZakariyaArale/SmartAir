@@ -30,6 +30,7 @@ public class ControllerScheduleActivity extends AppCompatActivity {
     private CheckBox checkMon, checkTue, checkWed, checkThu, checkFri, checkSat, checkSun;
     private EditText editDosesPerDay;
     private Button buttonSaveSchedule;
+    private Button backButton;
 
     private String parentUid;
     private String childId;
@@ -63,6 +64,8 @@ public class ControllerScheduleActivity extends AppCompatActivity {
         checkSun = findViewById(R.id.checkSun);
         editDosesPerDay = findViewById(R.id.editDosesPerDay);
         buttonSaveSchedule = findViewById(R.id.buttonSaveSchedule);
+        backButton = findViewById(R.id.backButton);
+        backButton.setOnClickListener(v -> finish());
 
         textScheduleChildName.setText("Child: " + childName);
 

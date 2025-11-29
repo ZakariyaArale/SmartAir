@@ -36,20 +36,26 @@
                 android:gravity="center_horizontal"
                 android:layout_marginBottom="16dp" />
 
-            <!-- Child selector (like parent home card, but here at top) -->
             <TextView
                 android:id="@+id/textSelectChildLabel"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Select child:"
+                android:text="Select child"
                 android:textSize="16sp"
                 android:fontFamily="@font/nunito_medium" />
 
-            <Spinner
-                android:id="@+id/spinnerChildSelector"
+            <Button
+                android:id="@+id/buttonSelectChild"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="8dp" />
+                android:layout_marginTop="8dp"
+                android:backgroundTint="#E6F7FF"
+                android:elevation="2dp"
+                android:fontFamily="@font/nunito_medium"
+                android:padding="12dp"
+                android:text="Select child"
+                android:textColor="#2E7D32"
+                android:textSize="18sp" />
 
             <!-- Short summary (we can show rescue/week or last check-in) -->
             <TextView
@@ -79,6 +85,14 @@
                 android:backgroundTint="@color/button_icon_color" />
 
             <Button
+                android:id="@+id/buttonLogControllerDoseNow"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                android:text="Log controller dose now"
+                android:backgroundTint="@color/button_icon_color" />
+
+            <Button
                 android:id="@+id/buttonOpenMedicationReport"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -94,6 +108,18 @@
                 android:text="What provider can see"
                 android:backgroundTint="@color/button_icon_color" />
 
+            <Button
+                android:id="@+id/backButton"
+                android:layout_width="wrap_content"
+                android:layout_height="48dp"
+                android:layout_marginTop="24dp"
+                android:layout_marginBottom="24dp"
+                android:layout_gravity="center_horizontal"
+                android:background="@android:color/transparent"
+                android:fontFamily="@font/nunito_medium"
+                android:text="@string/back_button"
+                android:textColor="#2E7D32"
+                android:textSize="22sp" />
         </LinearLayout>
     </ScrollView>
 
