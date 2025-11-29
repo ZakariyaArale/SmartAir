@@ -94,6 +94,25 @@ public class ChildHomeActivity extends AbstractNavigation {
             new_intent.putExtra("CHILD_ID", childId);
             startActivity(new_intent);
         });
+
+        ImageButton takeMedicationButton = findViewById(R.id.buttonTakeMedication);
+        takeMedicationButton.setOnClickListener(v -> {
+            if (childId.isEmpty()) {
+                Toast.makeText(
+                        ChildHomeActivity.this,
+                        "Please add a child first.",
+                        Toast.LENGTH_SHORT
+                ).show();
+                return;
+            }
+            Intent new_intent = new Intent(ChildHomeActivity.this, ChildBadgesActivity.class);
+            new_intent.putExtra("CHILD_ID", childId);
+            new_intent.putExtra("mode", "pre");
+            startActivity(new_intent);
+        });
+
+
+
     }
 
     // 2) Only set greeting message here
