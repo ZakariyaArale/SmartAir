@@ -1,0 +1,236 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#DFF3FF"
+    android:padding="16dp">
+
+    <!-- MAIN CONTENT IN A SCROLLVIEW -->
+    <ScrollView
+        android:id="@+id/scrollChildOverview"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/bottomNavBackground"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
+
+        <LinearLayout
+            android:id="@+id/overviewContainer"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <!-- Title -->
+            <TextView
+                android:id="@+id/textChildOverviewTitle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Child Overview"
+                android:textSize="22sp"
+                android:textStyle="bold"
+                android:textColor="@android:color/black"
+                android:fontFamily="@font/nunito_regular"
+                android:gravity="center_horizontal"
+                android:layout_marginBottom="16dp" />
+
+            <!-- Child selector (like parent home card, but here at top) -->
+            <TextView
+                android:id="@+id/textSelectChildLabel"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Select child:"
+                android:textSize="16sp"
+                android:fontFamily="@font/nunito_medium" />
+
+            <Spinner
+                android:id="@+id/spinnerChildSelector"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp" />
+
+            <!-- Short summary (we can show rescue/week or last check-in) -->
+            <TextView
+                android:id="@+id/textChildSummary"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Select a child to view summary."
+                android:textSize="14sp"
+                android:layout_marginTop="12dp"
+                android:fontFamily="@font/nunito_regular" />
+
+            <!-- Feature buttons -->
+            <Button
+                android:id="@+id/buttonOpenSchedule"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="24dp"
+                android:text="Edit controller schedule"
+                android:backgroundTint="@color/button_icon_color" />
+
+            <Button
+                android:id="@+id/buttonOpenSymptomTrend"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                android:text="View symptom trend chart"
+                android:backgroundTint="@color/button_icon_color" />
+
+            <Button
+                android:id="@+id/buttonOpenMedicationReport"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                android:text="View medication report"
+                android:backgroundTint="@color/button_icon_color" />
+
+            <Button
+                android:id="@+id/buttonWhatProviderSees"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                android:text="What provider can see"
+                android:backgroundTint="@color/button_icon_color" />
+
+        </LinearLayout>
+    </ScrollView>
+
+    <!-- BOTTOM NAV copied from activity_parent_home.xml (same ids!) -->
+    <View
+        android:id="@+id/bottomNavBackground"
+        android:layout_width="0dp"
+        android:layout_height="64dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="16dp"
+        android:background="@drawable/bottom_nav_background"
+        android:elevation="8dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <!-- Home Button + Text -->
+    <ImageButton
+        android:id="@+id/homeButton"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:background="?attr/selectableItemBackgroundBorderless"
+        android:contentDescription="Home"
+        android:elevation="9dp"
+        android:paddingTop="8dp"
+        android:scaleType="fitCenter"
+        app:layout_constraintBottom_toTopOf="@id/homeText"
+        app:layout_constraintEnd_toEndOf="@id/homeText"
+        app:layout_constraintStart_toStartOf="@id/homeText"
+        app:layout_constraintTop_toTopOf="@id/bottomNavBackground"
+        app:srcCompat="@drawable/menu_home_button_logo"
+        app:tint="@color/active_button_icon_color" />
+
+    <TextView
+        android:id="@+id/homeText"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:elevation="9dp"
+        android:gravity="center"
+        android:paddingBottom="4dp"
+        android:text="Home"
+        android:textColor="@color/active_button_icon_color"
+        android:textSize="10sp"
+        app:layout_constraintBottom_toBottomOf="@id/bottomNavBackground"
+        app:layout_constraintEnd_toStartOf="@+id/familyText"
+        app:layout_constraintHorizontal_chainStyle="spread"
+        app:layout_constraintStart_toStartOf="@id/bottomNavBackground" />
+
+    <!-- Family -->
+    <ImageButton
+        android:id="@+id/familyButton"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:background="?attr/selectableItemBackgroundBorderless"
+        android:contentDescription="Family"
+        android:elevation="9dp"
+        android:paddingTop="8dp"
+        android:scaleType="fitCenter"
+        app:layout_constraintBottom_toTopOf="@id/familyText"
+        app:layout_constraintEnd_toEndOf="@id/familyText"
+        app:layout_constraintStart_toStartOf="@id/familyText"
+        app:layout_constraintTop_toTopOf="@id/bottomNavBackground"
+        app:srcCompat="@drawable/menu_family_button_logo" />
+
+    <TextView
+        android:id="@+id/familyText"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:elevation="9dp"
+        android:gravity="center"
+        android:paddingBottom="4dp"
+        android:text="Family"
+        android:textColor="#1B4F72"
+        android:textSize="10sp"
+        app:layout_constraintBottom_toBottomOf="@id/bottomNavBackground"
+        app:layout_constraintEnd_toStartOf="@+id/profileText"
+        app:layout_constraintStart_toEndOf="@id/homeText" />
+
+    <!-- Profile -->
+    <ImageButton
+        android:id="@+id/profileButton"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:background="?attr/selectableItemBackgroundBorderless"
+        android:contentDescription="Profile"
+        android:elevation="9dp"
+        android:paddingTop="8dp"
+        android:scaleType="fitCenter"
+        app:layout_constraintBottom_toTopOf="@id/profileText"
+        app:layout_constraintEnd_toEndOf="@id/profileText"
+        app:layout_constraintStart_toStartOf="@id/profileText"
+        app:layout_constraintTop_toTopOf="@id/bottomNavBackground"
+        app:srcCompat="@drawable/menu_profile_button_logo" />
+
+    <TextView
+        android:id="@+id/profileText"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:elevation="9dp"
+        android:gravity="center"
+        android:paddingBottom="4dp"
+        android:text="Profile"
+        android:textColor="#1B4F72"
+        android:textSize="10sp"
+        app:layout_constraintBottom_toBottomOf="@id/bottomNavBackground"
+        app:layout_constraintEnd_toStartOf="@+id/settingsText"
+        app:layout_constraintStart_toEndOf="@id/familyText" />
+
+    <!-- Settings -->
+    <ImageButton
+        android:id="@+id/settingsButton"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:background="?attr/selectableItemBackgroundBorderless"
+        android:contentDescription="Settings"
+        android:elevation="9dp"
+        android:paddingTop="8dp"
+        android:scaleType="fitCenter"
+        app:layout_constraintBottom_toTopOf="@id/settingsText"
+        app:layout_constraintEnd_toEndOf="@id/settingsText"
+        app:layout_constraintStart_toStartOf="@id/settingsText"
+        app:layout_constraintTop_toTopOf="@id/bottomNavBackground"
+        app:srcCompat="@drawable/menu_settings_button_logo" />
+
+    <TextView
+        android:id="@+id/settingsText"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:elevation="9dp"
+        android:gravity="center"
+        android:paddingBottom="4dp"
+        android:text="Settings"
+        android:textColor="#1B4F72"
+        android:textSize="10sp"
+        app:layout_constraintBottom_toBottomOf="@id/bottomNavBackground"
+        app:layout_constraintEnd_toEndOf="@id/bottomNavBackground"
+        app:layout_constraintStart_toEndOf="@id/profileText" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
