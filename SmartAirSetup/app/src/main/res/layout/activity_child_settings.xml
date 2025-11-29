@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ChildSettingsActivity">
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="36dp"
+            android:text="Sign Out"
+            android:id="@+id/buttonSignOut"
+            android:backgroundTint="@color/button_icon_color" />
+    </ScrollView>
+    <!-- BOTTOM NAV BACKGROUND -->
+    <View
+        android:id="@+id/bottomNavBackground"
+        android:layout_width="0dp"
+        android:layout_height="64dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="16dp"
+        android:background="@drawable/bottom_nav_background"
+        android:elevation="8dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <!-- Home Button + Text -->
+    <ImageButton
+        android:id="@+id/homeButton"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:background="?attr/selectableItemBackgroundBorderless"
+        android:contentDescription="Home"
+        android:elevation="9dp"
+        android:paddingTop="8dp"
+        android:scaleType="fitCenter"
+        app:layout_constraintBottom_toTopOf="@id/homeText"
+        app:layout_constraintEnd_toEndOf="@id/homeText"
+        app:layout_constraintStart_toStartOf="@id/homeText"
+        app:layout_constraintTop_toTopOf="@id/bottomNavBackground"
+        app:srcCompat="@drawable/menu_home_button_logo"
+        app:tint="@color/button_icon_color" />
+
+    <TextView
+        android:id="@+id/homeText"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:elevation="9dp"
+        android:gravity="center"
+        android:paddingBottom="4dp"
+        android:text="Home"
+        android:textColor="@color/button_icon_color"
+        android:textSize="10sp"
+        app:layout_constraintBottom_toBottomOf="@id/bottomNavBackground"
+        app:layout_constraintEnd_toStartOf="@+id/familyText"
+        app:layout_constraintHorizontal_chainStyle="spread"
+        app:layout_constraintStart_toStartOf="@id/bottomNavBackground" />
+
+    <!-- Family Button + Text -->
+    <ImageButton
+        android:id="@+id/familyButton"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:background="?attr/selectableItemBackgroundBorderless"
+        android:contentDescription="Family"
+        android:elevation="9dp"
+        android:paddingTop="8dp"
+        android:scaleType="fitCenter"
+        app:layout_constraintBottom_toTopOf="@id/familyText"
+        app:layout_constraintEnd_toEndOf="@id/familyText"
+        app:layout_constraintStart_toStartOf="@id/familyText"
+        app:layout_constraintTop_toTopOf="@id/bottomNavBackground"
+        app:srcCompat="@drawable/menu_family_button_logo"
+        app:tint="@color/button_icon_color" />
+
+    <TextView
+        android:id="@+id/familyText"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:elevation="9dp"
+        android:gravity="center"
+        android:paddingBottom="4dp"
+        android:text="Family"
+        android:textColor="@color/button_icon_color"
+        android:textSize="10sp"
+        app:layout_constraintBottom_toBottomOf="@id/bottomNavBackground"
+        app:layout_constraintEnd_toStartOf="@+id/emergencyText"
+        app:layout_constraintStart_toEndOf="@+id/homeText" />
+
+    <!-- Emergency Button + Text -->
+    <ImageButton
+        android:id="@+id/emergencyButton"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:background="?attr/selectableItemBackgroundBorderless"
+        android:contentDescription="Emergency"
+        android:elevation="9dp"
+        android:paddingTop="8dp"
+        android:scaleType="fitCenter"
+        app:layout_constraintBottom_toTopOf="@id/emergencyText"
+        app:layout_constraintEnd_toEndOf="@id/emergencyText"
+        app:layout_constraintStart_toStartOf="@id/emergencyText"
+        app:layout_constraintTop_toTopOf="@id/bottomNavBackground"
+        app:srcCompat="@drawable/menu_emergency_button_logo"
+        app:tint="@color/button_icon_color" />
+
+    <TextView
+        android:id="@+id/emergencyText"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:elevation="9dp"
+        android:gravity="center"
+        android:paddingBottom="4dp"
+        android:text="Emergency"
+        android:textColor="@color/active_button_icon_color"
+        android:textSize="10sp"
+        app:layout_constraintBottom_toBottomOf="@id/bottomNavBackground"
+        app:layout_constraintEnd_toStartOf="@+id/settingsText"
+        app:layout_constraintStart_toEndOf="@+id/familyText" />
+
+    <!-- Settings Button + Text -->
+    <ImageButton
+        android:id="@+id/settingsButton"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:background="?attr/selectableItemBackgroundBorderless"
+        android:contentDescription="Settings"
+        android:elevation="9dp"
+        android:paddingTop="8dp"
+        android:scaleType="fitCenter"
+        app:layout_constraintBottom_toTopOf="@id/settingsText"
+        app:layout_constraintEnd_toEndOf="@id/settingsText"
+        app:layout_constraintStart_toStartOf="@id/settingsText"
+        app:layout_constraintTop_toTopOf="@id/bottomNavBackground"
+        app:srcCompat="@drawable/menu_settings_button_logo"
+        app:tint="@color/active_button_icon_color" />
+
+    <TextView
+        android:id="@+id/settingsText"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:elevation="9dp"
+        android:gravity="center"
+        android:paddingBottom="4dp"
+        android:text="Settings"
+        android:textColor="@color/button_icon_color"
+        android:textSize="10sp"
+        app:layout_constraintBottom_toBottomOf="@id/bottomNavBackground"
+        app:layout_constraintEnd_toEndOf="@id/bottomNavBackground"
+        app:layout_constraintStart_toEndOf="@+id/emergencyText" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

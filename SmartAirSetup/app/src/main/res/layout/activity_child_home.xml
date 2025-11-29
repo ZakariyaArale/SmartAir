@@ -196,16 +196,45 @@
 
                 </FrameLayout>
 
-            </GridLayout>
+                <FrameLayout
+                    android:id="@+id/cardBadges"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_columnWeight="1"
+                    android:background="@drawable/shortcut_button_background"
+                    android:padding="16dp"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:foreground="?attr/selectableItemBackgroundBorderless">
 
-            <Button
-                android:id="@+id/buttonBadges"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:backgroundTint="@color/button_icon_color"
-                android:text="Badges"
-                app:layout_constraintTop_toBottomOf="@+id/shortcutsGrid"
-                tools:layout_editor_absoluteX="-16dp" />
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+
+                        <ImageButton
+                            android:id="@+id/buttonBadges"
+                            android:layout_width="match_parent"
+                            android:layout_height="74dp"
+                            android:background="@android:color/transparent"
+                            android:contentDescription="My Badges"
+                            android:src="@drawable/badge"
+                            android:scaleType="fitCenter"
+                            app:tint="#00BCD4" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="8dp"
+                            android:text="My Badges"
+                            android:textColor="@color/black"
+                            android:textSize="18dp"
+                            android:textStyle="bold"
+                            android:layout_gravity="center" />
+                    </LinearLayout>
+
+                </FrameLayout>
+            </GridLayout>
         </androidx.constraintlayout.widget.ConstraintLayout>
 
     </FrameLayout>

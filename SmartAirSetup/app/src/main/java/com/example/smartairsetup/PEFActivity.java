@@ -8,10 +8,14 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.SetOptions;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
 
 public class PEFActivity extends AppCompatActivity {
@@ -25,7 +29,7 @@ public class PEFActivity extends AppCompatActivity {
     public EditText postMedicationPB;
 
     private FirebaseFirestore db;
-    private String parentID = "VfB95gwXXyWFAqdajTHJBgyeYfB3"; // hardcoded for testing
+    private String parentID;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,6 +46,17 @@ public class PEFActivity extends AppCompatActivity {
         Button saveButton = findViewById(R.id.savePBButton);
 
         db = FirebaseFirestore.getInstance();
+
+        // Get current logged-in user's UID
+        parentID = FirebaseAuth.getInstance().getCurrentUser() != null
+                ? FirebaseAuth.getInstance().getCurrentUser().getUid()
+                : null;
+
+        if (parentID == null) {
+            Toast.makeText(this, "User not logged in", Toast.LENGTH_SHORT).show();
+            finish();
+            return;
+        }
 
         // Child selection dialog
         ProcessChildren provider = new FireBaseProcessChild();
@@ -88,14 +103,14 @@ public class PEFActivity extends AppCompatActivity {
 
     private void saveChildPEFToFirebase(String childUid, String childName, StorageChild entry) {
 
-        // Hardcoded test date
-        String testDate = "2025-11-25";
+        // Use today's date dynamically
+        String todayDate = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(new Date());
 
         var childRef = db.collection("users").document(parentID).collection("children").document(childUid);
         var logsCollection = childRef.collection("PEF").document("logs").collection("daily");
         var latestRef = childRef.collection("PEF").document("latest");
 
-        // --- STEP 0: Get PB from child document ---
+        // Get PB from child document
         childRef.get().addOnSuccessListener(childDoc -> {
             Long pbValue = childDoc.getLong("pb");
             long pb = pbValue != null ? pbValue : 0;
@@ -105,8 +120,8 @@ public class PEFActivity extends AppCompatActivity {
                 return;
             }
 
-            // --- STEP 1: Check if log for testDate exists ---
-            var todayLogRef = logsCollection.document(testDate);
+            // Check if log for today exists
+            var todayLogRef = logsCollection.document(todayDate);
             todayLogRef.get().addOnSuccessListener(todayDoc -> {
                 long oldDaily = todayDoc.getLong("dailyPEF") != null ? todayDoc.getLong("dailyPEF") : 0;
 
@@ -115,7 +130,7 @@ public class PEFActivity extends AppCompatActivity {
                     String zone = computeZone(entry.getDailyPEF(), pb);
 
                     Map<String, Object> logData = new HashMap<>();
-                    logData.put("date", testDate);
+                    logData.put("date", todayDate);
                     logData.put("dailyPEF", entry.getDailyPEF());
                     logData.put("prePEF", entry.getPrePEF());
                     logData.put("postPEF", entry.getPostPEF());
@@ -127,7 +142,7 @@ public class PEFActivity extends AppCompatActivity {
                             .addOnSuccessListener(a -> Toast.makeText(this, "PEF log updated", Toast.LENGTH_SHORT).show())
                             .addOnFailureListener(e -> Log.e("PEFActivity", "Error updating log", e));
 
-                    // --- STEP 2: Update latest ---
+                    // Update latest
                     Map<String, Object> latestData = new HashMap<>();
                     latestData.put("dailyPEF", entry.getDailyPEF());
                     latestData.put("prePEF", entry.getPrePEF());

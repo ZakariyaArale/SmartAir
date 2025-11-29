@@ -1,5 +1,6 @@
 package com.example.smartairsetup;
 
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 
@@ -12,7 +13,9 @@ public class FireBaseProcessChild implements ProcessChildren {
     private final FirebaseFirestore db = FirebaseFirestore.getInstance();
 
     public FireBaseProcessChild() {
-        parentID = "VfB95gwXXyWFAqdajTHJBgyeYfB3"; //TODO: change to FirebaseAuth.getInstance().getCurrentUser().getUid()
+        parentID = FirebaseAuth.getInstance().getCurrentUser() != null
+                ? FirebaseAuth.getInstance().getCurrentUser().getUid()
+                : null;
     }
 
     @Override
@@ -29,7 +32,7 @@ public class FireBaseProcessChild implements ProcessChildren {
                 .get()
                 .addOnSuccessListener(query -> {
 
-                    //Store all child Ids here!
+                    // Store all child Ids here
                     List<UserID> childrenList = new ArrayList<>();
 
                     for (QueryDocumentSnapshot doc : query) {

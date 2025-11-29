@@ -137,6 +137,12 @@ public class ParentHomeActivity extends AbstractNavigation {
             Intent intent = new Intent(ParentHomeActivity.this, MedicationInventoryActivity.class);
             startActivity(intent);
         });
+
+        Button buttongenPDF = findViewById(R.id.buttonPDF);
+        buttongenPDF.setOnClickListener(v -> {
+            Intent intent = new Intent(ParentHomeActivity.this, PDFStoreActivity.class);
+            startActivity(intent);
+        });
     }
 
     @Override
@@ -278,14 +284,13 @@ public class ParentHomeActivity extends AbstractNavigation {
 
     @Override
     protected void onEmergencyClicked() {
-        Intent intent = new Intent(this, EmergencyActivity.class);
+        Intent intent = new Intent(ParentHomeActivity.this, EmergencyActivity.class);
         startActivity(intent);
     }
 
     @Override
     protected void onSettingsClicked() {
-        // TODO: For a Parent, this would go to ParentSettingsActivity
-        // Intent intent = new Intent(this, ParentSettingsActivity.class);
-        // startActivity(intent);
+        Intent intent = new Intent(ParentHomeActivity.this, ParentSettingsActivity.class);
+        startActivity(intent);
     }
 }

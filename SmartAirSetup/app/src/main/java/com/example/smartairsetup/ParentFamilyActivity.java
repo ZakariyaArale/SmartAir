@@ -212,8 +212,7 @@ public class ParentFamilyActivity extends AbstractNavigation {
 
     @Override
     protected void onSettingsClicked() {
-        // TODO: Navigate to Parent Settings screen
-        // Intent intent = new Intent(this, ParentSettingsActivity.class);
-        // startActivity(intent);
+        Intent intent = new Intent(this, ParentSettingsActivity.class);
+        startActivity(intent);
     }
 }

@@ -22,9 +22,6 @@ import java.util.Map;
 public class AddChildActivity extends AppCompatActivity {
 
     private static final int DEFAULT_PB = 0;
-    private static final int DEFAULT_PEF = 0;
-    private static final int DEFAULT_PMED = 0;
-
     private EditText editChildUsername;
     private EditText editChildPassword;
     private EditText editChildConfirmPassword;
@@ -162,16 +159,7 @@ public class AddChildActivity extends AppCompatActivity {
             childData.put("notes", notes);
         }
         childData.put("pb", DEFAULT_PB);
-        childData.put("pef", DEFAULT_PEF);
-        childData.put("pre-med", DEFAULT_PMED);
-        childData.put("post-med", DEFAULT_PMED);
-        childData.put("rescue-triage", DEFAULT_PMED);
-        childData.put("pef-triage", DEFAULT_PMED);
-        childData.put("message-triage", "None");
 
-
-
-        // Sharing options default
         childData.put("shareRescueLogs", false);
         childData.put("shareControllerSummary", false);
         childData.put("shareSymptoms", false);
@@ -180,15 +168,13 @@ public class AddChildActivity extends AppCompatActivity {
         childData.put("shareTriageIncidents", false);
         childData.put("shareSummaryCharts", false);
 
-        // First create the child under the parent so we get the childDocId
         childrenRef.add(childData)
                 .addOnSuccessListener(childDocRef -> {
                     String childDocId = childDocRef.getId();
 
-                    // Now create top-level childAccounts/{username}
                     Map<String, Object> accountData = new HashMap<>();
                     accountData.put("username", username);
-                    accountData.put("password", password); // Plaintext for now (hackathon level)
+                    accountData.put("password", password);
                     accountData.put("parentUid", parentUid);
                     accountData.put("childDocId", childDocId);
 

@@ -91,7 +91,7 @@
     </FrameLayout>
 
     <!-- CENTER: Main Parent Home + Shortcuts (UNCHANGED, just moved below overviewContainer) -->
-    <FrameLayout
+    <ScrollView
         android:id="@+id/shortcutContainer"
         android:layout_width="0dp"
         android:layout_height="0dp"
@@ -190,9 +190,17 @@
                 android:text="Medication Inventory"
                 android:backgroundTint="@color/button_icon_color"
                 android:layout_marginTop="12dp" />
+            <Button
+                android:id="@+id/buttonPDF"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="PDF"
+                android:backgroundTint="@color/button_icon_color"
+                android:layout_marginTop="12dp" />
+
 
         </LinearLayout>
-    </FrameLayout>
+    </ScrollView>
 
     <!-- BOTTOM NAV BACKGROUND -->
     <View
