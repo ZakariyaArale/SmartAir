@@ -1,74 +1,134 @@
-
 package com.example.smartairsetup;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.View;
 import android.widget.Button;
+import android.widget.TextView;
+import android.widget.Toast;
+
+import androidx.annotation.Nullable;
+
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 public class ChildHomeActivity extends AbstractNavigation {
 
+    private FirebaseAuth mAuth;
+    private FirebaseFirestore db;
+    private TextView greetingText;
+    private String parentUid;
+    private String childId;
+
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        Button buttonBadges = findViewById(R.id.buttonBadges);
-        buttonBadges.setOnClickListener(v -> {
-            Intent intent = new Intent(ChildHomeActivity.this, ChildBadgesActivity.class);
-            startActivity(intent);
-        });
+        mAuth = FirebaseAuth.getInstance();
+        db = FirebaseFirestore.getInstance();
+
+        FirebaseUser currentUser = mAuth.getCurrentUser();
+        if (currentUser == null) {
+            Toast.makeText(this, "You are not logged in.", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        parentUid = currentUser.getUid();
+
+        Intent intent = getIntent();
+        if (intent != null) {
+            childId = intent.getStringExtra("CHILD_ID");
+        }
+        if (childId == null || childId.isEmpty()) {
+            Toast.makeText(this, "Child id is missing.", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        greetingText = findViewById(R.id.greetingText);
+
+        // Only load child data here
+        loadChild();
+
     }
 
 
-    private void setupShortcutClicks() {
-        // go to Calculate PEF
-        View.OnClickListener calculateListener = new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                //Intent intent = new Intent(ChildHomeActivity.this, CalculatePefActivity.class);
-                //startActivity(intent);
-
-            }
-        };
-
-        // go to  Set Personal Best
-        View.OnClickListener setPbListener = new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                //Intent intent = new Intent(ChildHomeActivity.this, SetPersonalBestActivity.class);
-                //startActivity(intent);
-            }
-        };
-    }
 
     @Override
     protected int getLayoutResourceId() {
         return R.layout.activity_child_home;
     }
 
+    // 1) Load child document from Firestore
+    private void loadChild() {
+        db.collection("users")
+                .document(parentUid)
+                .collection("children")
+                .document(childId)
+                .get()
+                .addOnSuccessListener(documentSnapshot -> {
+                    if (documentSnapshot.exists()) {
+                        String name = documentSnapshot.getString("name");
+                        setGreeting(name);
+                        setButtons();
+                    } else {
+                        Toast.makeText(this, "Child not found.", Toast.LENGTH_SHORT).show();
+                    }
+                })
+                .addOnFailureListener(e -> {
+                    Toast.makeText(this, "Failed to load child.", Toast.LENGTH_SHORT).show();
+                });
+    }
+
+    private void setButtons(){
+        Button buttonBadges = findViewById(R.id.buttonBadges);
+        buttonBadges.setOnClickListener(v -> {
+            if (childId.isEmpty()) {
+                Toast.makeText(
+                        ChildHomeActivity.this,
+                        "Please add a child first.",
+                        Toast.LENGTH_SHORT
+                ).show();
+                return;
+            }
+            Intent new_intent = new Intent(ChildHomeActivity.this, ChildBadgesActivity.class);
+            startActivity(new_intent);
+            new_intent.putExtra("CHILD_ID", childId);
+        });
+    }
+
+    // 2) Only set greeting message here
+    private void setGreeting(String name) {
+        if (name != null && !name.isEmpty()) {
+            String message = "Hi, " + name;
+            greetingText.setText(message);
+        } else {
+            Toast.makeText(this, "Child name is empty.", Toast.LENGTH_SHORT).show();
+        }
+    }
+
     @Override
     protected void onHomeClicked() {
-        //Do nothing as we are on Home Page
+        Intent intent = new Intent(this, ParentHomeActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
+        startActivity(intent);
     }
 
     @Override
     protected void onFamilyClicked() {
-        Intent intent = new Intent(this, ChildFamilyActivity.class);
+        Intent intent = new Intent(this, ParentFamilyActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
         startActivity(intent);
     }
 
     @Override
     protected void onEmergencyClicked() {
-         Intent intent = new Intent(this, EmergencyActivity_Child.class);
-         startActivity(intent);
-
+        Intent intent = new Intent(this, EmergencyActivity.class);
+        startActivity(intent);
     }
 
     @Override
     protected void onSettingsClicked() {
-        // TODO: For a Child, this would go to ChildSettingsActivity
-        // Intent intent = new Intent(this, ChildSettingsActivity.class);
+        // TODO: Navigate to Parent Settings screen when implemented
+        // Intent intent = new Intent(this, ParentSettingsActivity.class);
         // startActivity(intent);
     }
 }

@@ -271,17 +271,15 @@ public class ParentHomeActivity extends AbstractNavigation {
 
     @Override
     protected void onFamilyClicked() {
-        Intent intent = new Intent(ParentHomeActivity.this, AddChildActivity.class);
+        Intent intent = new Intent(ParentHomeActivity.this, ParentFamilyActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
         startActivity(intent);
     }
 
     @Override
     protected void onEmergencyClicked() {
-        // TODO: For a Parent, this would go to EmergencyActivity
         Intent intent = new Intent(this, EmergencyActivity.class);
         startActivity(intent);
-
     }
 
     @Override
