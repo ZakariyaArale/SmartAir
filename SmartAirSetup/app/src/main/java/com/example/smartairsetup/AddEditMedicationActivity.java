@@ -221,22 +221,61 @@ public class AddEditMedicationActivity extends AppCompatActivity {
                 medData.put("active", true);
 
                 if (isEditMode) {
-                    db.collection("users")
-                            .document(parentUid)
-                            .collection("children")
-                            .document(selectedChildId)
-                            .collection("medications")
-                            .document(passedMedID)
-                            .update(medData)
-                            .addOnSuccessListener(unused -> {
-                                Toast.makeText(this, "Medication updated!", Toast.LENGTH_SHORT).show();
-                                saveButton.setEnabled(true);
-                                finish();
-                            })
-                            .addOnFailureListener(e -> {
-                                Toast.makeText(this, "FAILED TO UPDATE MEDICATION", Toast.LENGTH_LONG).show();
-                                saveButton.setEnabled(true);
-                            });
+
+                    if (!selectedChildId.equals(passedChildUID)) {
+                        //Delete old medication
+                        db.collection("users")
+                                .document(parentUid)
+                                .collection("children")
+                                .document(passedChildUID) // OLD child
+                                .collection("medications")
+                                .document(passedMedID)
+                                .delete()
+                                .addOnSuccessListener(unused -> {
+
+                                    //add medication to selected child
+                                    db.collection("users")
+                                            .document(parentUid)
+                                            .collection("children")
+                                            .document(selectedChildId) // NEW child
+                                            .collection("medications")
+                                            .document(passedMedID)
+                                            .set(medData)
+                                            .addOnSuccessListener(v2 -> {
+                                                Toast.makeText(this, "Medication moved & updated!", Toast.LENGTH_SHORT).show();
+                                                saveButton.setEnabled(true);
+                                                finish();
+                                            })
+                                            .addOnFailureListener(e -> {
+                                                Toast.makeText(this, "Failed writing to new child", Toast.LENGTH_LONG).show();
+                                                saveButton.setEnabled(true);
+                                            });
+
+                                })
+                                .addOnFailureListener(e -> {
+                                    Toast.makeText(this, "Failed removing from old child", Toast.LENGTH_LONG).show();
+                                    saveButton.setEnabled(true);
+                                });
+
+                    } else {
+                        // Normal update (child not changed)
+                        db.collection("users")
+                                .document(parentUid)
+                                .collection("children")
+                                .document(selectedChildId)
+                                .collection("medications")
+                                .document(passedMedID)
+                                .update(medData)
+                                .addOnSuccessListener(unused -> {
+                                    Toast.makeText(this, "Medication updated!", Toast.LENGTH_SHORT).show();
+                                    saveButton.setEnabled(true);
+                                    finish();
+                                })
+                                .addOnFailureListener(e -> {
+                                    Toast.makeText(this, "FAILED TO UPDATE MEDICATION", Toast.LENGTH_LONG).show();
+                                    saveButton.setEnabled(true);
+                                });
+                        }
 
                 } else {
 
@@ -262,8 +301,6 @@ public class AddEditMedicationActivity extends AppCompatActivity {
                             });
                 }
             });
-
-
         }
     }
 

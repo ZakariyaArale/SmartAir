@@ -32,10 +32,6 @@ import java.util.List;
 
 
 public class MedicationInventoryActivity extends AppCompatActivity {
-
-    //TEMPORARY HARD CODED FIELD: tk
-    List<Medication> hardCodedMedList;
-
     private ScrollView medDetailsSV;
     private TextView medNameTV;
     private TextView purchaseDateTV;
@@ -76,8 +72,6 @@ public class MedicationInventoryActivity extends AppCompatActivity {
         setEditButton();
         setNotifButton();
 
-
-
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
@@ -92,6 +86,12 @@ public class MedicationInventoryActivity extends AppCompatActivity {
         db = FirebaseFirestore.getInstance();
         loadAllMedications();  //refreshes medications to reflect changes
         medDetailsSV.setVisibility(View.INVISIBLE); //hides last clicked med info
+
+        deleteMedButton.setEnabled(false);
+        deleteMedButton.setAlpha(0.5f); //greys out buttons
+        editMedButton.setEnabled(false);
+        editMedButton.setAlpha(0.5f);
+
     }
 
 
@@ -326,8 +326,10 @@ public class MedicationInventoryActivity extends AppCompatActivity {
 
         long triggerTime = System.currentTimeMillis() + 60 * 1000; // 1 minute later
 
-        alarmManager.setExact(AlarmManager.RTC_WAKEUP, triggerTime, pendingIntent); //tk
-
+        //error is due to API difference. Have to revamp notifications to work on older API tk
+        if(alarmManager.canScheduleExactAlarms()) {
+            alarmManager.setExact(AlarmManager.RTC_WAKEUP, triggerTime, pendingIntent); //tk
+        }
         Toast.makeText(this, "Notification scheduled for 1 minute from now!", Toast.LENGTH_SHORT).show();
     }
 }
