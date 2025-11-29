@@ -9,6 +9,8 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
+import com.google.firebase.auth.FirebaseAuth;
+
 public class ChildSettingsActivity extends AbstractNavigation {
 
     @Override
@@ -25,11 +27,14 @@ public class ChildSettingsActivity extends AbstractNavigation {
 
         Button buttonSignOut = findViewById(R.id.buttonSignOut);
         buttonSignOut.setOnClickListener(v -> {
-            //TODO: Sign Out Should be Implemeneted
+            FirebaseAuth.getInstance().signOut();
+            Intent intent = new Intent(this, MainActivity.class);
+            //Make sure the user cannot go back to the main screen after signing out
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            startActivity(intent);
+            finish();
         });
     }
-
-
 
     @Override
     protected int getLayoutResourceId() {
