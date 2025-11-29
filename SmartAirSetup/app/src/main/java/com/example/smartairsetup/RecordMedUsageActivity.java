@@ -118,7 +118,7 @@ public class RecordMedUsageActivity extends AppCompatActivity {
         medSpinner = findViewById(R.id.logMedSpinner);
 
         db.collection("users")
-                .document(mAuth.getUid())
+                .document(parentUid)
                 .collection("children")
                 .document(childID)
                 .collection("medications")
