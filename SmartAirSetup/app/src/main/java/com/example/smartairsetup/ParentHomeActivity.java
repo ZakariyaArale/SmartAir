@@ -143,6 +143,12 @@ public class ParentHomeActivity extends AbstractNavigation {
             Intent intent = new Intent(ParentHomeActivity.this, PDFStoreActivity.class);
             startActivity(intent);
         });
+
+        Button buttonZone = findViewById(R.id.buttonZone);
+        buttonAddBadges.setOnClickListener(v -> {
+            //TODO: Zone backend will be implemented
+        });
+
     }
 
     @Override
