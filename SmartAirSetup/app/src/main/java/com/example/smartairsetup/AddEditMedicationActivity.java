@@ -92,7 +92,7 @@ public class AddEditMedicationActivity extends AppCompatActivity {
         Intent intent = getIntent();
         String mode = intent.getStringExtra("mode");
 
-        if ("edit".equals(mode)) {
+        if (mode == null || "edit".equals(mode)) {
             isEditMode = true;
             passedChildUID= intent.getStringExtra("passedChildUID");
             passedMedID = intent.getStringExtra("passedMedID");

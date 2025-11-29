@@ -40,7 +40,7 @@
     <!-- This makes the title-->
     <!-- Remember to replace hard coded text-->
     <TextView
-        android:id="@+id/newMedTitleTV"
+        android:id="@+id/medCheckInTitleTV"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
@@ -68,7 +68,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/newMedTitleTV"
+        app:layout_constraintTop_toBottomOf="@id/medCheckInTitleTV"
         app:layout_constraintVertical_bias="0.0"
         android:background="@color/white">
 
@@ -88,9 +88,6 @@
                 android:text="Child"
                 android:textColor="#2E7D32"
                 android:textSize="20sp" />
-
-            <!-- this will have to be implemented a little differently,
-                    use firebase to get a list of all children-->
 
             <Spinner
                 android:id="@+id/childSpinner"
