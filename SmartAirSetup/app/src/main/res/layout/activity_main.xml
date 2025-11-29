@@ -22,16 +22,17 @@
 
     <ImageView
         android:id="@+id/imageLogo"
-        android:layout_width="120dp"
-        android:layout_height="120dp"
-        android:src="@drawable/asthma_logo"
-        android:contentDescription="Asthma logo" />
+        android:layout_width="204dp"
+        android:layout_height="210dp"
+        android:contentDescription="Asthma logo"
+        android:src="@drawable/asthma_logo" />
 
     <Button
         android:id="@+id/buttonNewUser"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="I'm a new user"
+        android:textSize="20sp"
         android:layout_marginTop="32dp"
         android:backgroundTint="#2E7D32"
         android:textColor="@android:color/white" />
@@ -41,6 +42,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="I'm an existing user"
+        android:textSize="20sp"
         android:layout_marginTop="16dp"
         android:backgroundTint="#2E7D32"
         android:textColor="@android:color/white" />

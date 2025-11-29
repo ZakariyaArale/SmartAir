@@ -2,8 +2,8 @@
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:background="#DFF3FF">
+    android:background="#DFF3FF"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -12,10 +12,9 @@
         android:gravity="center_horizontal"
         android:padding="24dp">
 
-        <!-- Heading -->
         <TextView
             android:id="@+id/textSignupTitle"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Create your Smart Air account"
             android:textSize="24sp"
@@ -46,12 +45,14 @@
 
         <TextView
             android:id="@+id/textSignupRoleLabel"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="I am a:"
+            android:textSize="24sp"
             android:layout_marginTop="16dp"
             android:fontFamily="@font/nunito_regular"
-            android:textColor="#333333" />
+            android:textColor="#333333"
+            android:gravity="start"/>
 
         <RadioGroup
             android:id="@+id/radioGroupRole"
@@ -62,15 +63,19 @@
 
             <RadioButton
                 android:id="@+id/radioParent"
-                android:layout_width="wrap_content"
+                android:textSize="20sp"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Parent" />
+                android:text="Parent"
+                android:padding="12dp"/>
 
             <RadioButton
                 android:id="@+id/radioProvider"
-                android:layout_width="wrap_content"
+                android:textSize="20sp"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Provider" />
+                android:text="Provider"
+                android:padding="12dp"/>
         </RadioGroup>
 
         <TextView
@@ -86,24 +91,23 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Create account"
+            android:textSize="20sp"
             android:layout_marginTop="24dp"
             android:backgroundTint="#2E7D32"
             android:textColor="@android:color/white" />
 
         <Button
             android:id="@+id/backButton"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="48dp"
+            android:layout_marginTop="20dp"
             android:layout_marginBottom="24dp"
             android:background="@android:color/transparent"
             android:fontFamily="@font/nunito_medium"
             android:text="@string/back_button"
             android:textColor="#2E7D32"
-            android:textSize="22sp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.5" />
+            android:textSize="24sp"
+            android:gravity="center" />
 
     </LinearLayout>
 </ScrollView>
