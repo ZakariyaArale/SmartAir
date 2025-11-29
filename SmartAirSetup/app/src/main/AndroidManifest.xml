@@ -13,11 +13,13 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.SmartAirSetup" >
 
+        <!--
         <activity
             android:name=".MedicationInventoryActivity"
             android:exported="false"/>
+        -->
         <activity
-            android:name=".AddMedicationActivityV2"
+            android:name=".AddEditMedicationActivity"
             android:exported="false" />
         <activity
             android:name=".DailyCheckIn"
@@ -81,7 +83,12 @@
             android:exported="false" />
         <activity
             android:name=".MainActivity"
-            android:exported="true" >
+            android:exported="false" /> <!-- change back-->
+
+        <activity
+                android:name=".MedicationInventoryActivity"
+                android:exported="true">
+
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

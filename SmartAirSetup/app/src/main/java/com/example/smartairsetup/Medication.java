@@ -1,7 +1,8 @@
 package com.example.smartairsetup;
 
 import java.time.LocalDate;
-import java.util.Arrays;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Medication implements DateCalculations{
 
@@ -17,16 +18,18 @@ public class Medication implements DateCalculations{
     private int expiryDay;
     private int expiryMonth;
     private int expiryYear;
-    private int [] reminderDays; // a list of how many days ahead of time they want to be reminded
+    private List<Integer> reminderDays; // a list of how many days ahead of time they want to be reminded
     private int puffNearEmptyThreshold; // should send reminder when puffs is less than this amount
+    String notes;
+    boolean isRescue;
 
     public Medication(){
         //default constructor needed for firebase
     }
 
     public Medication(String med_UUID, String name, int purchaseDay, int purchaseMonth, int purchaseYear,
-                      int expiryDay, int expiryMonth, int expiryYear,  int[] reminderDays,
-                      int puffsLeft, int puffNearEmptyThreshold){
+                      int expiryDay, int expiryMonth, int expiryYear,  List<Integer> reminderDays,
+                      int puffsLeft, int puffNearEmptyThreshold, String notes, boolean isRescue){
 
         this.med_UUID = med_UUID;   //need this for firebase
         this.name = name;
@@ -39,10 +42,14 @@ public class Medication implements DateCalculations{
         this.expiryMonth = expiryMonth;
         this.expiryYear =expiryYear;
 
-        this.reminderDays = Arrays.copyOf(reminderDays, reminderDays.length);
+        this.reminderDays = new ArrayList<Integer>(reminderDays);
 
         this.puffsLeft = puffsLeft;
         this.puffNearEmptyThreshold = puffNearEmptyThreshold;
+
+        this.notes = notes;
+
+        this.isRescue = isRescue;
     }
 
     public int daysTillExpired(){
@@ -56,52 +63,80 @@ public class Medication implements DateCalculations{
     public String getMed_UUID(){
         return this.med_UUID;
     }
+    public void setMed_UUID(String med_UUID){this.med_UUID = med_UUID;}
 
     public String getName(){
         return this.name;
     }
 
+    public void setName(String name){this.name = name;}
+
     public int getPurchaseDay(){
         return this.purchaseDay;
     }
+
+    public void setPurchaseDay(int purchaseDay){this.purchaseDay = purchaseDay;}
 
     public int getPurchaseMonth(){
         return this.purchaseMonth;
     }
 
+    public void setPurchaseMonth(int purchaseMonth){this.purchaseMonth = purchaseMonth;}
+
     public int getPurchaseYear(){
         return this.purchaseYear;
     }
 
+    public void setPurchaseYear(int purchaseYear){this.purchaseYear = purchaseYear;}
+
     public int getExpiryDay(){
         return this.expiryDay;
     }
+
+    public void setExpiryDay(int expiryDay){this.expiryDay = expiryDay;}
+
     public int getExpiryMonth(){
         return this.expiryMonth;
     }
+
+    public void setExpiryMonth(int expiryMonth){this.expiryMonth = expiryMonth;}
+
     public int getExpiryYear(){
         return this.expiryYear;
     }
-    public int [] getReminderDays(){
-        return Arrays.copyOf(this.reminderDays, this.reminderDays.length);
-    }
+
+    public void setExpiryYear(int expiryYear){this.expiryYear = expiryYear;}
+
+    public List<Integer> getReminderDays(){return new ArrayList<>(reminderDays);}
+
+    public void setReminderDays(List<Integer> reminderDays){
+        this.reminderDays = new ArrayList<>(reminderDays);}
 
     public int getPuffsLeft(){
         return this.puffsLeft;
-    }
+    }//////////////////////////////////////////////////I want to change this to doses left but am worried it will mess up other peoples firebase code
+
+    public void setPuffsLeft(int puffsLeft){this.puffsLeft = puffsLeft;}
+
     public int getPuffNearEmptyThreshold(){
         return puffNearEmptyThreshold;
     }
 
-    public void recordPuffsTaken(int puffsTaken){
-        this.puffsLeft -= puffsTaken;
+    public void setPuffNearEmptyThreshold(int puffNearEmptyThreshold) {
+        this.puffNearEmptyThreshold = puffNearEmptyThreshold;}
 
-        /*
-        if(this.puffsLeft <= puffNearEmptyThreshold){
-            //send notification tk
-
-        }*/
-
+    public String getNotes() {
+        return notes;
+    }
+    public void setNotes(String notes) {
+        this.notes = notes;
     }
 
+    public boolean getisRescue(){
+        return isRescue;
+    }
+
+    public void setisRescue(boolean rescue) {
+        this.isRescue = rescue;
+    }
 }

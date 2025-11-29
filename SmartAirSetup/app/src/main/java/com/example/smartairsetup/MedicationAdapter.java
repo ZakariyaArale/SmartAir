@@ -10,43 +10,56 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.List;
 
+
 public class MedicationAdapter extends RecyclerView.Adapter<MedicationAdapter.MedViewHolder> {
 
-    private List<Medication> meds;
+    private List<ChildMedicationWrapper> meds;
     private OnMedClickListener listener;
 
-    public MedicationAdapter(List<Medication> meds, OnMedClickListener listener) {
+    private int selectedPosition = RecyclerView.NO_POSITION;
+
+    public MedicationAdapter(List<ChildMedicationWrapper> meds, OnMedClickListener listener) {
 
         this.meds = meds;
         this.listener = listener;
     }
 
-    @NonNull
     @Override
-    public MedViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        // Inflate the row layout. Make sure the resource name matches your file in res/layout.
-        // If your row file is med_item.xml, use R.layout.med_item.
-        // If it's item_medication.xml, change R.layout.med_item here to R.layout.item_medication.
+    public MedViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+
         View v = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.med_item_in_inventory_list, parent, false);
+                .inflate(R.layout.item_medicaton_listlinearlayout, parent, false);
         return new MedViewHolder(v);
     }
 
     @Override
     public void onBindViewHolder(@NonNull MedViewHolder holder, int position) {
-        Medication med = meds.get(position);
+        ChildMedicationWrapper childMeds = meds.get(position);
 
-        // Use whatever accessor your Medication class provides:
-        // - If Medication has public field `name`: use med.name
-        // - If Medication has getter getName(): use med.getName()
-        // I will assume public field `name` (as in the earlier example).
-        holder.medNameText.setText(med.getName());
+        holder.medNameTV.setText(childMeds.getMed().getName());
+        holder.childNameTV.setText(childMeds.getChildName());
+
+        // Apply selected state to trigger selector drawable
+        holder.itemView.setSelected(position == selectedPosition);
 
         holder.itemView.setOnClickListener(view -> {
+
+            int clickedPosition = holder.getBindingAdapterPosition();
+            if (clickedPosition == RecyclerView.NO_POSITION) return;
+
+            int oldPosition = selectedPosition;
+            selectedPosition = clickedPosition;
+
             if (listener != null) {
-                listener.onMedClick(med);
+                listener.onMedClick(childMeds);
             }
+
+            // Refresh only what changed
+            notifyItemChanged(oldPosition);
+            notifyItemChanged(selectedPosition);
+
         });
+
     }
 
     @Override
@@ -56,15 +69,17 @@ public class MedicationAdapter extends RecyclerView.Adapter<MedicationAdapter.Me
 
     public static class MedViewHolder extends RecyclerView.ViewHolder {
 
-        TextView medNameText;
+        TextView medNameTV;
+        TextView childNameTV;
 
         public MedViewHolder(View itemView) {
             super(itemView);
-            medNameText = itemView.findViewById(R.id.medNameText);
+            medNameTV = itemView.findViewById(R.id.medNameTV);
+            childNameTV = itemView.findViewById(R.id.childNameTV);
         }
     }
 
     public interface OnMedClickListener {
-        void onMedClick(Medication med);
+        void onMedClick(ChildMedicationWrapper med);
     }
 }

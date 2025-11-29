@@ -11,17 +11,17 @@
 
     <Button
         android:id="@+id/buttonNotif"
-        android:layout_width="170dp"
-        android:layout_height="85dp"
+        android:layout_width="167dp"
+        android:layout_height="69dp"
         android:layout_marginStart="121dp"
-        android:layout_marginEnd="120dp"
-        android:layout_marginBottom="20dp"
-        android:text="Click Me for a Notification (add to values xml)"
+        android:layout_marginEnd="32dp"
+        android:layout_marginBottom="30dp"
         android:backgroundTint="#2E7D32"
+        android:text="Click Me for a Notification (add to values xml)"
         android:textColor="@android:color/white"
-        app:layout_constraintBottom_toTopOf="@+id/backButton"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent" />
 
     <TextView
@@ -80,75 +80,130 @@
 
     <Button
         android:id="@+id/newMedButton"
-        android:layout_width="283dp"
-        android:layout_height="53dp"
+        android:layout_width="280dp"
+        android:layout_height="55dp"
         android:layout_marginStart="64dp"
         android:layout_marginEnd="64dp"
-        android:layout_marginBottom="8dp"
+        android:layout_marginBottom="16dp"
         android:backgroundTint="#2E7D32"
         android:text="New Medication (add to values xml)"
         android:textColor="@android:color/white"
         android:textSize="20sp"
-        app:layout_constraintBottom_toTopOf="@+id/buttonNotif"
+        app:layout_constraintBottom_toTopOf="@+id/deleteMedButton"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent" />
 
+    <Button
+        android:id="@+id/deleteMedButton"
+        android:layout_width="125dp"
+        android:layout_height="55dp"
+        android:layout_marginEnd="64dp"
+        android:layout_marginBottom="32dp"
+        android:backgroundTint="#2E7D32"
+        android:text="Delete"
+        android:textColor="@android:color/white"
+        android:textSize="20sp"
+        android:enabled="false"
+        android:alpha="0.5"
+        app:layout_constraintBottom_toTopOf="@+id/backButton"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <Button
+        android:id="@+id/editMedButton"
+        android:layout_width="125dp"
+        android:layout_height="55dp"
+        android:layout_marginStart="64dp"
+        android:layout_marginBottom="32dp"
+        android:backgroundTint="#2E7D32"
+        android:text="Edit"
+        android:textColor="@android:color/white"
+        android:textSize="20sp"
+        android:enabled="false"
+        android:alpha="0.5"
+        app:layout_constraintBottom_toTopOf="@+id/backButton"
+        app:layout_constraintStart_toStartOf="parent" />
+
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/medicineList"
-        android:layout_width="371dp"
-        android:layout_height="143dp"
+        android:layout_width="360dp"
+        android:layout_height="177dp"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="36dp"
+        android:layout_marginTop="16dp"
         android:layout_marginEnd="16dp"
         android:layout_marginBottom="450dp"
-        android:background="@color/white"
         android:scrollbars="vertical"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.473"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/onboardingSubtitle"
-        app:layout_constraintVertical_bias="0.0" />
+        app:layout_constraintVertical_bias="0.025" />
 
-    <LinearLayout
-        android:id="@+id/medDetailsContainer"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
+    <ScrollView
+        android:id="@+id/medDetailsSV"
+        android:layout_width="419dp"
+        android:layout_height="0dp"
+        android:layout_marginTop="16dp"
+        android:layout_weight="1"
+        android:fillViewport="true"
         android:padding="16dp"
-        android:visibility="gone"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/medicineList">
+        android:visibility="invisible"
+        app:layout_constraintBottom_toTopOf="@+id/newMedButton"
+        app:layout_constraintTop_toBottomOf="@+id/medicineList"
+        tools:layout_editor_absoluteX="-4dp">
 
-        <TextView
-            android:id="@+id/tvMedName"
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:id="@+id/medDetailsContainer"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textSize="18sp"
-            android:textStyle="bold" />
+            android:orientation="vertical"
+            android:padding="16dp"
 
-        <TextView
-            android:id="@+id/tvPurchaseDate"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/medicineList">
 
-        <TextView
-            android:id="@+id/tvExpiryDate"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            <TextView
+                android:id="@+id/medNameTV"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/poppins_medium"
+                android:textSize="22sp"
+                android:textStyle="bold" />
 
-        <TextView
-            android:id="@+id/tvPuffsLeft"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            <TextView
+                android:id="@+id/purchaseDateTV"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/nunito_regular"
+                android:textSize="18sp" />
 
-        <TextView
-            android:id="@+id/tvReminders"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            <TextView
+                android:id="@+id/expiryDateTV"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/nunito_regular"
+                android:textSize="18sp" />
 
-    </LinearLayout>
+            <TextView
+                android:id="@+id/dosesLeftTV"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/nunito_regular"
+                android:textSize="18sp" />
+
+            <TextView
+                android:id="@+id/medNotesTV"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/nunito_regular"
+                android:textSize="18sp" />
+
+        </LinearLayout>
+    </ScrollView>
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>
 
