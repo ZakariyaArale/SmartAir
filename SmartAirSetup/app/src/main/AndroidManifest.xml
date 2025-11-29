@@ -92,9 +92,6 @@
             android:name=".ChildBadgesActivity"
             android:exported="false" /> <!--  -->
         <activity
-            android:name=".ChildSettingsActivity"
-            android:exported="false" />
-        <activity
             android:name=".HistoryActivity"
             android:exported="false" />
         <activity

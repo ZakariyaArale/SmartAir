@@ -19,6 +19,7 @@ import androidx.core.view.WindowInsetsCompat;
 public class PrePostCheckActivity extends AppCompatActivity {
 
     TextView checkInTitleTV;
+    TextView  checkFeelingTitleTV;
     Button nextButton;
 
     RadioGroup segmentGroup;
@@ -31,6 +32,13 @@ public class PrePostCheckActivity extends AppCompatActivity {
 
     int selected;
 
+    //passed information for log/other uses
+    String mode;
+    String childId;
+    int passedFeeling;
+    int passedDoseCount;
+    int passedTimestamp;
+    String medID;
 
 
 
@@ -46,16 +54,32 @@ public class PrePostCheckActivity extends AppCompatActivity {
         });
 
         getIds();
-
         Intent intent = getIntent();
-        String mode = intent.getStringExtra("mode");
+        mode = intent.getStringExtra("mode");
+
+        //hardcoded VALUE DELETE THIS/////////////////////////////////////////////////////////////////////////////
+        mode = "pre";
+
         if(mode == null || mode.equals("post")){
             setUpPostCheck();
+            getPassedInfo();
         }
+
+        childId = getIntent().getStringExtra("CHILD_ID");
 
         setBackButton();
         setNextButton();
         setSegmentGroup();
+
+    }
+
+    private void getPassedInfo(){
+
+        //prior to taking medication breath rating 1 = very bad, 5 = very good. (range from 1 -5)
+        passedFeeling = getIntent().getIntExtra("PRE_FEELING", -1);
+        passedDoseCount = getIntent().getIntExtra("DOSE_COUNT", 0);
+        passedTimestamp = getIntent().getIntExtra("TIME_STAMP", 0);
+        medID = getIntent().getStringExtra("MED_ID");
 
     }
 
@@ -68,6 +92,7 @@ public class PrePostCheckActivity extends AppCompatActivity {
         opt5 = findViewById(R.id.opt5);
         segmentGroup = findViewById(R.id.BreathingSG);
         checkInTitleTV = findViewById(R.id.medCheckInTitleTV);
+        checkFeelingTitleTV = findViewById(R.id.checkFeelingTV);
         nextButton = findViewById(R.id.checkInNextButton);
 
     }
@@ -77,8 +102,9 @@ public class PrePostCheckActivity extends AppCompatActivity {
         checkInTitleTV.setText("Post Medication Check");
         nextButton.setText("Finish");
 
+        //makes second question visable
+        checkFeelingTitleTV.setVisibility(View.VISIBLE);
         setUpSpinner();
-        //make 2nd question visible
 
     }
 
@@ -113,7 +139,9 @@ public class PrePostCheckActivity extends AppCompatActivity {
         if (nextButton != null) {
             nextButton.setOnClickListener(v -> {
 
-                //log selected information here.
+                if(mode == null || mode.equals("post")) {
+
+                    //log selected information here.
                 /*
                 my current plan would be to pass it to the next activity if in pre,
                 and save it to firebase logs if in post along with the other needed data:
@@ -121,16 +149,16 @@ public class PrePostCheckActivity extends AppCompatActivity {
                 Date - timestamp
 
 
-                maybe put option for training in taking medication tab.
+                maybe put option for training in taking medication tab. yes!
                 remember we have to use this for badges.
 
                  */
 
-
-
-                Intent intent = new Intent(this, AddEditMedicationActivity.class); ////Change this to next page
-                intent.putExtra("mode", "new");
-                startActivity(intent);
+                }else{
+                    Intent intent = new Intent(this, RecordMedUsageActivity.class); ////Change this to next page
+                    intent.putExtra("PRE_FEELING", selected); //passes user choice
+                    startActivity(intent);
+                }
             });
         }
 

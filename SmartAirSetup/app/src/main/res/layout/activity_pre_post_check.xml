@@ -74,7 +74,7 @@
 
 
     <TextView
-        android:id="@+id/checkFeelingTitle"
+        android:id="@+id/checkFeelingTV"
         android:layout_width="345dp"
         android:layout_height="68dp"
         android:layout_marginStart="3dp"
@@ -84,6 +84,7 @@
         android:text="How are you feeling after taking your Medication:"
         android:textColor="#666666"
         android:textSize="20sp"
+        android:visibility="invisible"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/BreathingSG" />
@@ -166,7 +167,7 @@
         android:textSize="20sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/checkFeelingTitle"
+        app:layout_constraintTop_toBottomOf="@+id/checkFeelingTV"
         tools:textColorHint="#666666" />
 
 

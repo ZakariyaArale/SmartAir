@@ -1,7 +1,9 @@
 package com.example.smartairsetup;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.widget.Button;
+import android.widget.NumberPicker;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -21,6 +23,11 @@ public class RecordMedUsageActivity extends AppCompatActivity {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
+
+        setBackButton();
+        setNextButton();
+        setDosePicker();
+
     }
 
     private void setBackButton() {
@@ -31,5 +38,29 @@ public class RecordMedUsageActivity extends AppCompatActivity {
             });
         }
     }
+
+    private void setNextButton() {
+        Button backButton = findViewById(R.id.medLogNextButton);
+        if (backButton != null) {
+            backButton.setOnClickListener(v -> {
+                Intent intent = new Intent(this, PrePostCheckActivity.class); ////Change this to next page
+                intent.putExtra("mode", "post");
+                startActivity(intent);
+            });
+        }
+    }
+
+    private void setDosePicker() {
+
+        NumberPicker picker = findViewById(R.id.logDoseCountNP);
+        picker.setMinValue(1);
+        //I think 10 is a reasonable bound, as
+        picker.setMaxValue(10);
+        picker.setValue(1);
+        picker.setWrapSelectorWheel(false);
+
+    }
+
+
 
 }
