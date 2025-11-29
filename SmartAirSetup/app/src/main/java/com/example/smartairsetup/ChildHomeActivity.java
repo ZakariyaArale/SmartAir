@@ -91,8 +91,8 @@ public class ChildHomeActivity extends AbstractNavigation {
                 return;
             }
             Intent new_intent = new Intent(ChildHomeActivity.this, ChildBadgesActivity.class);
-            startActivity(new_intent);
             new_intent.putExtra("CHILD_ID", childId);
+            startActivity(new_intent);
         });
     }
 
