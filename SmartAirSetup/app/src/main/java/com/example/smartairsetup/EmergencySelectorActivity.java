@@ -76,7 +76,7 @@ public class EmergencySelectorActivity extends AppCompatActivity {
             return;
         }
 
-        // Format today's date as document ID
+
         String dateId = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
                 .format(new Date());
 
@@ -94,7 +94,7 @@ public class EmergencySelectorActivity extends AppCompatActivity {
         data.put("message-triage", message);
         data.put("timestamp", System.currentTimeMillis());
 
-        // Overwrite if today's log already exists — same logic as PEF
+
         logRef.get().addOnSuccessListener(doc -> {
             logRef.set(data)
                     .addOnSuccessListener(aVoid -> {

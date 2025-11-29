@@ -100,15 +100,13 @@
         <activity
             android:name=".OptionalDataActivity"
             android:exported="false" />
-        <activity
-            android:name=".RedFlagsActivity"
-            android:exported="false" />
+
         <activity
             android:name=".EmergencyActivity"
             android:exported="false" />
         <activity
-            android:name=".ZoneActivity"
-            android:exported="false" />
+          android:name=".ZoneActivity"
+          android:exported="false" />
         <activity
             android:name=".ZoneActivityChild"
             android:exported="false" />
@@ -130,6 +128,12 @@
         <activity
             android:name=".SymptomTrendActivity"
             android:exported="false"/>
+        <activity
+            android:name=".RedFlagsActivity"
+            android:exported="false" />
+        <activity
+            android:name=".PDFStoreActivity"
+            android:exported="false" />
         <activity
             android:name=".MainActivity"
             android:exported="true">

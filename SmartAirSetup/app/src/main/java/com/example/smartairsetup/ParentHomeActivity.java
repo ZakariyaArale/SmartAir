@@ -37,7 +37,6 @@ public class ParentHomeActivity extends AbstractNavigation {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_parent_home);
 
         mAuth = FirebaseAuth.getInstance();
         db = FirebaseFirestore.getInstance();
@@ -132,6 +131,12 @@ public class ParentHomeActivity extends AbstractNavigation {
         buttonOverviewSelectChild.setOnClickListener(v -> showOverviewChildDialog());
 
         loadChildren();
+
+        Button buttonMedicatitonInventory = findViewById(R.id.buttonMedicationInventory);
+        buttonMedicatitonInventory.setOnClickListener(v -> {
+            Intent intent = new Intent(ParentHomeActivity.this, MedicationInventoryActivity.class);
+            startActivity(intent);
+        });
     }
 
     @Override
@@ -272,12 +277,17 @@ public class ParentHomeActivity extends AbstractNavigation {
     }
 
     @Override
-    protected void onProfileClicked() {
-        // TODO: For a Parent, this would go to ParentProfileActivity
+    protected void onEmergencyClicked() {
+        // TODO: For a Parent, this would go to EmergencyActivity
+        Intent intent = new Intent(this, EmergencyActivity.class);
+        startActivity(intent);
+
     }
 
     @Override
     protected void onSettingsClicked() {
         // TODO: For a Parent, this would go to ParentSettingsActivity
+        // Intent intent = new Intent(this, ParentSettingsActivity.class);
+        // startActivity(intent);
     }
 }

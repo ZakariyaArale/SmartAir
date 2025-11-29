@@ -182,10 +182,10 @@
                             android:layout_marginTop="8dp"
                             android:text="Set Personal Best" />
                     </LinearLayout>
+
                 </FrameLayout>
 
             </GridLayout>
-
             <Button
                 android:id="@+id/buttonBadges"
                 android:layout_width="match_parent"
@@ -194,22 +194,13 @@
                 android:text="Badges"
                 tools:layout_editor_absoluteX="4dp"
                 tools:layout_editor_absoluteY="200dp" />
-
         </androidx.constraintlayout.widget.ConstraintLayout>
 
     </FrameLayout>
 
-    <!-- Main Layout (for navigation container / fragments if needed) -->
-    <FrameLayout
-        android:id="@+id/navigatorContainer"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toTopOf="@+id/bottomNavBackground"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+    <!-- BELOW THIS LINE ARE THE NAVIGATION MENU BUTTONS -->
 
-    <!-- Navigator menu -->
+    <!-- BOTTOM NAV BACKGROUND -->
     <View
         android:id="@+id/bottomNavBackground"
         android:layout_width="0dp"
@@ -223,7 +214,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
 
-    <!-- Home Button and Text-->
+    <!-- Home Button + Text -->
     <ImageButton
         android:id="@+id/homeButton"
         android:layout_width="0dp"
@@ -255,7 +246,7 @@
         app:layout_constraintHorizontal_chainStyle="spread"
         app:layout_constraintStart_toStartOf="@id/bottomNavBackground" />
 
-    <!-- Family Button and Text-->
+    <!-- Family Button + Text -->
     <ImageButton
         android:id="@+id/familyButton"
         android:layout_width="0dp"
@@ -283,41 +274,41 @@
         android:textColor="@color/button_icon_color"
         android:textSize="10sp"
         app:layout_constraintBottom_toBottomOf="@id/bottomNavBackground"
-        app:layout_constraintEnd_toStartOf="@+id/profileText"
+        app:layout_constraintEnd_toStartOf="@+id/emergencyText"
         app:layout_constraintStart_toEndOf="@+id/homeText" />
 
-    <!-- Profile Button and Text-->
+    <!-- Emergency Button + Text -->
     <ImageButton
-        android:id="@+id/profileButton"
+        android:id="@+id/emergencyButton"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:background="?attr/selectableItemBackgroundBorderless"
-        android:contentDescription="Profile"
+        android:contentDescription="Emergency"
         android:elevation="9dp"
         android:paddingTop="8dp"
         android:scaleType="fitCenter"
-        app:layout_constraintBottom_toTopOf="@id/profileText"
-        app:layout_constraintEnd_toEndOf="@id/profileText"
-        app:layout_constraintStart_toStartOf="@id/profileText"
+        app:layout_constraintBottom_toTopOf="@id/emergencyText"
+        app:layout_constraintEnd_toEndOf="@id/emergencyText"
+        app:layout_constraintStart_toStartOf="@id/emergencyText"
         app:layout_constraintTop_toTopOf="@id/bottomNavBackground"
-        app:srcCompat="@drawable/menu_profile_button_logo"
+        app:srcCompat="@drawable/menu_emergency_button_logo"
         app:tint="@color/button_icon_color" />
 
     <TextView
-        android:id="@+id/profileText"
+        android:id="@+id/emergencyText"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:elevation="9dp"
         android:gravity="center"
         android:paddingBottom="4dp"
-        android:text="Profile"
+        android:text="Emergency"
         android:textColor="@color/button_icon_color"
         android:textSize="10sp"
         app:layout_constraintBottom_toBottomOf="@id/bottomNavBackground"
         app:layout_constraintEnd_toStartOf="@+id/settingsText"
         app:layout_constraintStart_toEndOf="@+id/familyText" />
 
-    <!-- Settings Button and Text -->
+    <!-- Settings Button + Text -->
     <ImageButton
         android:id="@+id/settingsButton"
         android:layout_width="0dp"
@@ -346,6 +337,6 @@
         android:textSize="10sp"
         app:layout_constraintBottom_toBottomOf="@id/bottomNavBackground"
         app:layout_constraintEnd_toEndOf="@id/bottomNavBackground"
-        app:layout_constraintStart_toEndOf="@+id/profileText" />
+        app:layout_constraintStart_toEndOf="@+id/emergencyText" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
