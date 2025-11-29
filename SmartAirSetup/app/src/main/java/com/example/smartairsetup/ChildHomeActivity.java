@@ -3,6 +3,7 @@ package com.example.smartairsetup;
 import android.content.Intent;
 import android.os.Bundle;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -79,7 +80,7 @@ public class ChildHomeActivity extends AbstractNavigation {
     }
 
     private void setButtons(){
-        Button buttonBadges = findViewById(R.id.buttonBadges);
+        ImageButton buttonBadges = findViewById(R.id.buttonBadges);
         buttonBadges.setOnClickListener(v -> {
             if (childId.isEmpty()) {
                 Toast.makeText(
