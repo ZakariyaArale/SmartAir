@@ -145,8 +145,16 @@ public class ParentHomeActivity extends AbstractNavigation {
         });
 
         Button buttonZone = findViewById(R.id.buttonZone);
-        buttonAddBadges.setOnClickListener(v -> {
-            //TODO: Zone backend will be implemented
+        buttonZone.setOnClickListener(v -> {
+            if (parentUid == null || parentUid.isEmpty()) {
+                Toast.makeText(ParentHomeActivity.this,
+                        "Parent UID not available.", Toast.LENGTH_SHORT).show();
+                return;
+            }
+
+            Intent intent = new Intent(ParentHomeActivity.this, ZoneActivity.class);
+            intent.putExtra("PARENT_UID", parentUid); // send parentUid
+            startActivity(intent);
         });
 
         Button buttonControllerLog= findViewById(R.id.buttonControllerLog);

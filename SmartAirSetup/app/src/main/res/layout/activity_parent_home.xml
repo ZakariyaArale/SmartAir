@@ -8,15 +8,20 @@
     tools:context=".ParentHomeActivity">
     <TextView
         android:id="@+id/textParentTitle"
-        android:layout_width="308dp"
-        android:layout_height="41dp"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
         android:paddingBottom="8dp"
         android:text="Parent Home"
         android:textColor="#1B4F72"
         android:textSize="24sp"
         android:textStyle="bold"
-        tools:layout_editor_absoluteX="28dp"
-        tools:layout_editor_absoluteY="16dp" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0"
+        android:layout_marginTop="16dp"
+        android:layout_marginStart="28dp"
+        android:layout_marginEnd="28dp"/>
     <!-- Top right: Notification -->
     <ImageButton
         android:id="@+id/notificationButton"

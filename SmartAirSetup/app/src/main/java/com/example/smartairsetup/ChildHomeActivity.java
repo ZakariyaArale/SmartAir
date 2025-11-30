@@ -2,6 +2,7 @@ package com.example.smartairsetup;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -47,6 +48,8 @@ public class ChildHomeActivity extends AbstractNavigation {
 
         Intent intent = getIntent();
         FirebaseUser currentUser = mAuth.getCurrentUser();
+
+        Log.d("RedFlagsChild", "Logged in UID = " + currentUser);
 
 // Case 1: parent/provider logged in with FirebaseAuth
         if (currentUser != null) {
@@ -155,6 +158,22 @@ public class ChildHomeActivity extends AbstractNavigation {
             newIntent.putExtra("CHILD_ID", childId);
             newIntent.putExtra("mode", "pre");
             startActivity(newIntent);
+        });
+
+        ImageButton checkZoneButton = findViewById(R.id.buttonCheckZone);
+        checkZoneButton.setOnClickListener(v -> {
+            if (childId == null || childId.isEmpty() || parentUid == null || parentUid.isEmpty()) {
+                Toast.makeText(
+                        ChildHomeActivity.this,
+                        "Missing child or parent ID.",
+                        Toast.LENGTH_SHORT
+                ).show();
+                return;
+            }
+            Intent zoneIntent = new Intent(ChildHomeActivity.this, ZoneActivityChild.class);
+            zoneIntent.putExtra("CHILD_ID", childId);
+            zoneIntent.putExtra("PARENT_UID", parentUid);
+            startActivity(zoneIntent);
         });
     }
 
@@ -323,6 +342,7 @@ public class ChildHomeActivity extends AbstractNavigation {
         Intent intent = new Intent(this, EmergencyActivity.class);
         if (childId != null && !childId.isEmpty()) {
             intent.putExtra("CHILD_ID", childId);
+            intent.putExtra("PARENT_UID", parentUid);
         }
         startActivity(intent);
     }
@@ -332,6 +352,7 @@ public class ChildHomeActivity extends AbstractNavigation {
         Intent intent = new Intent(ChildHomeActivity.this, ChildSettingsActivity.class);
         if (childId != null && !childId.isEmpty()) {
             intent.putExtra("CHILD_ID", childId);
+            intent.putExtra("PARENT_UID", parentUid);
         }
         startActivity(intent);
     }

@@ -15,6 +15,7 @@ public class ChildSettingsActivity extends AbstractNavigation {
 
     // We keep the child id here so we can pass it back when navigating
     private String childId;
+    private String parentId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,6 +34,7 @@ public class ChildSettingsActivity extends AbstractNavigation {
         Intent intent = getIntent();
         if (intent != null) {
             childId = intent.getStringExtra("CHILD_ID");
+            parentId = intent.getStringExtra("PARENT_UID");
         }
 
         Button buttonSignOut = findViewById(R.id.buttonSignOut);
@@ -56,6 +58,7 @@ public class ChildSettingsActivity extends AbstractNavigation {
         Intent intent = new Intent(ChildSettingsActivity.this, ChildHomeActivity.class);
         if (childId != null && !childId.isEmpty()) {
             intent.putExtra("CHILD_ID", childId);
+            intent.putExtra("PARENT_UID", parentId);
         }
         startActivity(intent);
     }
@@ -74,6 +77,7 @@ public class ChildSettingsActivity extends AbstractNavigation {
         Intent intent = new Intent(ChildSettingsActivity.this, EmergencyActivity_Child.class);
         if (childId != null && !childId.isEmpty()) {
             intent.putExtra("CHILD_ID", childId);
+            intent.putExtra("PARENT_UID", parentId);
         }
         startActivity(intent);
     }
