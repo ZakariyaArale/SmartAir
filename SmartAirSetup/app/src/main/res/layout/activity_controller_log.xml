@@ -75,6 +75,13 @@
         android:text="Apply filters"
         android:backgroundTint="@color/button_icon_color"
         android:layout_marginTop="12dp" />
+    <Button
+        android:id="@+id/buttonBack"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Back"
+        android:backgroundTint="@color/button_icon_color"
+        android:layout_marginTop="12dp" />
 
     <!-- IMPORTANT: ListView gets remaining space -->
     <ListView

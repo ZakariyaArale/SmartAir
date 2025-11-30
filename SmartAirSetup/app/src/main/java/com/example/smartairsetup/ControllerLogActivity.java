@@ -1,5 +1,6 @@
 package com.example.smartairsetup;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.widget.ArrayAdapter;
@@ -75,8 +76,13 @@ public class ControllerLogActivity extends AppCompatActivity {
         listHistory.setAdapter(logAdapter);
 
         buttonApplyFilters.setOnClickListener(v -> loadLogs());
+        Button buttonBack = findViewById(R.id.buttonBack);
+        buttonBack.setOnClickListener(v -> goBack());
     }
-
+    private void goBack(){
+        Intent intent = new Intent(ControllerLogActivity.this, ParentHomeActivity.class);
+        startActivity(intent);
+    }
     private void setupMedTypeSpinner() {
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(
                 this,
