@@ -291,27 +291,33 @@ public class ChildHomeActivity extends AbstractNavigation {
 
     @Override
     protected void onHomeClicked() {
-        Intent intent = new Intent(this, ParentHomeActivity.class);
-        intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
-        startActivity(intent);
+        //Do nothing as we are in home page
     }
 
     @Override
     protected void onFamilyClicked() {
         Intent intent = new Intent(this, ParentFamilyActivity.class);
-        intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
+        if (childId != null && !childId.isEmpty()) {
+            intent.putExtra("CHILD_ID", childId);
+        }
         startActivity(intent);
     }
 
     @Override
     protected void onEmergencyClicked() {
         Intent intent = new Intent(this, EmergencyActivity.class);
+        if (childId != null && !childId.isEmpty()) {
+            intent.putExtra("CHILD_ID", childId);
+        }
         startActivity(intent);
     }
 
     @Override
     protected void onSettingsClicked() {
         Intent intent = new Intent(ChildHomeActivity.this, ChildSettingsActivity.class);
+        if (childId != null && !childId.isEmpty()) {
+            intent.putExtra("CHILD_ID", childId);
+        }
         startActivity(intent);
     }
 }

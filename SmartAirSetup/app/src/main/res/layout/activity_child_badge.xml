@@ -93,9 +93,9 @@
                 </LinearLayout>
             </LinearLayout>
 
-            <!-- 2) 10 high-quality technique sessions -->
+            <!-- 2) High-quality technique sessions -->
             <LinearLayout
-                android:id="@+id/rowBadgeTechnique10"
+                android:id="@+id/rowBadgeTechnique"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="8dp"
@@ -105,7 +105,7 @@
                 android:padding="8dp">
 
                 <ImageView
-                    android:id="@+id/imageBadgeTechnique10"
+                    android:id="@+id/imageBadgeTechnique"
                     android:layout_width="48dp"
                     android:layout_height="48dp"
                     android:layout_gravity="center_vertical"
@@ -120,16 +120,16 @@
                     android:paddingStart="12dp">
 
                     <TextView
-                        android:id="@+id/textBadgeTechnique10Title"
+                        android:id="@+id/textBadgeTechniqueTitle"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="10 High-Quality Technique Sessions"
+                        android:text="High-Quality Technique Sessions"
                         android:textColor="@android:color/black"
                         android:textSize="16sp"
                         android:textStyle="bold" />
 
                     <TextView
-                        android:id="@+id/textBadgeTechnique10Desc"
+                        android:id="@+id/textBadgeTechniqueDesc"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Use perfect inhaler technique 10 times."

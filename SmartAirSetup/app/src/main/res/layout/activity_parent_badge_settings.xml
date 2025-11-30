@@ -9,7 +9,7 @@
     android:background="#DFF3FF"
     tools:context=".ParentBadgeSettingsActivity">
 
-    <!-- Upper BAR: Child seçimi + Back -->
+    <!-- Top bar: Child selection + Back button -->
     <LinearLayout
         android:id="@+id/topBar"
         android:layout_width="0dp"
@@ -36,7 +36,6 @@
             android:layout_marginStart="8dp"
             android:layout_weight="1" />
 
-        <!-- Back butonu -->
         <Button
             android:id="@+id/backButton"
             android:layout_width="wrap_content"
@@ -63,38 +62,15 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
 
-    <!-- First perfect controller week -->
-    <TextView
-        android:id="@+id/textPerfectControllerLabel"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:text="First perfect controller week: days per week target"
-        android:textSize="14sp"
-        android:layout_marginTop="24dp"
-        app:layout_constraintTop_toBottomOf="@id/textBadgeSettingsTitle"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
-
-    <EditText
-        android:id="@+id/editPerfectControllerDays"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:inputType="number"
-        android:hint="Default: 1"
-        android:maxLines="1"
-        app:layout_constraintTop_toBottomOf="@id/textPerfectControllerLabel"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
-
-    <!-- 10 high-quality technique sessions -->
+    <!-- High-quality technique sessions target -->
     <TextView
         android:id="@+id/textTechniqueSessionsLabel"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:text="High-quality technique sessions badge: target count"
         android:textSize="14sp"
-        android:layout_marginTop="16dp"
-        app:layout_constraintTop_toBottomOf="@id/editPerfectControllerDays"
+        android:layout_marginTop="24dp"
+        app:layout_constraintTop_toBottomOf="@id/textBadgeSettingsTitle"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
 
@@ -109,7 +85,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
 
-    <!-- low rescue month (≤ X rescue days / 30 days) -->
+    <!-- Low rescue month (≤ X rescue days / 30 days) -->
     <TextView
         android:id="@+id/textLowRescueDaysLabel"
         android:layout_width="0dp"
