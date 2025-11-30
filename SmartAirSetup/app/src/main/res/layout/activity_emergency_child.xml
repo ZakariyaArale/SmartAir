@@ -147,7 +147,7 @@
         android:layout_marginBottom="24dp"
         android:background="@android:color/transparent"
         android:fontFamily="@font/nunito_medium"
-        android:text="Main"
+        android:text="Next"
         android:textColor="#B71C1C"
         android:textSize="22sp"
         app:layout_constraintBottom_toBottomOf="parent"

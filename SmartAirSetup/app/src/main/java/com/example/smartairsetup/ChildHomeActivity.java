@@ -333,13 +333,14 @@ public class ChildHomeActivity extends AbstractNavigation {
         Intent intent = new Intent(this, ChildFamilyActivity.class);
         if (childId != null && !childId.isEmpty()) {
             intent.putExtra("CHILD_ID", childId);
+            intent.putExtra("PARENT_UID", parentUid);
         }
         startActivity(intent);
     }
 
     @Override
     protected void onEmergencyClicked() {
-        Intent intent = new Intent(this, EmergencyActivity.class);
+        Intent intent = new Intent(this, RedFlagsActivity_Child.class);
         if (childId != null && !childId.isEmpty()) {
             intent.putExtra("CHILD_ID", childId);
             intent.putExtra("PARENT_UID", parentUid);

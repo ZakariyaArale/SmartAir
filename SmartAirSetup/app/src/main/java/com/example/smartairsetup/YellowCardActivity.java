@@ -14,8 +14,8 @@ import androidx.appcompat.app.AppCompatActivity;
 public class YellowCardActivity extends AppCompatActivity {
 
     public static final String EXTRA_PARENT_ID = "PARENT_UID";
-    public static final String EXTRA_CHILD_UID = "childUID";
-    public static final String EXTRA_IS_CHILD = "extra_is_child";
+    public static final String EXTRA_CHILD_UID = "CHILD_ID";
+    public static final String EXTRA_IS_CHILD = "extra_is_child"; // 1 = child, 0 = parent
 
     public static final String EXTRA_CANT_SPEAK = "cantSpeakFullSentences";
     public static final String EXTRA_RETRACTIONS = "chestRetractions";
@@ -42,7 +42,9 @@ public class YellowCardActivity extends AppCompatActivity {
         setContentView(R.layout.activity_yellow_card);
 
         // --- READ DATA FROM INTENT ---
-        this.isChild = getIntent().getBooleanExtra(EXTRA_IS_CHILD, false);
+        int isChildFlag = getIntent().getIntExtra(EXTRA_IS_CHILD, 0); // default parent
+        this.isChild = isChildFlag == 1;
+
         this.childUid = getIntent().getStringExtra(EXTRA_CHILD_UID);
         this.parentUid = getIntent().getStringExtra(EXTRA_PARENT_ID);
 
@@ -51,44 +53,46 @@ public class YellowCardActivity extends AppCompatActivity {
         this.blueLipsNails = getIntent().getBooleanExtra(EXTRA_BLUE_LIPS, false);
 
         // Validation
-        if (parentUid == null) {
-            Toast.makeText(this, "Missing parent UID", Toast.LENGTH_SHORT).show();
+        if (parentUid == null || childUid == null) {
+            Toast.makeText(this, "Missing parent or child UID", Toast.LENGTH_SHORT).show();
             finish();
             return;
         }
 
-        if (childUid == null) {
-            Toast.makeText(this, "Missing child UID", Toast.LENGTH_SHORT).show();
-            finish();
-            return;
-        }
-
-        // UI
+        // --- UI ---
         textTimer = findViewById(R.id.buttonStartTimer);
         Button feelWorse = findViewById(R.id.buttonFeelWorse);
         Button backButton = findViewById(R.id.backButton);
         Button nextButton = findViewById(R.id.nextButton);
 
+        // --- BUTTONS ---
         feelWorse.setOnClickListener(v -> goToEmergency());
         backButton.setOnClickListener(v -> goBackToOptional());
+
         nextButton.setOnClickListener(v -> {
             cancelTimer();
-            Intent intent = new Intent(this, ParentHomeActivity.class);
+            Intent intent;
+            if (isChild) {
+                intent = new Intent(this, ChildHomeActivity.class);
+            } else {
+                intent = new Intent(this, ParentHomeActivity.class);
+            }
+            // Pass parent and child IDs
+            intent.putExtra(EXTRA_PARENT_ID, parentUid);
+            intent.putExtra(EXTRA_CHILD_UID, childUid);
             startActivity(intent);
             finish();
         });
 
-        // Recheck handler
+        // --- Recheck Handler ---
         recheckLauncher = registerForActivityResult(
                 new ActivityResultContracts.StartActivityForResult(),
                 result -> {
                     boolean needsEmergency = false;
-
                     if (result.getData() != null) {
                         needsEmergency = result.getData()
                                 .getBooleanExtra(RecheckActivity.EXTRA_NEEDS_EMERGENCY, false);
                     }
-
                     if (needsEmergency) goToEmergency();
                 }
         );
@@ -130,9 +134,10 @@ public class YellowCardActivity extends AppCompatActivity {
         startActivity(i);
         finish();
     }
+
     private void goBackToOptional() {
         cancelTimer();
-        Intent i = new Intent(this, OptionalDataActivity.class);
+        Intent i = new Intent(this, isChild ? OptionalDataActivity_Child.class : OptionalDataActivity.class);
         sendCommonData(i);
         startActivity(i);
         finish();
@@ -142,6 +147,7 @@ public class YellowCardActivity extends AppCompatActivity {
     private void sendCommonData(Intent i) {
         i.putExtra(EXTRA_PARENT_ID, parentUid);
         i.putExtra(EXTRA_CHILD_UID, childUid);
+        i.putExtra(EXTRA_IS_CHILD, isChild ? 1 : 0); // send int now
         i.putExtra(EXTRA_CANT_SPEAK, cantSpeakFullSentences);
         i.putExtra(EXTRA_RETRACTIONS, chestRetractions);
         i.putExtra(EXTRA_BLUE_LIPS, blueLipsNails);

@@ -77,7 +77,7 @@ public class OptionalDataActivity extends AppCompatActivity {
 
             selectedChildUid = tag.toString();
             Intent intent = new Intent(OptionalDataActivity.this, RecordMedicationTriage.class);
-            intent.putExtra("childUID", selectedChildUid);
+            intent.putExtra("CHILD_ID", selectedChildUid);
             intent.putExtra("returnClass", OptionalDataActivity.this.getClass().getName());
             intent.putExtra("PARENT_UID", parentUid);
 
@@ -274,10 +274,11 @@ public class OptionalDataActivity extends AppCompatActivity {
 
         // Pass required extras
         intent.putExtra("PARENT_UID", parentUid);
-        intent.putExtra("childUID", selectedChildUid);
+        intent.putExtra("CHILD_ID", selectedChildUid);
         intent.putExtra("cantSpeakFullSentences", cantSpeakFullSentences);
         intent.putExtra("chestRetractions", chestRetractions);
         intent.putExtra("blueLipsNails", blueLipsNails);
+        intent.putExtra(GreenCardActivity.EXTRA_IS_CHILD, 0);
 
         startActivity(intent);
     }

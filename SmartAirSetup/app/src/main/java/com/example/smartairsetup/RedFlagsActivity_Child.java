@@ -2,6 +2,7 @@ package com.example.smartairsetup;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.Button;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
@@ -9,97 +10,96 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.google.firebase.firestore.FirebaseFirestore;
-
 public class RedFlagsActivity_Child extends AppCompatActivity {
 
-    private RadioGroup radioSpeakFullSentences, radioChestRetractions, radioBlueLipsNails;
-    private Button backButton, nextButton;
+    private static final String TAG = "RedFlagsActivity_Child";
 
-    private FirebaseFirestore db;
+    private RadioGroup radioSpeakFullSentences;
+    private RadioGroup radioChestRetractions;
+    private RadioGroup radioBlueLipsNails;
 
-    // Hardcoded test UIDs
-    private final String childUid = "gifrbhr98mAAyv78MC80";
-    private final String parentUid = "VfB95gwXXyWFAqdajTHJBgyeYfB3";
+    private Button backButton;
+    private Button nextButton;
+
+    private String parentUid;
+    private String childId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_red_flags_child);
 
-        db = FirebaseFirestore.getInstance();
+        // --- Retrieve intent data ---
+        parentUid = getIntent().getStringExtra("PARENT_UID");
+        childId = getIntent().getStringExtra("CHILD_ID");
 
-        // Initialize radio groups
+        Log.d(TAG, "onCreate: parentUid=" + parentUid + ", childId=" + childId);
+
+        if (parentUid == null || parentUid.isEmpty()) {
+            Toast.makeText(this, "Missing parent UID", Toast.LENGTH_SHORT).show();
+            finish();
+            return;
+        }
+        if (childId == null || childId.isEmpty()) {
+            Toast.makeText(this, "Missing child UID", Toast.LENGTH_SHORT).show();
+            finish();
+            return;
+        }
+
+        // --- Initialize UI elements ---
         radioSpeakFullSentences = findViewById(R.id.radioSpeakFullSentences);
         radioChestRetractions = findViewById(R.id.radioChestRetractions);
         radioBlueLipsNails = findViewById(R.id.radioBlueLipsNails);
 
-        // Initialize buttons
         backButton = findViewById(R.id.backButton);
         nextButton = findViewById(R.id.nextButton);
 
-        backButton.setOnClickListener(v -> finish());
-        nextButton.setOnClickListener(v -> handleNextButton());
+        // --- Back button ---
+        backButton.setOnClickListener(v -> {
+            Intent intent = new Intent(this, ChildHomeActivity.class);
+            intent.putExtra("PARENT_UID", parentUid);
+            intent.putExtra("CHILD_ID", childId);
+            startActivity(intent);
+            finish();
+        });
+
+        // --- Next button ---
+        nextButton.setOnClickListener(v -> handleNextClicked());
     }
 
-    private void handleNextButton() {
-        // Ensure all questions are answered
+    private void handleNextClicked() {
+
+        // Ensure all questions answered
         if (radioSpeakFullSentences.getCheckedRadioButtonId() == -1 ||
                 radioChestRetractions.getCheckedRadioButtonId() == -1 ||
                 radioBlueLipsNails.getCheckedRadioButtonId() == -1) {
+
             Toast.makeText(this, "Please answer all questions", Toast.LENGTH_SHORT).show();
             return;
         }
 
-        // Check red flags
-        boolean cantSpeakFullSentences = ((RadioButton)findViewById(R.id.radioSpeakNo)).isChecked();
-        boolean chestRetractions = ((RadioButton)findViewById(R.id.radioChestYes)).isChecked();
-        boolean blueLipsNails = ((RadioButton)findViewById(R.id.radioBlueYes)).isChecked();
-        boolean anyRedFlags = cantSpeakFullSentences || chestRetractions || blueLipsNails;
+        // Extract boolean answers
+        boolean cantSpeakFullSentences = ((RadioButton) findViewById(R.id.radioSpeakNo)).isChecked();
+        boolean chestRetractions = ((RadioButton) findViewById(R.id.radioChestYes)).isChecked();
+        boolean blueLipsNails = ((RadioButton) findViewById(R.id.radioBlueYes)).isChecked();
 
-        if (anyRedFlags) {
-            // Child emergency
-            startActivity(new Intent(RedFlagsActivity_Child.this, EmergencyActivity_Child.class));
+        // Decide next screen
+        Intent intent;
+        if (cantSpeakFullSentences || chestRetractions || blueLipsNails) {
+            intent = new Intent(this, EmergencyActivity_Child.class);
         } else {
-            // Fetch latest zone from parent's record
-            db.collection("users")
-                    .document(parentUid)
-                    .collection("children")
-                    .document(childUid)
-                    .collection("PEF")
-                    .document("latest")
-                    .get()
-                    .addOnSuccessListener(latestDoc -> {
-                        if (!latestDoc.exists()) {
-                            Toast.makeText(this, "Please ask parent to enter your PEF and Parent", Toast.LENGTH_LONG).show();
-                            return;
-                        }
-
-                        String zone = latestDoc.getString("zone");
-                        if (zone == null) {
-                            Toast.makeText(this, "Please ask parent to enter your PEF and Parent", Toast.LENGTH_LONG).show();
-                            return;
-                        }
-
-                        Intent intent;
-                        switch (zone.toUpperCase()) {
-                            case "GREEN":
-                                intent = new Intent(RedFlagsActivity_Child.this, GreenCardActivity.class);
-                                break;
-                            case "YELLOW":
-                                intent = new Intent(RedFlagsActivity_Child.this, YellowCardActivity.class);
-                                break;
-                            case "RED":
-                                intent = new Intent(RedFlagsActivity_Child.this, RedCardActivity.class);
-                                break;
-                            default:
-                                Toast.makeText(this, "Please ask parent to enter your PEF and Parent", Toast.LENGTH_LONG).show();
-                                return;
-                        }
-                        startActivity(intent);
-                    })
-                    .addOnFailureListener(e ->
-                            Toast.makeText(this, "Error fetching zone: " + e.getMessage(), Toast.LENGTH_SHORT).show());
+            intent = new Intent(this, OptionalDataActivity_Child.class);
         }
+
+        // Pass required data forward
+        intent.putExtra("PARENT_UID", parentUid);
+        intent.putExtra("CHILD_ID", childId); // <-- consistent key
+        intent.putExtra("cantSpeakFullSentences", cantSpeakFullSentences);
+        intent.putExtra("chestRetractions", chestRetractions);
+        intent.putExtra("blueLipsNails", blueLipsNails);
+
+        Log.d(TAG, "handleNextClicked: Sending childId=" + childId);
+
+        startActivity(intent);
     }
 }

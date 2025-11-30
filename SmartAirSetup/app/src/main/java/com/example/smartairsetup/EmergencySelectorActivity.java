@@ -76,7 +76,7 @@ public class EmergencySelectorActivity extends AppCompatActivity {
 
             selectedChildUid = tag.toString();
             Intent intent = new Intent(EmergencySelectorActivity.this, RecordMedicationTriage.class);
-            intent.putExtra("childUID", selectedChildUid);
+            intent.putExtra("CHILD_ID", selectedChildUid);
             intent.putExtra("returnClass", EmergencySelectorActivity.this.getClass().getName());
             intent.putExtra("PARENT_UID", parentUid);
             intent.putExtra("cantSpeakFullSentences", cantSpeakFullSentences);

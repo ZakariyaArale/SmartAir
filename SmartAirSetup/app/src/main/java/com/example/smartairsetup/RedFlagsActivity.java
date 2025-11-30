@@ -43,7 +43,12 @@ public class RedFlagsActivity extends AppCompatActivity {
         nextButton = findViewById(R.id.nextButton);
 
         // Back button simply finishes this activity
-        backButton.setOnClickListener(v -> finish());
+        backButton.setOnClickListener(v -> {
+            Intent intent = new Intent(RedFlagsActivity.this, ParentHomeActivity.class);
+            intent.putExtra("PARENT_UID", parentUid);
+            startActivity(intent);
+            finish();
+        });
 
         // Next button
         nextButton.setOnClickListener(v -> {

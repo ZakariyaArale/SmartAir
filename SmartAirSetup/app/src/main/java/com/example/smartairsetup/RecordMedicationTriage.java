@@ -2,6 +2,7 @@ package com.example.smartairsetup;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -37,7 +38,7 @@ public class RecordMedicationTriage extends AppCompatActivity {
 
         // Retrieve extras
         Intent incoming = getIntent();
-        childUid = incoming.getStringExtra("childUID");
+        childUid = incoming.getStringExtra("CHILD_ID");
         parentUid = incoming.getStringExtra("PARENT_UID");
         returnClassName = incoming.getStringExtra("returnClass");
 
@@ -52,6 +53,7 @@ public class RecordMedicationTriage extends AppCompatActivity {
             return;
         }
 
+
         db = FirebaseFirestore.getInstance();
 
         Button chooseMedButton = findViewById(R.id.chooseMedButton);
@@ -60,7 +62,7 @@ public class RecordMedicationTriage extends AppCompatActivity {
         Button backButton = findViewById(R.id.backButton);
 
         // Medication selection dialog
-        MedicationDialog dialog = new MedicationDialog(this, new FireBaseProcessMedication(childUid));
+        MedicationDialog dialog = new MedicationDialog(this, new FireBaseProcessMedication(parentUid,childUid));
         chooseMedButton.setOnClickListener(v -> dialog.showSelectionDialog(chooseMedButton));
 
         // Save button
@@ -73,7 +75,7 @@ public class RecordMedicationTriage extends AppCompatActivity {
                     Class<?> returnClass = Class.forName(returnClassName);
                     Intent intent = new Intent(RecordMedicationTriage.this, returnClass);
                     intent.putExtra("PARENT_UID", parentUid);
-                    intent.putExtra("childUID", childUid);
+                    intent.putExtra("CHILD_ID", childUid);
                     intent.putExtra("cantSpeakFullSentences", cantSpeakFullSentences);
                     intent.putExtra("chestRetractions", chestRetractions);
                     intent.putExtra("blueLipsNails", blueLipsNails);

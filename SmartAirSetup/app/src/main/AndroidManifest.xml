@@ -125,6 +125,12 @@
             android:name=".ZoneActivityChild"
             android:exported="false" />
         <activity
+            android:name=".EmergencySelectorActivity_Child"
+            android:exported="false" />
+        <activity
+            android:name=".OptionalDataActivity_Child"
+            android:exported="false" />
+        <activity
             android:name=".EmergencyActivity_Child"
             android:exported="false" />
         <activity
