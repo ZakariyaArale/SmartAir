@@ -311,7 +311,7 @@ public class ChildHomeActivity extends AbstractNavigation {
 
     @Override
     protected void onFamilyClicked() {
-        Intent intent = new Intent(this, ParentFamilyActivity.class);
+        Intent intent = new Intent(this, ChildFamilyActivity.class);
         if (childId != null && !childId.isEmpty()) {
             intent.putExtra("CHILD_ID", childId);
         }
