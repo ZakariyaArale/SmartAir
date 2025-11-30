@@ -93,6 +93,30 @@
                 android:text="Rescue medication count this week: 0"
                 android:textColor="@android:color/black"
                 android:textSize="14sp" />
+            <TextView
+                android:id="@+id/textLastRescueUsed"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="6dp"
+                android:text="Last rescue medication use: —"
+                android:textColor="@android:color/black"
+                android:textSize="14sp" />
+
+            <!-- Tag: Weekly rescue is shared -->
+            <TextView
+                android:id="@+id/tagSharedRescue"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="6dp"
+                android:text="Shared with provider"
+                android:textSize="12sp"
+                android:textColor="#2E7D32"
+                android:paddingStart="10dp"
+                android:paddingEnd="10dp"
+                android:paddingTop="4dp"
+                android:paddingBottom="4dp"
+                android:background="@drawable/bg_shared_tag"
+                android:visibility="gone" />
 
         </LinearLayout>
     </FrameLayout>
@@ -131,6 +155,7 @@
                 android:textSize="18sp"
                 android:textStyle="bold" />
 
+            <!-- Daily Check-in -->
             <Button
                 android:id="@+id/buttonDailyCheckIn"
                 android:layout_width="match_parent"
@@ -139,6 +164,22 @@
                 android:backgroundTint="@color/button_icon_color"
                 android:text="Daily Check-in" />
 
+            <TextView
+                android:id="@+id/tagSharedSymptoms"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="6dp"
+                android:text="Shared with provider"
+                android:textSize="12sp"
+                android:textColor="#2E7D32"
+                android:paddingStart="10dp"
+                android:paddingEnd="10dp"
+                android:paddingTop="4dp"
+                android:paddingBottom="4dp"
+                android:background="@drawable/bg_shared_tag"
+                android:visibility="gone" />
+
+            <!-- View History -->
             <Button
                 android:id="@+id/buttonViewHistory"
                 android:layout_width="match_parent"
@@ -147,6 +188,22 @@
                 android:backgroundTint="@color/button_icon_color"
                 android:text="View History" />
 
+            <TextView
+                android:id="@+id/tagSharedHistory"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="6dp"
+                android:text="Shared with provider"
+                android:textSize="12sp"
+                android:textColor="#2E7D32"
+                android:paddingStart="10dp"
+                android:paddingEnd="10dp"
+                android:paddingTop="4dp"
+                android:paddingBottom="4dp"
+                android:background="@drawable/bg_shared_tag"
+                android:visibility="gone" />
+
+            <!-- Child Overview -->
             <Button
                 android:id="@+id/buttonChildOverview"
                 android:layout_width="match_parent"
@@ -155,6 +212,7 @@
                 android:backgroundTint="@color/button_icon_color"
                 android:text="Child Overview" />
 
+            <!-- Set Personal Best -->
             <Button
                 android:id="@+id/buttonSetPB"
                 android:layout_width="match_parent"
@@ -163,6 +221,22 @@
                 android:backgroundTint="@color/button_icon_color"
                 android:text="Set Personal Best" />
 
+            <TextView
+                android:id="@+id/tagSharedPB"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="6dp"
+                android:text="Shared with provider"
+                android:textSize="12sp"
+                android:textColor="#2E7D32"
+                android:paddingStart="10dp"
+                android:paddingEnd="10dp"
+                android:paddingTop="4dp"
+                android:paddingBottom="4dp"
+                android:background="@drawable/bg_shared_tag"
+                android:visibility="gone" />
+
+            <!-- Enter PEF -->
             <Button
                 android:id="@+id/buttonEnterPEF"
                 android:layout_width="match_parent"
@@ -171,6 +245,22 @@
                 android:backgroundTint="@color/button_icon_color"
                 android:text="Enter PEF" />
 
+            <TextView
+                android:id="@+id/tagSharedPEF"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="6dp"
+                android:text="Shared with provider"
+                android:textSize="12sp"
+                android:textColor="#2E7D32"
+                android:paddingStart="10dp"
+                android:paddingEnd="10dp"
+                android:paddingTop="4dp"
+                android:paddingBottom="4dp"
+                android:background="@drawable/bg_shared_tag"
+                android:visibility="gone" />
+
+            <!-- Add Child -->
             <Button
                 android:id="@+id/buttonAddChild"
                 android:layout_width="match_parent"
@@ -179,6 +269,7 @@
                 android:backgroundTint="@color/button_icon_color"
                 android:text="Add Child" />
 
+            <!-- Add Badges -->
             <Button
                 android:id="@+id/buttonAddBadges"
                 android:layout_width="match_parent"
@@ -187,6 +278,7 @@
                 android:backgroundTint="@color/button_icon_color"
                 android:text="Add Badges" />
 
+            <!-- Medication Inventory -->
             <Button
                 android:id="@+id/buttonMedicationInventory"
                 android:layout_width="match_parent"
@@ -195,6 +287,7 @@
                 android:backgroundTint="@color/button_icon_color"
                 android:text="Medication Inventory" />
 
+            <!-- PDF -->
             <Button
                 android:id="@+id/buttonPDF"
                 android:layout_width="match_parent"
@@ -203,6 +296,22 @@
                 android:backgroundTint="@color/button_icon_color"
                 android:text="PDF" />
 
+            <TextView
+                android:id="@+id/tagSharedPDF"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="6dp"
+                android:text="Shared with provider"
+                android:textSize="12sp"
+                android:textColor="#2E7D32"
+                android:paddingStart="10dp"
+                android:paddingEnd="10dp"
+                android:paddingTop="4dp"
+                android:paddingBottom="4dp"
+                android:background="@drawable/bg_shared_tag"
+                android:visibility="gone" />
+
+            <!-- Zone -->
             <Button
                 android:id="@+id/buttonZone"
                 android:layout_width="match_parent"
@@ -211,6 +320,22 @@
                 android:backgroundTint="@color/button_icon_color"
                 android:text="Zone" />
 
+            <TextView
+                android:id="@+id/tagSharedZone"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="6dp"
+                android:text="Shared with provider"
+                android:textSize="12sp"
+                android:textColor="#2E7D32"
+                android:paddingStart="10dp"
+                android:paddingEnd="10dp"
+                android:paddingTop="4dp"
+                android:paddingBottom="4dp"
+                android:background="@drawable/bg_shared_tag"
+                android:visibility="gone" />
+
+            <!-- Controller Logs -->
             <Button
                 android:id="@+id/buttonControllerLog"
                 android:layout_width="match_parent"
@@ -218,6 +343,21 @@
                 android:layout_marginTop="12dp"
                 android:backgroundTint="@color/button_icon_color"
                 android:text="Controller Logs" />
+
+            <TextView
+                android:id="@+id/tagSharedController"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="6dp"
+                android:text="Shared with provider"
+                android:textSize="12sp"
+                android:textColor="#2E7D32"
+                android:paddingStart="10dp"
+                android:paddingEnd="10dp"
+                android:paddingTop="4dp"
+                android:paddingBottom="4dp"
+                android:background="@drawable/bg_shared_tag"
+                android:visibility="gone" />
 
         </LinearLayout>
     </ScrollView>

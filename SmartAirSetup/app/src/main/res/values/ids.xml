@@ -6,4 +6,11 @@
     <item name="buttonCopy" type="id" />
     <item name="buttonShare" type="id" />
     <item name="buttonRevoke" type="id" />
+    <item name="tagSharedSymptoms" type="id" />
+    <item name="tagSharedHistory" type="id" />
+    <item name="tagSharedPB" type="id" />
+    <item name="tagSharedPEF" type="id" />
+    <item name="tagSharedPDF" type="id" />
+    <item name="tagSharedZone" type="id" />
+    <item name="tagSharedController" type="id" />
 </resources>
