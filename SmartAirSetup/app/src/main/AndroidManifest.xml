@@ -21,9 +21,9 @@
             android:exported="false" />
         <activity
             android:name=".ParentSettingsActivity"
-            android:exported="false" /> <!-- Child -->
+            android:exported="false" />
         <activity
-            android:name=".ParentSettingsActivity"
+            android:name=".RecordMedicationTriage"
             android:exported="false" />
         <activity
             android:name=".RecordMedUsageActivity"
@@ -147,9 +147,6 @@
             android:exported="false" />
         <activity
             android:name=".PDFStoreActivity"
-            android:exported="false" />
-        <activity
-            android:name=".PDFGenerator"
             android:exported="false" />
         <activity
             android:name=".ControllerLogActivity"

@@ -9,35 +9,45 @@ import androidx.appcompat.app.AppCompatActivity;
 
 public class EmergencyActivity extends AppCompatActivity {
 
-    private Intent intent;
+    private String parentUid;
+    private boolean cantSpeakFullSentences;
+    private boolean chestRetractions;
+    private boolean blueLipsNails;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_emergency); // Make sure this matches your XML filename
+        setContentView(R.layout.activity_emergency);
 
         Button callButton = findViewById(R.id.buttonCallEmergency);
         Button backButton = findViewById(R.id.buttonBack);
         Button nextButton = findViewById(R.id.buttonNext);
 
-        // Call emergency service when pressed
+        Intent incomingIntent = getIntent();
+        parentUid = incomingIntent.getStringExtra("PARENT_UID");
+        cantSpeakFullSentences = incomingIntent.getBooleanExtra("cantSpeakFullSentences", false);
+        chestRetractions = incomingIntent.getBooleanExtra("chestRetractions", false);
+        blueLipsNails = incomingIntent.getBooleanExtra("blueLipsNails", false);
+
         callButton.setOnClickListener(v -> {
-            // Emergency number, default 911
             String emergencyNumber = "911";
             Intent intent = new Intent(Intent.ACTION_DIAL);
             intent.setData(Uri.parse("tel:" + emergencyNumber));
             startActivity(intent);
         });
 
-        // Back button
         backButton.setOnClickListener(v -> {
-            intent = new Intent(this, RedFlagsActivity.class);
+            Intent intent = new Intent(this, RedFlagsActivity.class);
+            intent.putExtra("PARENT_UID", parentUid);
             startActivity(intent);
         });
-
-        // Next button: handle navigation if needed
+        
         nextButton.setOnClickListener(v -> {
-            intent = new Intent(this, EmergencySelectorActivity.class);
+            Intent intent = new Intent(this, EmergencySelectorActivity.class);
+            intent.putExtra("PARENT_UID", parentUid);
+            intent.putExtra("cantSpeakFullSentences", cantSpeakFullSentences);
+            intent.putExtra("chestRetractions", chestRetractions);
+            intent.putExtra("blueLipsNails", blueLipsNails);
             startActivity(intent);
         });
     }
