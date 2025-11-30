@@ -138,14 +138,32 @@ public class PDFGenerator {
                     Long timestamp = doc.getLong("timestamp");
                     if (timestamp == null || timestamp < startTimestamp || timestamp > endTimestamp) continue;
 
-                    String zone = doc.getString("triage-zone");
+                    String zone = doc.getString("zone");
                     String message = doc.getString("message-triage");
+
+                    // Additional flags
+                    Boolean blueLipsNails = doc.getBoolean("blueLipsNails");
+                    Boolean cantSpeakFullSentences = doc.getBoolean("cantSpeakFullSentences");
+                    Boolean chestRetractions = doc.getBoolean("chestRetractions");
+
+                    Long dailyPEF = doc.getLong("dailyPEF"); // optional, may be null
+
                     if (zone != null && !"Green".equalsIgnoreCase(zone)) {
                         String dateString = sdf.format(new Date(timestamp));
+
                         triageEvents.append(dateString)
-                                .append(" | Zone: ").append(zone)
-                                .append(" | Message: ").append(message != null ? message : "")
-                                .append("\n");
+                                .append(" | Guidance Shown: ").append(zone)
+                                .append(" | Message: ").append(message != null ? message : "");
+
+                        // Append additional flags
+                        if (blueLipsNails != null) triageEvents.append(" | blueLipsNails: ").append(blueLipsNails);
+                        if (cantSpeakFullSentences != null) triageEvents.append(" | cantSpeakFullSentences: ").append(cantSpeakFullSentences);
+                        if (chestRetractions != null) triageEvents.append(" | chestRetractions: ").append(chestRetractions);
+
+                        // Append dailyPEF if available
+                        if (dailyPEF != null) triageEvents.append(" | Optional PEF: ").append(dailyPEF);
+
+                        triageEvents.append("\n");
                     }
                 }
 
@@ -264,7 +282,7 @@ public class PDFGenerator {
         document.add(new Paragraph("\n"));
 
         // Pie chart
-        document.add(new Paragraph("5. Zone Distribution Pie Chart", font));
+        document.add(new Paragraph("5. Zone Distribution Pie Chart (PEF)", font));
         if (shareSummaryCharts) {
 
             PdfContentByte canvas = writer.getDirectContent();

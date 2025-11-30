@@ -11,6 +11,7 @@ import android.widget.Toast;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 
+import com.google.firebase.Timestamp;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.CollectionReference;
@@ -19,6 +20,7 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 
+import java.text.DateFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.text.SimpleDateFormat;
@@ -136,8 +138,22 @@ public class ParentHomeActivity extends AbstractNavigation {
 
         Button buttonPDF = findViewById(R.id.buttonPDF);
         buttonPDF.setOnClickListener(v -> {
-            startActivity(new Intent(this, PDFStoreActivity.class));
+            if (selectedOverviewChildId == null) {
+                Toast.makeText(this, "Please select a child first.", Toast.LENGTH_SHORT).show();
+                return;
+            }
+
+            String childId = selectedOverviewChildId;
+            int index = childIds.indexOf(childId);
+            String childName = (index >= 0 && index < childNames.size()) ? childNames.get(index) : "(Unnamed child)";
+
+            Intent intent = new Intent(this, PDFStoreActivity.class);
+            intent.putExtra("PARENT_UID", parentUid);
+            intent.putExtra("CHILD_ID", childId);
+            intent.putExtra("CHILD_NAME", childName);
+            startActivity(intent);
         });
+
 
         Button buttonZone = findViewById(R.id.buttonZone);
         buttonZone.setOnClickListener(v -> {
@@ -319,22 +335,22 @@ public class ParentHomeActivity extends AbstractNavigation {
 
                     if (raw instanceof Long) tsMillis = (Long) raw;
                     else if (raw instanceof Double) tsMillis = ((Double) raw).longValue();
-                    else if (raw instanceof com.google.firebase.Timestamp)
-                        tsMillis = ((com.google.firebase.Timestamp) raw).toDate().getTime();
+                    else if (raw instanceof Timestamp)
+                        tsMillis = ((Timestamp) raw).toDate().getTime();
 
                     if (tsMillis == null) {
                         textLastRescueUsed.setText("Last rescue medication use: —");
                         return;
                     }
 
-                    java.text.DateFormat fmt =
-                            java.text.DateFormat.getDateTimeInstance(java.text.DateFormat.MEDIUM, java.text.DateFormat.SHORT);
-                    String when = fmt.format(new java.util.Date(tsMillis));
+                    DateFormat fmt =
+                            DateFormat.getDateTimeInstance(DateFormat.MEDIUM, DateFormat.SHORT);
+                    String when = fmt.format(new Date(tsMillis));
 
                     textLastRescueUsed.setText("Last rescue medication use: " + when);
                 })
                 .addOnFailureListener(e -> {
-                    android.util.Log.e("LastRescue", "Failed to load last rescue use", e);
+                    Log.e("LastRescue", "Failed to load last rescue use", e);
                     textLastRescueUsed.setText("Last rescue medication use: —");
                 });
     }

@@ -1,7 +1,9 @@
 package com.example.smartairsetup;
 
 import android.app.DatePickerDialog;
+import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.Button;
 import android.widget.Toast;
 
@@ -14,13 +16,14 @@ public class PDFStoreActivity extends AppCompatActivity {
     private Button chooseChildButton;
     private Button chooseDateButton;
     private Button downloadPdfButton;
+    private Button backButton;
 
     private long chosenTimestamp = -1;
     private PDFGenerator pdfGenerator;
 
-    // Hardcoded parent and child for testing
-    private final String parentID = "VfB95gwXXyWFAqdajTHJBgyeYfB3";
-    private final String childID = "gifrbhr98mAAyv78MC80";
+    private String parentID;
+    private String childID;
+    private String childName;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,8 +33,26 @@ public class PDFStoreActivity extends AppCompatActivity {
         chooseChildButton = findViewById(R.id.chooseChildButton);
         chooseDateButton = findViewById(R.id.chooseDateButton);
         downloadPdfButton = findViewById(R.id.btnDownloadPdf);
+        backButton = findViewById(R.id.backButton);
+
 
         pdfGenerator = new PDFGenerator(this);
+
+        // Get IDs passed via Intent
+        Intent intent = getIntent();
+        parentID = intent.getStringExtra("PARENT_UID");
+        childID = intent.getStringExtra("CHILD_ID");
+        childName = intent.getStringExtra("CHILD_NAME");
+
+        if (childID == null || childID.isEmpty()) {
+            Toast.makeText(this, "Child ID not provided", Toast.LENGTH_LONG).show();
+            finish();
+            return;
+        }
+
+        // Show selected child
+        chooseChildButton.setText("Child: " + (childName != null ? childName : childID));
+        chooseChildButton.setEnabled(false); // disable selection if only one child
 
         // Date selection
         chooseDateButton.setOnClickListener(v -> openRestrictedDatePicker());
@@ -46,11 +67,12 @@ public class PDFStoreActivity extends AppCompatActivity {
             long startTimestamp = chosenTimestamp;
             long endTimestamp = Calendar.getInstance().getTimeInMillis();
 
+            Log.d("PDFStoreActivity", "parentID=" + parentID + ", childID=" + childID);
             pdfGenerator.generatePdf(parentID, childID, startTimestamp, endTimestamp);
         });
 
-        // Optional: Disable child selection button (we're hardcoding)
-        chooseChildButton.setText("Child UID: " + childID);
+        // Back button
+        backButton.setOnClickListener(v -> finish());
     }
 
     private void openRestrictedDatePicker() {
