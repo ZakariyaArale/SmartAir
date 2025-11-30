@@ -37,7 +37,7 @@ public class PrePostCheckActivity extends AppCompatActivity {
     String childId;
     int passedFeeling;
     int passedDoseCount;
-    int passedTimestamp;
+    long passedTimestamp;
     String medID;
 
 
@@ -56,16 +56,12 @@ public class PrePostCheckActivity extends AppCompatActivity {
         getIds();
         Intent intent = getIntent();
         mode = intent.getStringExtra("mode");
+        childId = getIntent().getStringExtra("CHILD_ID");
 
-        //hardcoded VALUE DELETE THIS/////////////////////////////////////////////////////////////////////////////
-        mode = "pre";
-
-        if(mode == null || mode.equals("post")){
+        if(mode != null && mode.equals("post")){
             setUpPostCheck();
             getPassedInfo();
         }
-
-        childId = getIntent().getStringExtra("CHILD_ID");
 
         setBackButton();
         setNextButton();
@@ -78,7 +74,7 @@ public class PrePostCheckActivity extends AppCompatActivity {
         //prior to taking medication breath rating 1 = very bad, 5 = very good. (range from 1 -5)
         passedFeeling = getIntent().getIntExtra("PRE_FEELING", -1);
         passedDoseCount = getIntent().getIntExtra("DOSE_COUNT", 0);
-        passedTimestamp = getIntent().getIntExtra("TIME_STAMP", 0);
+        passedTimestamp = getIntent().getLongExtra("TIME_STAMP", 0);
         medID = getIntent().getStringExtra("MED_ID");
 
     }
@@ -169,11 +165,11 @@ public class PrePostCheckActivity extends AppCompatActivity {
 
         segmentGroup.setOnCheckedChangeListener((group, checkedId) -> {
             selected = 0;
-            if(opt1.isSelected()){selected = 1;}
-            else if(opt2.isSelected()){selected = 2;}
-            else if(opt3.isSelected()){selected = 3;}
-            else if(opt4.isSelected()){selected = 4;}
-            else if(opt5.isSelected()){selected = 5;}
+            if(opt1.isChecked()){selected = 1;}
+            else if(opt2.isChecked()){selected = 2;}
+            else if(opt3.isChecked()){selected = 3;}
+            else if(opt4.isChecked()){selected = 4;}
+            else if(opt5.isChecked()){selected = 5;}
             nextButton.setEnabled(true);
             nextButton.setAlpha(1f);
 

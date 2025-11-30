@@ -38,8 +38,6 @@ public class RecordMedUsageActivity extends AppCompatActivity {
     private int passedFeeling;
     private String childID;
 
-    private List<ChildMedicationWrapper> allMeds = new ArrayList<>();
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -54,6 +52,11 @@ public class RecordMedUsageActivity extends AppCompatActivity {
         setBackButton();
         setNextButton();
         setDosePicker();
+
+        //get values from previous activity to pass along for logging
+        Intent intent = getIntent();
+        passedFeeling = intent.getIntExtra("PRE_FEELING", 0);
+        childID = intent.getStringExtra("CHILD_ID");
 
         mAuth = FirebaseAuth.getInstance();
         db = FirebaseFirestore.getInstance();
@@ -70,10 +73,7 @@ public class RecordMedUsageActivity extends AppCompatActivity {
 
         setUpMedSpinner();
 
-        //get values from previous activity to pass along for logging
-        Intent intent = getIntent();
-        passedFeeling = intent.getIntExtra("PRE_FEELING", 0);
-        childID = intent.getStringExtra("CHILD_ID");
+
 
     }
 
@@ -90,6 +90,12 @@ public class RecordMedUsageActivity extends AppCompatActivity {
         Button backButton = findViewById(R.id.medLogNextButton);
         if (backButton != null) {
             backButton.setOnClickListener(v -> {
+
+                if (medIds.isEmpty()) {
+                    Toast.makeText(this, "No medications found", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
                 Intent intent = new Intent(this, PrePostCheckActivity.class);
                 intent.putExtra("mode", "post");
                 intent.putExtra("PRE_FEELING", passedFeeling);
@@ -106,7 +112,7 @@ public class RecordMedUsageActivity extends AppCompatActivity {
 
         dosePicker = findViewById(R.id.logDoseCountNP);
         dosePicker.setMinValue(1);
-        //I think 10 is a reasonable bound, as
+        //I think 10 is a reasonable bound
         dosePicker.setMaxValue(10);
         dosePicker.setValue(1);
         dosePicker.setWrapSelectorWheel(false);
