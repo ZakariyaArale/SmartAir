@@ -30,6 +30,8 @@ public class RecordMedUsageActivity extends AppCompatActivity {
     private FirebaseAuth mAuth;
     private FirebaseFirestore db;
     private String parentUid;
+
+    Button nextButton;
     private Spinner medSpinner;
     private List<String> medIds = new ArrayList<>();
     private List<String> medNames = new ArrayList<>();
@@ -87,9 +89,9 @@ public class RecordMedUsageActivity extends AppCompatActivity {
     }
 
     private void setNextButton() {
-        Button backButton = findViewById(R.id.medLogNextButton);
-        if (backButton != null) {
-            backButton.setOnClickListener(v -> {
+        nextButton = findViewById(R.id.medLogNextButton);
+        if (nextButton != null) {
+            nextButton.setOnClickListener(v -> {
 
                 if (medIds.isEmpty()) {
                     Toast.makeText(this, "No medications found", Toast.LENGTH_SHORT).show();
@@ -98,6 +100,7 @@ public class RecordMedUsageActivity extends AppCompatActivity {
 
                 Intent intent = new Intent(this, PrePostCheckActivity.class);
                 intent.putExtra("mode", "post");
+                intent.putExtra("CHILD_ID", childID);
                 intent.putExtra("PRE_FEELING", passedFeeling);
                 intent.putExtra("TIME_STAMP", System.currentTimeMillis());
                 intent.putExtra("DOSE_COUNT", dosePicker.getValue());
@@ -141,8 +144,7 @@ public class RecordMedUsageActivity extends AppCompatActivity {
                         if (name == null) name = "Unnamed Med";
 
                         // get medications id
-                        String medId = doc.getString("med_UUID");
-                        if (medId == null) medId = doc.getId();  // fallback
+                        String medId = doc.getId();
 
                         //makes two parallel lists so we can easily get values from lists
                         medNames.add(name);

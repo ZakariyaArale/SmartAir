@@ -34,7 +34,6 @@
         android:text="Next (add to value xml)"
         android:textColor="#2E7D32"
         android:textSize="30sp"
-        android:enabled="false"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
 
@@ -101,7 +100,6 @@
         android:spinnerMode="dropdown"
         android:textColor="@color/black"
         android:textSize="20sp"
-        android:visibility="invisible"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"

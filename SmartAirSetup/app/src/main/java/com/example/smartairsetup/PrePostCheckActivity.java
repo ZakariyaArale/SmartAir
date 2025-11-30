@@ -120,7 +120,7 @@ public class PrePostCheckActivity extends AppCompatActivity {
         checkInTitleTV.setText("Post Medication Check");
         nextButton.setText("Finish");
 
-        //makes second question visable
+        //makes second question visible
         checkFeelingTitleTV.setVisibility(View.VISIBLE);
         setUpSpinner();
 
