@@ -41,27 +41,29 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:id="@+id/tasksText"
+        android:id="@+id/techniqueStreakText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
-        android:text="You have 0 tasks..."
+        android:text="Your Completed Technique streak is: "
         android:textColor="@android:color/black"
         android:textSize="16sp"
         app:layout_constraintStart_toStartOf="@id/greetingText"
         app:layout_constraintTop_toBottomOf="@id/greetingText" />
+    <TextView
+        android:id="@+id/controllerStreakText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="Your Controller Day streak is: "
+        android:textColor="@android:color/black"
+        android:textSize="16sp"
+        app:layout_constraintStart_toStartOf="@id/techniqueStreakText"
+        app:layout_constraintTop_toBottomOf="@id/techniqueStreakText" />
 
-    <com.google.android.material.imageview.ShapeableImageView
-        android:id="@+id/profileImage"
-        android:layout_width="60dp"
-        android:layout_height="60dp"
-        android:layout_marginEnd="24dp"
-        android:src="@drawable/person"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@id/greetingText" />
 
     <!-- ============================================= -->
-    <!-- ==   WHITE MAIN CONTENT PANEL (UPDATED)    == -->
+    <!-- ==   GRAY MAIN CONTENT PANEL (UPDATED)    == -->
     <!-- ============================================= -->
 
     <!-- This FrameLayout is now our white panel and Fragment container. -->
@@ -76,7 +78,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/tasksText">
+        app:layout_constraintTop_toBottomOf="@id/controllerStreakText">
 
         <!--
             Shortcuts and other content should now be placed INSIDE this FrameLayout
