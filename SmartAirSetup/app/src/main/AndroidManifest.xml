@@ -152,6 +152,9 @@
             android:name=".PDFGenerator"
             android:exported="false" />
         <activity
+            android:name=".ControllerLogActivity"
+            android:exported="false" />
+        <activity
             android:name=".MainActivity"
             android:exported="true">
             <intent-filter>

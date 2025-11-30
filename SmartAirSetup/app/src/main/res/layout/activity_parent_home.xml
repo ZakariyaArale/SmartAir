@@ -204,6 +204,13 @@
                 android:text="Zone"
                 android:backgroundTint="@color/button_icon_color"
                 android:layout_marginTop="12dp" />
+            <Button
+                android:id="@+id/buttonControllerLog"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Controller Logs"
+                android:backgroundTint="@color/button_icon_color"
+                android:layout_marginTop="12dp" />
 
 
         </LinearLayout>

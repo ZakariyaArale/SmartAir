@@ -149,6 +149,12 @@ public class ParentHomeActivity extends AbstractNavigation {
             //TODO: Zone backend will be implemented
         });
 
+        Button buttonControllerLog= findViewById(R.id.buttonControllerLog);
+        buttonControllerLog.setOnClickListener(v -> {
+            Intent intent = new Intent(ParentHomeActivity.this, ControllerLogActivity.class);
+            startActivity(intent);
+        });
+
     }
 
     @Override
