@@ -17,13 +17,13 @@ import java.util.Calendar;
 public class ZoneActivityChild extends AppCompatActivity {
 
     private Button chooseChildButton;
+    public Button backButton;
     private FirebaseFirestore db;
 
-    // Forced child and parent UIDs for testing
-    private final String childUid = "gifrbhr98mAAyv78MC80";
-    private final String parentID = "VfB95gwXXyWFAqdajTHJBgyeYfB3";
+    // Receive these from intent
+    private String childUid;
+    private String parentID;
 
-    // NEW
     private String currentZone = null;
     private TextView zoneLabel;
 
@@ -34,20 +34,31 @@ public class ZoneActivityChild extends AppCompatActivity {
 
         zoneLabel = findViewById(R.id.zoneLabel);
         chooseChildButton = findViewById(R.id.chooseChildButton);
+        backButton = findViewById(R.id.backButton);
         GradientDrawable background = (GradientDrawable) zoneLabel.getBackground();
 
         db = FirebaseFirestore.getInstance();
 
-        // NEW: click zone label to open decision card
-        zoneLabel.setOnClickListener(v -> {
-            if (currentZone == null) {
-                Toast.makeText(this, "Zone not available yet.", Toast.LENGTH_SHORT).show();
-                return;
-            }
-            openDecisionCard(true, parentID, childUid, currentZone);
-        });
+        // Get childId and parentId from intent
+        childUid = getIntent().getStringExtra("CHILD_ID");
+        parentID = getIntent().getStringExtra("PARENT_UID");
+
+        if (childUid == null || parentID == null) {
+            Toast.makeText(this, "Missing child or parent ID.", Toast.LENGTH_SHORT).show();
+            finish();
+            return;
+        }
 
         loadChildInfo(background);
+
+        backButton.setOnClickListener(v -> {
+            Intent intent = new Intent(this, ChildHomeActivity.class);
+            if (childUid != null && !childUid.isEmpty()) {
+                intent.putExtra("CHILD_ID", childUid);
+                intent.putExtra("PARENT_UID", parentID);
+            }
+            startActivity(intent);
+        });
     }
 
     private void loadChildInfo(GradientDrawable background) {
@@ -83,8 +94,7 @@ public class ZoneActivityChild extends AppCompatActivity {
                                     return;
                                 }
 
-                                // ✅ NEW: Check that this record is from TODAY
-                                Long ts = latestDoc.getLong("timestamp");  // must be saved in millis
+                                Long ts = latestDoc.getLong("timestamp");  // must be in millis
                                 if (ts == null) {
                                     currentZone = null;
                                     background.setColor(Color.parseColor("#808080"));
@@ -101,19 +111,16 @@ public class ZoneActivityChild extends AppCompatActivity {
                                                 recordCal.get(Calendar.DAY_OF_YEAR) == todayCal.get(Calendar.DAY_OF_YEAR);
 
                                 if (!sameDay) {
-                                    // NOT today's data → turn grey
                                     currentZone = null;
                                     background.setColor(Color.parseColor("#808080"));
                                     return;
                                 }
-                                // ⬆️ END timestamp check
 
                                 String zone = latestDoc.getString("zone");
 
                                 if (zone != null) {
                                     setZoneColor(zone, background);
                                 } else {
-                                    // Fallback zone calculation
                                     Long dailyPEF = latestDoc.getLong("dailyPEF");
                                     Long pb = latestDoc.getLong("pb");
 
@@ -150,23 +157,5 @@ public class ZoneActivityChild extends AppCompatActivity {
                 background.setColor(Color.parseColor("#808080"));
                 break;
         }
-    }
-
-    private void openDecisionCard(boolean isChild, String parentId, String childUid, String zone) {
-        Class<?> target;
-        switch (zone) {
-            case "GREEN": target = GreenCardActivity.class; break;
-            case "YELLOW": target = YellowCardActivity.class; break;
-            case "RED": target = RedCardActivity.class; break;
-            default:
-                Toast.makeText(this, "Unknown zone.", Toast.LENGTH_SHORT).show();
-                return;
-        }
-
-        Intent i = new Intent(this, target);
-        i.putExtra(YellowCardActivity.EXTRA_IS_CHILD, isChild);
-        i.putExtra(YellowCardActivity.EXTRA_CHILD_UID, childUid);
-        i.putExtra("extra_parent_id", parentId);
-        startActivity(i);
     }
 }

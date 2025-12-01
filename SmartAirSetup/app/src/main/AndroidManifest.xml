@@ -4,7 +4,6 @@
 
     <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
     <uses-permission android:name="android.permission.SCHEDULE_EXACT_ALARM" />
-    <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission
         android:name="android.permission.WRITE_EXTERNAL_STORAGE"
@@ -17,11 +16,10 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.SmartAirSetup">
-        <!--
         <activity
-            android:name=".TechniqueTraining1"
+            android:name=".TechniqueTraining"
             android:exported="false" />
-            -->
+
         <activity
             android:name=".TechniqueTrainingVideo"
             android:exported="false" />
@@ -30,6 +28,9 @@
             android:exported="false" />
         <activity
             android:name=".ParentSettingsActivity"
+            android:exported="false" />
+        <activity
+            android:name=".RecordMedicationTriage"
             android:exported="false" />
         <activity
             android:name=".RecordMedUsageActivity"
@@ -45,7 +46,7 @@
             android:exported="false" />
         <activity
             android:name=".MedicationInventoryActivity"
-            android:exported="false" />
+            android:exported="false"/>
         <activity
             android:name=".AddEditMedicationActivity"
             android:exported="false" />
@@ -131,6 +132,12 @@
             android:name=".ZoneActivityChild"
             android:exported="false" />
         <activity
+            android:name=".EmergencySelectorActivity_Child"
+            android:exported="false" />
+        <activity
+            android:name=".OptionalDataActivity_Child"
+            android:exported="false" />
+        <activity
             android:name=".EmergencyActivity_Child"
             android:exported="false" />
         <activity
@@ -155,15 +162,11 @@
             android:name=".PDFStoreActivity"
             android:exported="false" />
         <activity
-            android:name=".PDFGenerator"
+            android:name=".ControllerLogActivity"
             android:exported="false" />
         <activity
             android:name=".MainActivity"
-            android:exported="true"/>
-
-        <activity
-            android:name=".TechniqueTraining"
-            android:exported="true" >
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -202,6 +205,7 @@
                 android:name="android.support.FILE_PROVIDER_PATHS"
                 android:resource="@xml/file_paths" />
         </provider>
+
     </application>
 
 </manifest>

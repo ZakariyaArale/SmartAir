@@ -96,5 +96,7 @@
 
     <string name="desc_user_avatar">User Avatar</string>
 
+    <string name="safety_note">This is guidance, not a diagnosis. If in doubt, call an emergency.</string>
+
 
 </resources>

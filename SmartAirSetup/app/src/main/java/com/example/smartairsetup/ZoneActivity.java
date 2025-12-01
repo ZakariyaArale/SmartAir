@@ -18,11 +18,12 @@ import java.util.Calendar;
 public class ZoneActivity extends AppCompatActivity {
 
     public Button chooseChildButton;
+    public Button backButton;
     public TextView zoneLabel;
     private FirebaseFirestore db;
-    private String parentID;
+    private String parentID; // parent UID received from intent
 
-    // NEW: track current state
+    // Track current state
     private String selectedChildUid = null;
     private String currentZone = null; // "GREEN"/"YELLOW"/"RED"
 
@@ -32,20 +33,34 @@ public class ZoneActivity extends AppCompatActivity {
         setContentView(R.layout.activity_zone);
 
         chooseChildButton = findViewById(R.id.chooseChildButton);
+        backButton = findViewById(R.id.backButton);
         zoneLabel = findViewById(R.id.zoneLabel);
         GradientDrawable background = (GradientDrawable) zoneLabel.getBackground();
-
+        background.setColor(Color.parseColor("#808080"));
         db = FirebaseFirestore.getInstance();
-        parentID = "VfB95gwXXyWFAqdajTHJBgyeYfB3"; // hardcoded parent for testing
+
+        // Get parent UID from intent
+        if (getIntent() != null && getIntent().hasExtra("PARENT_UID")) {
+            parentID = getIntent().getStringExtra("PARENT_UID");
+        } else {
+            Toast.makeText(this, "Parent UID not available.", Toast.LENGTH_SHORT).show();
+            finish();
+            return;
+        }
 
         ProcessChildren provider = new FireBaseProcessChild();
         ChildDiaglog childDiaglog = new ChildDiaglog(this, provider);
 
-        chooseChildButton.setOnClickListener(v -> {
-            childDiaglog.showSelectionDialog(chooseChildButton);
+        // Choose child button
+        chooseChildButton.setOnClickListener(v -> childDiaglog.showSelectionDialog(chooseChildButton));
+
+        // Back button just finishes the activity
+        backButton.setOnClickListener(v -> {
+            Intent intent = new Intent(this, ParentHomeActivity.class);
+            startActivity(intent);
         });
 
-        // NEW: click zone label to open decision card for current zone
+        // Zone label click shows current zone info
         zoneLabel.setOnClickListener(v -> {
             if (selectedChildUid == null) {
                 Toast.makeText(this, "Select a child first.", Toast.LENGTH_SHORT).show();
@@ -55,7 +70,7 @@ public class ZoneActivity extends AppCompatActivity {
                 Toast.makeText(this, "Zone not available yet.", Toast.LENGTH_SHORT).show();
                 return;
             }
-            openDecisionCard(false, parentID, selectedChildUid, currentZone);
+            Toast.makeText(this, "Current zone: " + currentZone, Toast.LENGTH_SHORT).show();
         });
 
         // If a child is already selected, update immediately
@@ -91,15 +106,13 @@ public class ZoneActivity extends AppCompatActivity {
                 .document("latest")
                 .get()
                 .addOnSuccessListener(latestDoc -> {
-
                     if (!latestDoc.exists()) {
                         currentZone = null;
                         background.setColor(Color.parseColor("#808080")); // grey
                         return;
                     }
 
-                    // ⬇️ NEW: Check timestamp is today
-                    Long ts = latestDoc.getLong("timestamp"); // must be millis
+                    Long ts = latestDoc.getLong("timestamp");
                     if (ts == null) {
                         currentZone = null;
                         background.setColor(Color.parseColor("#808080"));
@@ -116,12 +129,10 @@ public class ZoneActivity extends AppCompatActivity {
                                     recordCal.get(Calendar.DAY_OF_YEAR) == todayCal.get(Calendar.DAY_OF_YEAR);
 
                     if (!sameDay) {
-                        // Record is NOT from today → force grey
                         currentZone = null;
                         background.setColor(Color.parseColor("#808080"));
                         return;
                     }
-                    // ⬆️ END timestamp check
 
                     String zone = latestDoc.getString("zone");
                     if (zone == null) {
@@ -153,23 +164,5 @@ public class ZoneActivity extends AppCompatActivity {
                     currentZone = null;
                     background.setColor(Color.parseColor("#808080"));
                 });
-    }
-
-    private void openDecisionCard(boolean isChild, String parentId, String childUid, String zone) {
-        Class<?> target;
-        switch (zone) {
-            case "GREEN": target = GreenCardActivity.class; break;
-            case "YELLOW": target = YellowCardActivity.class; break;
-            case "RED": target = RedCardActivity.class; break;
-            default:
-                Toast.makeText(this, "Unknown zone.", Toast.LENGTH_SHORT).show();
-                return;
-        }
-
-        Intent i = new Intent(this, target);
-        i.putExtra(YellowCardActivity.EXTRA_IS_CHILD, isChild);
-        i.putExtra(YellowCardActivity.EXTRA_CHILD_UID, childUid);
-        i.putExtra("extra_parent_id", parentId);
-        startActivity(i);
     }
 }

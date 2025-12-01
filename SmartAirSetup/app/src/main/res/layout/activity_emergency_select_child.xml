@@ -1,0 +1,186 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#FFEBEE"
+    android:padding="16dp">
+
+    <!-- Title -->
+    <TextView
+        android:id="@+id/emergencyTitle"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="Emergency Follow-Up"
+        android:textSize="26sp"
+        android:textColor="#B71C1C"
+        android:fontFamily="@font/nunito_regular"
+        android:gravity="center"
+        android:layout_marginTop="24dp"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
+
+    <!-- Subtitle -->
+    <TextView
+        android:id="@+id/emergencySubtitle"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="Select the child and record what happened."
+        android:textColor="#444444"
+        android:textSize="16sp"
+        android:fontFamily="@font/nunito_medium"
+        android:gravity="center"
+        android:layout_marginTop="8dp"
+        app:layout_constraintTop_toBottomOf="@id/emergencyTitle"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
+
+    <!-- Child Selection Card -->
+    <LinearLayout
+        android:id="@+id/childSection"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:background="#FFFFFF"
+        android:padding="16dp"
+        android:elevation="4dp"
+        android:layout_marginTop="24dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
+        android:gravity="center"
+        app:layout_constraintTop_toBottomOf="@id/emergencySubtitle"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
+
+
+
+        <Button
+            android:id="@+id/chooseChildButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:backgroundTint="#FFCDD2"
+            android:elevation="2dp"
+            android:fontFamily="@font/nunito_medium"
+            android:padding="12dp"
+            android:text="Select Child"
+            android:textColor="#B71C1C"
+            android:textSize="18sp" />
+    </LinearLayout>
+
+    <!-- Follow-Up Notes -->
+    <LinearLayout
+        android:id="@+id/emergencyNotesSection"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:background="#FFFFFF"
+        android:padding="16dp"
+        android:elevation="4dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="16dp"
+        android:layout_marginTop="24dp"
+        app:layout_constraintTop_toBottomOf="@id/childSection"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
+
+        <TextView
+            android:id="@+id/followUpLabel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="What happened?"
+            android:textColor="#000000"
+            android:textSize="16sp"
+            android:fontFamily="@font/nunito_medium"
+            android:layout_marginBottom="8dp"/>
+
+        <EditText
+            android:id="@+id/followUpInput"
+            android:layout_width="match_parent"
+            android:layout_height="120dp"
+            android:gravity="top|start"
+            android:hint="Describe steps taken, symptoms, rescue/other medications used, EMS arrival..."
+            android:background="@android:color/transparent"
+            android:padding="8dp"
+            android:textSize="16sp"/>
+    </LinearLayout>
+
+    <!-- Save Button -->
+    <Button
+        android:id="@+id/saveButton"
+        android:layout_width="0dp"
+        android:layout_height="50dp"
+        android:text="Save"
+        android:textSize="20sp"
+        android:textColor="#FFFFFF"
+        android:fontFamily="@font/nunito_medium"
+        android:backgroundTint="#B71C1C"
+        android:elevation="4dp"
+        android:layout_marginStart="40dp"
+        android:layout_marginEnd="40dp"
+        android:layout_marginTop="12dp"
+        app:layout_constraintTop_toBottomOf="@id/emergencyNotesSection"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
+
+    <Button
+        android:id="@+id/recordMedicationButton"
+        android:layout_width="0dp"
+        android:layout_height="50dp"
+        android:text="Record Medication"
+        android:textSize="20sp"
+        android:textColor="#FFFFFF"
+        android:fontFamily="@font/nunito_medium"
+        android:backgroundTint="#B71C1C"
+        android:elevation="4dp"
+        android:layout_marginStart="40dp"
+        android:layout_marginEnd="40dp"
+        android:layout_marginTop="12dp"
+        app:layout_constraintTop_toBottomOf="@id/saveButton"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
+
+
+    <include
+        android:id="@+id/safetyNote"
+        layout="@layout/view_safety_note"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="8dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/backButton"/>
+    <Button
+        android:id="@+id/backButton"
+        android:layout_width="107dp"
+        android:layout_height="48dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginBottom="24dp"
+        android:background="@android:color/transparent"
+        android:fontFamily="@font/nunito_medium"
+        android:text="Back"
+        android:textColor="#B71C1C"
+        android:textSize="22sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <Button
+        android:id="@+id/nextButton"
+        android:layout_width="106dp"
+        android:layout_height="55dp"
+        android:layout_marginEnd="20dp"
+        android:layout_marginBottom="16dp"
+        android:background="@android:color/transparent"
+        android:fontFamily="@font/nunito_medium"
+        android:text="Main"
+        android:textColor="#B71C1C"
+        android:textSize="22sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+</androidx.constraintlayout.widget.ConstraintLayout>

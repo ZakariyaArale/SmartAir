@@ -2,7 +2,6 @@ package com.example.smartairsetup;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.widget.Button;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
@@ -12,8 +11,6 @@ import androidx.appcompat.app.AppCompatActivity;
 
 public class RedFlagsActivity extends AppCompatActivity {
 
-    private static final String TAG = "RedFlagsActivity";
-
     private RadioGroup radioSpeakFullSentences;
     private RadioGroup radioChestRetractions;
     private RadioGroup radioBlueLipsNails;
@@ -21,10 +18,20 @@ public class RedFlagsActivity extends AppCompatActivity {
     private Button backButton;
     private Button nextButton;
 
+    private String parentUid; // receive from intent
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_red_flags);
+
+        // Receive parent UID from intent
+        parentUid = getIntent().getStringExtra("PARENT_UID");
+        if (parentUid == null) {
+            Toast.makeText(this, "Missing parent ID", Toast.LENGTH_SHORT).show();
+            finish();
+            return;
+        }
 
         // Initialize RadioGroups
         radioSpeakFullSentences = findViewById(R.id.radioSpeakFullSentences);
@@ -35,21 +42,16 @@ public class RedFlagsActivity extends AppCompatActivity {
         backButton = findViewById(R.id.backButton);
         nextButton = findViewById(R.id.nextButton);
 
-        // Debug listeners
-        radioSpeakFullSentences.setOnCheckedChangeListener((group, checkedId) ->
-                Log.d(TAG, "SpeakFullSentences checkedId=" + checkedId));
-        radioChestRetractions.setOnCheckedChangeListener((group, checkedId) ->
-                Log.d(TAG, "ChestRetractions checkedId=" + checkedId));
-        radioBlueLipsNails.setOnCheckedChangeListener((group, checkedId) ->
-                Log.d(TAG, "BlueLipsNails checkedId=" + checkedId));
-
-        // Back button
-        backButton.setOnClickListener(v -> finish());
+        // Back button simply finishes this activity
+        backButton.setOnClickListener(v -> {
+            Intent intent = new Intent(RedFlagsActivity.this, ParentHomeActivity.class);
+            intent.putExtra("PARENT_UID", parentUid);
+            startActivity(intent);
+            finish();
+        });
 
         // Next button
         nextButton.setOnClickListener(v -> {
-            Log.d(TAG, "Next button clicked");
-
             // Ensure all questions answered
             if (radioSpeakFullSentences.getCheckedRadioButtonId() == -1 ||
                     radioChestRetractions.getCheckedRadioButtonId() == -1 ||
@@ -60,21 +62,22 @@ public class RedFlagsActivity extends AppCompatActivity {
             }
 
             // Check each radio button directly
-            boolean cantSpeakFullSentences = ((RadioButton)findViewById(R.id.radioSpeakNo)).isChecked();
-            boolean chestRetractions = ((RadioButton)findViewById(R.id.radioChestYes)).isChecked();
-            boolean blueLipsNails = ((RadioButton)findViewById(R.id.radioBlueYes)).isChecked();
+            boolean cantSpeakFullSentences = ((RadioButton) findViewById(R.id.radioSpeakNo)).isChecked();
+            boolean chestRetractions = ((RadioButton) findViewById(R.id.radioChestYes)).isChecked();
+            boolean blueLipsNails = ((RadioButton) findViewById(R.id.radioBlueYes)).isChecked();
 
-            Log.d(TAG, "Red flags -> cantSpeakFullSentences: " + cantSpeakFullSentences +
-                    ", chestRetractions: " + chestRetractions +
-                    ", blueLipsNails: " + blueLipsNails);
-
-            // Launch correct activity
+            // Launch correct activity and pass parent UID
             Intent intent;
             if (cantSpeakFullSentences || chestRetractions || blueLipsNails) {
                 intent = new Intent(this, EmergencyActivity.class);
             } else {
                 intent = new Intent(this, OptionalDataActivity.class);
             }
+            // Pass the parent UID along
+            intent.putExtra("PARENT_UID", parentUid);
+            intent.putExtra("cantSpeakFullSentences", cantSpeakFullSentences);
+            intent.putExtra("chestRetractions", chestRetractions);
+            intent.putExtra("blueLipsNails", blueLipsNails);
             startActivity(intent);
         });
     }

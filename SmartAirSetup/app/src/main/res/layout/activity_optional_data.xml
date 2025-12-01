@@ -62,44 +62,46 @@
             android:textSize="18sp"/>
     </LinearLayout>
 
-    <!-- Rescue Attempts -->
+    <!-- Follow-Up Notes -->
+    <!-- Follow-Up Notes -->
     <LinearLayout
-        android:id="@+id/rescueSection"
+        android:id="@+id/emergencyNotesSection"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:orientation="vertical"
         android:background="#FFFFFF"
         android:padding="16dp"
         android:elevation="4dp"
-        android:layout_marginTop="16dp"
         android:layout_marginStart="8dp"
         android:layout_marginEnd="8dp"
+        android:layout_marginBottom="16dp"
+        android:layout_marginTop="24dp"
         app:layout_constraintTop_toBottomOf="@id/childSection"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent">
 
         <TextView
-            android:id="@+id/rescueLabel"
+            android:id="@+id/followUpLabel"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Number of Rescue Attempts within 3 hours"
+            android:text="What happened?"
             android:textColor="#000000"
             android:textSize="16sp"
             android:fontFamily="@font/nunito_medium"
             android:layout_marginBottom="8dp"/>
 
         <EditText
-            android:id="@+id/rescueInput"
+            android:id="@+id/followUpInput"
             android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:hint="Enter number"
-            android:inputType="number"
-            android:backgroundTint="#E6F7FF"
-            android:textSize="16sp"
-            android:padding="12dp"/>
+            android:layout_height="80dp"
+            android:gravity="top|start"
+            android:hint="Describe steps taken, symptoms, rescue/other medications used, EMS arrival..."
+            android:background="@android:color/transparent"
+            android:padding="8dp"
+            android:textSize="16sp"/>
     </LinearLayout>
 
-    <!-- Optional PEF -->
+    <!-- Optional PEF Section -->
     <LinearLayout
         android:id="@+id/pefSection"
         android:layout_width="0dp"
@@ -108,10 +110,10 @@
         android:background="#FFFFFF"
         android:padding="16dp"
         android:elevation="4dp"
-        android:layout_marginTop="16dp"
         android:layout_marginStart="8dp"
         android:layout_marginEnd="8dp"
-        app:layout_constraintTop_toBottomOf="@id/rescueSection"
+        android:layout_marginTop="16dp"
+        app:layout_constraintTop_toBottomOf="@id/emergencyNotesSection"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent">
 
@@ -172,6 +174,36 @@
         app:layout_constraintTop_toBottomOf="@id/pefSection"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"/>
+
+    <!-- Record Medication Button -->
+    <Button
+        android:id="@+id/recordMedicationButton"
+        android:layout_width="0dp"
+        android:layout_height="50dp"
+        android:text="Record Medication"
+        android:textSize="20sp"
+        android:textColor="#FFFFFF"
+        android:fontFamily="@font/nunito_medium"
+        android:backgroundTint="#2E7D32"
+        android:elevation="4dp"
+        android:layout_marginStart="40dp"
+        android:layout_marginEnd="40dp"
+        android:layout_marginTop="12dp"
+        app:layout_constraintTop_toBottomOf="@id/saveButton"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
+    <include
+        android:id="@+id/safetyNote"
+        layout="@layout/view_safety_note"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="8dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/backButton" />
 
     <!-- Back Button -->
     <Button

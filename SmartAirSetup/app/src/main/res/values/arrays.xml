@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string-array name="med_type_filter_options">
+        <item>All medications</item>
+        <item>Rescue only</item>
+        <item>Controller only</item>
+    </string-array>
+
+</resources>

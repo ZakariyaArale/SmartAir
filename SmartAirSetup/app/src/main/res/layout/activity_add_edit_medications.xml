@@ -239,9 +239,13 @@
                 android:maxLength="500"
                 />
 
+            <include
+                android:id="@+id/safetyNote"
+                layout="@layout/view_safety_note"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp" />
 
         </LinearLayout>
     </ScrollView>
-
-
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -41,30 +41,31 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:id="@+id/tasksText"
+        android:id="@+id/techniqueStreakText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
-        android:text="You have 0 tasks..."
+        android:text="Your Completed Technique streak is: "
         android:textColor="@android:color/black"
         android:textSize="16sp"
         app:layout_constraintStart_toStartOf="@id/greetingText"
         app:layout_constraintTop_toBottomOf="@id/greetingText" />
 
-    <com.google.android.material.imageview.ShapeableImageView
-        android:id="@+id/profileImage"
-        android:layout_width="60dp"
-        android:layout_height="60dp"
-        android:layout_marginEnd="24dp"
-        android:src="@drawable/person"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@id/greetingText" />
+    <TextView
+        android:id="@+id/controllerStreakText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="Your Controller Day streak is: "
+        android:textColor="@android:color/black"
+        android:textSize="16sp"
+        app:layout_constraintStart_toStartOf="@id/techniqueStreakText"
+        app:layout_constraintTop_toBottomOf="@id/techniqueStreakText" />
 
     <!-- ============================================= -->
-    <!-- ==   WHITE MAIN CONTENT PANEL (UPDATED)    == -->
+    <!-- ==   GRAY MAIN CONTENT PANEL (UPDATED)    == -->
     <!-- ============================================= -->
 
-    <!-- This FrameLayout is now our white panel and Fragment container. -->
     <FrameLayout
         android:id="@+id/shortcutContainer"
         android:layout_width="0dp"
@@ -73,21 +74,15 @@
         android:background="@drawable/main_content_background"
         android:elevation="4dp"
         android:backgroundTint="#E9E9E9"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/controllerStreakText"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/tasksText">
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/safetyNote">
 
-        <!--
-            Shortcuts and other content should now be placed INSIDE this FrameLayout
-            or inside the layout file of a Fragment that is shown INSIDE this FrameLayout.
-            For now, I am placing them directly here.
-        -->
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
-            <!-- "Shortcuts" Title -->
             <TextView
                 android:id="@+id/shortcutsTitle"
                 android:layout_width="wrap_content"
@@ -101,7 +96,6 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
-            <!-- GridLayout for shortcut buttons -->
             <GridLayout
                 android:id="@+id/shortcutsGrid"
                 android:layout_width="0dp"
@@ -152,7 +146,6 @@
                             android:textSize="18dp"
                             android:textStyle="bold"
                             android:layout_gravity="center" />
-
                     </LinearLayout>
                 </FrameLayout>
 
@@ -193,9 +186,9 @@
                             android:textStyle="bold"
                             android:layout_gravity="center" />
                     </LinearLayout>
-
                 </FrameLayout>
 
+                <!-- Shortcut Card: My Badges -->
                 <FrameLayout
                     android:id="@+id/cardBadges"
                     android:layout_width="0dp"
@@ -232,12 +225,64 @@
                             android:textStyle="bold"
                             android:layout_gravity="center" />
                     </LinearLayout>
-
                 </FrameLayout>
-            </GridLayout>
-        </androidx.constraintlayout.widget.ConstraintLayout>
 
+                <!-- Shortcut Card: Check Zone (NEW) -->
+                <FrameLayout
+                    android:id="@+id/cardCheckZone"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_columnWeight="1"
+                    android:background="@drawable/shortcut_button_background"
+                    android:padding="16dp"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:foreground="?attr/selectableItemBackgroundBorderless">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+
+                        <ImageButton
+                            android:id="@+id/buttonCheckZone"
+                            android:layout_width="match_parent"
+                            android:layout_height="74dp"
+                            android:background="@android:color/transparent"
+                            android:contentDescription="Check Zone"
+                            android:src="@drawable/lung"
+                            android:scaleType="fitCenter"
+                            app:tint="#00BCD4" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="8dp"
+                            android:text="Check Zone"
+                            android:textColor="@color/black"
+                            android:textSize="18dp"
+                            android:textStyle="bold"
+                            android:layout_gravity="center" />
+                    </LinearLayout>
+                </FrameLayout>
+
+            </GridLayout>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
     </FrameLayout>
+
+    <!-- SAFETY NOTE (INCLUDED VIEW) -->
+    <include
+        android:id="@+id/safetyNote"
+        layout="@layout/view_safety_note"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="8dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/bottomNavBackground" />
 
     <!-- BELOW THIS LINE ARE THE NAVIGATION MENU BUTTONS -->
 

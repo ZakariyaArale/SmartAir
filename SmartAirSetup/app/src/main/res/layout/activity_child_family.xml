@@ -22,115 +22,52 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-
     <!--
     ============================================================
     ==      CARD VIEW FOR THE FAMILY MEMBERS LIST             ==
     ============================================================
     -->
-    <com.google.android.material.card.MaterialCardView
+
+
+    <!-- BELOW THIS LINE ARE THE NAVIGATION MENU BUTTONS -->
+
+    <include
+        android:id="@+id/safetyNote"
+        layout="@layout/view_safety_note"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="8dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/bottomNavBackground"/>
+
+    <!-- BOTTOM NAV BACKGROUND -->
+    <ScrollView
         android:id="@+id/familyTableCard"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
         android:layout_marginEnd="16dp"
+        android:background="@color/white"
         app:cardCornerRadius="12dp"
         app:cardElevation="4dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/titleFamilyMembers">
 
-        <!-- Layout inside the card -->
+        <!-- Container for dynamic rows -->
         <LinearLayout
+            android:id="@+id/familyListContainer"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:padding="16dp">
+            android:padding="16dp" />
 
-            <!-- This list will be populated dynamically. -->
-            <!-- Let's add an example row for now. -->
-            <!-- In a real app, this would be a RecyclerView. -->
-
-            <!-- Example Family Member Row 1 -->
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center_vertical"
-                android:orientation="horizontal"
-                android:paddingTop="8dp"
-                android:paddingBottom="8dp">
-
-                <ImageView
-                    android:layout_width="40dp"
-                    android:layout_height="40dp"
-                    android:src="@drawable/person" />
-
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="16dp"
-                    android:layout_weight="1"
-                    android:text="Rohat D"
-                    android:textColor="@android:color/black"
-                    android:textSize="16sp" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Parent"
-                    android:textColor="@android:color/darker_gray"
-                    android:textSize="14sp" />
-
-            </LinearLayout>
-
-            <!-- Separator Line -->
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:layout_marginTop="8dp"
-                android:layout_marginBottom="8dp"
-                android:background="#E0E0E0" />
-
-            <!-- Example Family Member Row 2 -->
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center_vertical"
-                android:orientation="horizontal"
-                android:paddingTop="8dp"
-                android:paddingBottom="8dp">
-
-                <ImageView
-                    android:layout_width="40dp"
-                    android:layout_height="40dp"
-                    android:src="@drawable/person" />
-
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="16dp"
-                    android:layout_weight="1"
-                    android:text="Rohat M"
-                    android:textColor="@android:color/black"
-                    android:textSize="16sp" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Child"
-                    android:textColor="@android:color/darker_gray"
-                    android:textSize="14sp" />
-
-            </LinearLayout>
-
-        </LinearLayout>
-
-    </com.google.android.material.card.MaterialCardView>
-
-    <!-- BELOW THIS LINE ARE THE NAVIGATION MENU BUTTONS -->
-
-    <!-- BOTTOM NAV BACKGROUND -->
+    </ScrollView>
     <View
         android:id="@+id/bottomNavBackground"
         android:layout_width="0dp"
@@ -159,7 +96,7 @@
         app:layout_constraintStart_toStartOf="@id/homeText"
         app:layout_constraintTop_toTopOf="@id/bottomNavBackground"
         app:srcCompat="@drawable/menu_home_button_logo"
-        app:tint="@color/active_button_icon_color" />
+        app:tint="@color/button_icon_color" />
 
     <TextView
         android:id="@+id/homeText"
@@ -169,7 +106,7 @@
         android:gravity="center"
         android:paddingBottom="4dp"
         android:text="Home"
-        android:textColor="@color/active_button_icon_color"
+        android:textColor="@color/button_icon_color"
         android:textSize="10sp"
         app:layout_constraintBottom_toBottomOf="@id/bottomNavBackground"
         app:layout_constraintEnd_toStartOf="@+id/familyText"
@@ -191,7 +128,7 @@
         app:layout_constraintStart_toStartOf="@id/familyText"
         app:layout_constraintTop_toTopOf="@id/bottomNavBackground"
         app:srcCompat="@drawable/menu_family_button_logo"
-        app:tint="@color/button_icon_color" />
+        app:tint="@color/active_button_icon_color" />
 
     <TextView
         android:id="@+id/familyText"
@@ -201,7 +138,7 @@
         android:gravity="center"
         android:paddingBottom="4dp"
         android:text="Family"
-        android:textColor="@color/button_icon_color"
+        android:textColor="@color/active_button_icon_color"
         android:textSize="10sp"
         app:layout_constraintBottom_toBottomOf="@id/bottomNavBackground"
         app:layout_constraintEnd_toStartOf="@+id/emergencyText"

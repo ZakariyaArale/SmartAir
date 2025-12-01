@@ -20,14 +20,17 @@ import java.util.Map;
 
 public class EmergencySelectorActivity extends AppCompatActivity {
 
-    private static final String TAG = "EmergencyTriage";
-
-    private Button chooseChildButton, saveButton, backButton, nextButton;
+    private Button chooseChildButton, saveButton, backButton, nextButton, recordMedicationButton;
     private EditText followUpInput;
 
     private FirebaseFirestore db;
     private String selectedChildUid;
-    private final String parentUid = "VfB95gwXXyWFAqdajTHJBgyeYfB3"; // hardcoded for testing
+    private String parentUid;
+
+    // Red flags passed from EmergencyActivity
+    private boolean cantSpeakFullSentences;
+    private boolean chestRetractions;
+    private boolean blueLipsNails;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,29 +42,73 @@ public class EmergencySelectorActivity extends AppCompatActivity {
         saveButton = findViewById(R.id.saveButton);
         backButton = findViewById(R.id.backButton);
         nextButton = findViewById(R.id.nextButton);
+        recordMedicationButton = findViewById(R.id.recordMedicationButton);
 
         db = FirebaseFirestore.getInstance();
 
+        // Retrieve parent UID and red flags from EmergencyActivity
+        Intent incomingIntent = getIntent();
+        parentUid = incomingIntent.getStringExtra("PARENT_UID");
+        cantSpeakFullSentences = incomingIntent.getBooleanExtra("cantSpeakFullSentences", false);
+        chestRetractions = incomingIntent.getBooleanExtra("chestRetractions", false);
+        blueLipsNails = incomingIntent.getBooleanExtra("blueLipsNails", false);
+
+        if (parentUid == null) {
+            Toast.makeText(this, "Missing parent ID", Toast.LENGTH_SHORT).show();
+            finish();
+            return;
+        }
+
+        // Child selection dialog
         ProcessChildren provider = new FireBaseProcessChild();
         ChildDiaglog dialog = new ChildDiaglog(this, provider);
 
         chooseChildButton.setOnClickListener(v -> dialog.showSelectionDialog(chooseChildButton));
+        saveButton.setOnClickListener(v -> saveTriageLog());
 
-        saveButton.setOnClickListener(v -> {
-            saveTriageLog();
-        });
-        backButton.setOnClickListener(v -> {
-            Intent intent = new Intent(this, EmergencyActivity.class);
+        // Record Medication button → passes returnClass dynamically
+        recordMedicationButton.setOnClickListener(v -> {
+            Object tag = chooseChildButton.getTag();
+            if (tag == null) {
+                Toast.makeText(this, "Please select a child first", Toast.LENGTH_SHORT).show();
+                return;
+            }
+
+            selectedChildUid = tag.toString();
+            Intent intent = new Intent(EmergencySelectorActivity.this, RecordMedicationTriage.class);
+            intent.putExtra("CHILD_ID", selectedChildUid);
+            intent.putExtra("returnClass", EmergencySelectorActivity.this.getClass().getName());
+            intent.putExtra("PARENT_UID", parentUid);
+            intent.putExtra("cantSpeakFullSentences", cantSpeakFullSentences);
+            intent.putExtra("chestRetractions", chestRetractions);
+            intent.putExtra("blueLipsNails", blueLipsNails);
+
+            Log.d("EmergencySelector", "Launching RecordMedicationTriage: childUid=" + selectedChildUid
+                    + ", parentUid=" + parentUid
+                    + ", cantSpeakFullSentences=" + cantSpeakFullSentences
+                    + ", chestRetractions=" + chestRetractions
+                    + ", blueLipsNails=" + blueLipsNails);
             startActivity(intent);
         });
 
-        nextButton.setOnClickListener(v ->
-                Toast.makeText(this, "Next screen not implemented", Toast.LENGTH_SHORT).show()
-        );
+        // Back button → return to EmergencyActivity with parent UID + red flags
+        backButton.setOnClickListener(v -> {
+            Intent intent = new Intent(this, EmergencyActivity.class);
+            intent.putExtra("PARENT_UID", parentUid);
+            intent.putExtra("cantSpeakFullSentences", cantSpeakFullSentences);
+            intent.putExtra("chestRetractions", chestRetractions);
+            intent.putExtra("blueLipsNails", blueLipsNails);
+            startActivity(intent);
+        });
+
+        // Next button → placeholder, can extend for next workflow
+        nextButton.setOnClickListener(v -> {
+            Intent intent = new Intent(this, ParentHomeActivity.class);
+            startActivity(intent);
+        });
     }
 
     private void saveTriageLog() {
-        // Read selected child UID from button tag
         Object tag = chooseChildButton.getTag();
         if (tag != null) selectedChildUid = tag.toString();
 
@@ -76,9 +123,7 @@ public class EmergencySelectorActivity extends AppCompatActivity {
             return;
         }
 
-
-        String dateId = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
-                .format(new Date());
+        String dateId = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(new Date());
 
         DocumentReference logRef = db.collection("users")
                 .document(parentUid)
@@ -94,18 +139,16 @@ public class EmergencySelectorActivity extends AppCompatActivity {
         data.put("message-triage", message);
         data.put("timestamp", System.currentTimeMillis());
 
+        // Record red flags
+        data.put("cantSpeakFullSentences", cantSpeakFullSentences);
+        data.put("chestRetractions", chestRetractions);
+        data.put("blueLipsNails", blueLipsNails);
 
-        logRef.get().addOnSuccessListener(doc -> {
-            logRef.set(data)
-                    .addOnSuccessListener(aVoid -> {
-                        Toast.makeText(this, "Emergency triage logged", Toast.LENGTH_SHORT).show();
-                        followUpInput.setText("");
-                        Log.d(TAG, "Logged triage under " + dateId);
-                    })
-                    .addOnFailureListener(e -> {
-                        Toast.makeText(this, "Save failed: " + e.getMessage(), Toast.LENGTH_LONG).show();
-                        Log.e(TAG, "Error writing triage", e);
-                    });
-        });
+        logRef.set(data)
+                .addOnSuccessListener(aVoid -> {
+                    Toast.makeText(this, "Emergency triage logged", Toast.LENGTH_SHORT).show();
+                    followUpInput.setText("");
+                })
+                .addOnFailureListener(e -> Toast.makeText(this, "Save failed: " + e.getMessage(), Toast.LENGTH_LONG).show());
     }
 }
