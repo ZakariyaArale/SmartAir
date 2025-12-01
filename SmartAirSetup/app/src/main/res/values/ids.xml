@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <item name="textChild" type="id" />
+    <item name="textInviteLink" type="id" />
+    <item name="buttonGenerate" type="id" />
+    <item name="buttonCopy" type="id" />
+    <item name="buttonShare" type="id" />
+    <item name="buttonRevoke" type="id" />
+</resources>

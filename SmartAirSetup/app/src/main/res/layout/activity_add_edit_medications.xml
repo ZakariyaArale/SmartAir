@@ -1,0 +1,247 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#DFF3FF"
+    android:padding="20dp">
+
+    <!-- Buttons at the bottom of the screen -->
+    <Button
+        android:id="@+id/cancelButton"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="10dp"
+        android:layout_marginBottom="24dp"
+        android:backgroundTint="#2E7D32"
+        android:text="Cancel"
+        android:textColor="@android:color/white"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/saveButton"
+        app:layout_constraintStart_toStartOf="parent" />
+
+
+    <Button
+        android:id="@+id/saveButton"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:layout_marginBottom="24dp"
+        android:backgroundTint="#2E7D32"
+        android:text="Save Medication"
+        android:textColor="@android:color/white"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/cancelButton" />
+
+
+    <!-- This makes the title-->
+    <!-- Remember to replace hard coded text-->
+    <TextView
+        android:id="@+id/medCheckInTitleTV"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="32dp"
+        android:layout_marginEnd="16dp"
+        android:fontFamily="@font/nunito_regular"
+        android:gravity="center"
+        android:text='Add Your Medication Information'
+        android:textColor="#2E7D32"
+        android:textSize="24sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+
+    <!-- This makes Scrollable Form-->
+    <ScrollView
+        android:id="@+id/formScroll"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginBottom="10dp"
+        android:padding="16dp"
+        app:layout_constraintBottom_toTopOf="@+id/cancelButton"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/medCheckInTitleTV"
+        app:layout_constraintVertical_bias="0.0"
+        android:background="@color/white">
+
+        <!-- The item that holds list of other items-->
+        <LinearLayout
+            android:id="@+id/formLL"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <!-- All the form inputs to add new Medication :) and their titles-->
+            <TextView
+                android:id="@+id/childNameTV"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/nunito_regular"
+                android:text="Child"
+                android:textColor="#2E7D32"
+                android:textSize="20sp" />
+
+            <Spinner
+                android:id="@+id/childSpinner"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:spinnerMode="dropdown"
+                android:layout_marginBottom="20dp"
+                android:fontFamily="@font/nunito_medium"
+                android:hint="Select a Child"
+                android:textColor="@color/black"
+                android:textSize="20sp"
+                tools:textColorHint="#666666" />
+
+            <TextView
+                android:id="@+id/medNameTV"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/nunito_regular"
+                android:text="Medication Name"
+                android:textColor="#2E7D32"
+                android:textSize="20sp" />
+
+            <EditText
+                android:id="@+id/medNameET"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="20dp"
+                android:fontFamily="@font/nunito_medium"
+                android:hint="Type Name Here. Max 50 characters"
+                android:textColor="@color/black"
+                android:textSize="20sp"
+                tools:textColorHint="#666666"
+                android:maxLength="50"
+                />
+
+            <TextView
+                android:id="@+id/purchaseDateTV"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/nunito_regular"
+                android:text="Purchase Date"
+                android:textColor="#2E7D32"
+                android:textSize="20sp" />
+
+            <EditText
+                android:id="@+id/purchaseDateET"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="20dp"
+                android:clickable="true"
+                android:focusable="false"
+                android:fontFamily="@font/nunito_medium"
+                android:hint="Select Date"
+                android:textColor="@color/black"
+                android:textSize="20sp"
+                tools:textColorHint="#666666" />
+
+            <TextView
+                android:id="@+id/expiryDateTV"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/nunito_regular"
+                android:text="Expiry Date"
+                android:textColor="#2E7D32"
+                android:textSize="20sp" />
+
+            <EditText
+                android:id="@+id/expiryDateET"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="20dp"
+                android:clickable="true"
+                android:focusable="false"
+                android:fontFamily="@font/nunito_medium"
+                android:hint="Select Date"
+                android:textColor="@color/black"
+                android:textSize="20sp"
+                tools:textColorHint="#666666" />
+
+            <TextView
+                android:id="@+id/doseCountTV"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/nunito_regular"
+                android:text="Doses Left"
+                android:textColor="#2E7D32"
+                android:textSize="20sp" />
+
+            <NumberPicker
+                android:id="@+id/doseCountNP"
+                android:layout_width="wrap_content"
+                android:layout_height="82dp"
+                android:layout_gravity="center"
+                android:textColor="@color/black" />
+
+            <TextView
+                android:id="@+id/rescueMedTV"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/nunito_regular"
+                android:text="Is this a Rescue Medication?"
+                android:textColor="#2E7D32"
+                android:textSize="20sp" />
+
+
+            <Switch
+                android:id="@+id/rescueMedSwitch"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="right"
+                android:layout_marginEnd="40dp"
+                android:layout_marginBottom="20dp"
+                android:focusable="false"
+                android:scaleX="1.3"
+                android:scaleY="1.3"
+                android:showText="true"
+                android:textOff="No"
+                android:textOn="Yes"
+                android:thumbTint="#629a79"
+                android:trackTint="#08CA0E" />
+
+            <TextView
+                android:id="@+id/medNotesTV"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/nunito_regular"
+                android:text="Additional Notes:"
+                android:textColor="#2E7D32"
+                android:textSize="20sp" />
+
+            <!-- note: that "max lines" actually controls
+                how many it allows before it starts scrolling-->
+            <EditText
+                android:id="@+id/notesET"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:minHeight="130dp"
+                android:layout_marginBottom="20dp"
+                android:hint="Type Notes Here, max 500 characters"
+
+                android:fontFamily="@font/nunito_medium"
+                android:textColor="@color/black"
+                android:textSize="20sp"
+                tools:textColorHint="#666666"
+                android:gravity="top|start"
+                android:inputType="textMultiLine"
+
+                android:maxLines="5"
+                android:maxLength="500"
+                />
+
+
+        </LinearLayout>
+    </ScrollView>
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

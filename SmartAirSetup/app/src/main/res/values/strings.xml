@@ -1,0 +1,100 @@
+<resources>
+    <string name="app_name">SmartAirSetup</string>
+
+    <!-- Onboarding texts -->
+    <string name="onboarding_heading">Welcome to SmartAir!</string>
+    <string name="onboarding_subtitle">Your personalized asthma assistance</string>
+    <string name="onboarding_description">Click next to learn more about the purpose of the app\nClick skip to signup</string>
+
+    <string name="forgot_password">Forgot password?</string>
+    <string name="onboarding_heading2">Breathe With Confidence!</string>
+    <string name="onboarding_subtitle2">SmartAir teaches children how to manage asthma safely while helping families and providers stay informed</string>
+    <string name="onboarding_description2">Click next to learn more about rescue vs controller\nClick back to return to the previous screen\nClick skip to signup</string>
+
+    <string name="onboarding_heading3">Quick Relief, Daily Protection!</string>
+    <string name="onboarding_subtitle3">Make sure to log the right inhaler:\nRescue for emergencies, Controller for daily protection</string>
+    <string name="onboarding_description3">Click next to learn more about data security\nClick back to return to the previous screen\nClick skip to signup</string>
+
+    <string name="onboarding_heading4">Your Data, Your Safety!</string>
+    <string name="onboarding_subtitle4">By default your health data is private, parents control what information is shared with healthcare providers, so your data stays safe and private</string>
+    <string name="onboarding_description4">Click next to get started!\nClick back to return to the previous screen</string>
+
+    <string name="onboarding_speak">Onboarding slides</string>
+
+    <!-- Button texts -->
+    <string name="back_button">Back</string>
+    <string name="skip_button">Skip</string>
+    <string name="next_button">Next</string>
+
+    <!-- Image content descriptions -->
+    <string name="onboarding_image_desc">Person Image</string>
+    <string name="onboarding_image_desc2">Family/Provider Image</string>
+    <string name="onboarding_image_desc3">Inhaler Image</string>
+    <string name="onboarding_image_desc4">Shield Image</string>
+
+    <!-- Titles -->
+    <string name="pef_title">Peak Expiratory Flow</string>
+    <string name="pef_subtitle">Enter your childs PEF readings below</string>
+
+    <!-- Child selection -->
+    <string name="choose_child">Select child</string>
+
+    <!-- Entry labels / hints -->
+    <string name="pef_entry_label">PEF Entry</string>
+    <string name="hint_daily_pef">Daily</string>
+    <string name="pre_med_hint">Pre-medication</string>
+    <string name="post_med_hint">Post-medication</string>
+
+    <!-- Units -->
+    <string name="unit_lmin">L/min</string>
+
+    <!-- Buttons -->
+    <string name="save_button">Save</string>
+
+    <!-- Zone -->
+    <string name="zone_heading">Child Zone</string>
+    <string name="check_zone">Check Zone</string>
+    <string name="zone_subtitle">Choose a child to check their PEF Zone</string>
+    <string name="zone_description">This indicator above indicates the child’s PEF zone\nbased on their daily PEF compared to their PB\n\nGrey = Invalid child/PB has no entry/PEF has not been entered today\nGreen = ≥80% PB\nYellow = 50–79% PB\nRed = &lt;50% PB</string>
+
+    <!-- Personal Best -->
+    <string name="pb_title">Set Personal Best</string>
+    <string name="pb_subtitle">Choose a child and enter their PB value.</string>
+    <string name="pb_entry_label">Enter Personal Best</string>
+    <string name="pb_hint">Enter PB</string>
+
+    <string-array name="trigger_filter_options">
+        <item>Any trigger</item>
+        <item>Exercise</item>
+        <item>Cold air</item>
+        <item>Dust / pets</item>
+        <item>Smoke</item>
+        <item>Illness</item>
+        <item>Strong odors / perfumes</item>
+    </string-array>
+
+    <string-array name="symptom_filter_options">
+        <item>Any symptom</item>
+        <item>Night waking (some/a lot)</item>
+        <item>Activity limits (some/a lot)</item>
+        <item>Cough / wheeze (some/a lot)</item>
+    </string-array>
+
+    <!--Home Screen -->
+    <!-- Navigation Buttons -->
+    <!-- Navigation Menu Texts -->
+    <string name="nav_home">Home</string>
+    <string name="nav_family">Family</string>
+    <string name="nav_profile">Profile</string>
+    <string name="nav_settings">Settings</string>
+
+    <!-- Family Screen Texts -->
+    <string name="family_members_title">Family Members</string>
+    <string name="add_member_button">Add Member</string>
+    <string name="role_parent">Parent</string>
+    <string name="role_child">Child</string>
+
+    <string name="desc_user_avatar">User Avatar</string>
+
+
+</resources>

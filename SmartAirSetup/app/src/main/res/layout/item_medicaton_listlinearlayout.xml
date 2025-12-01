@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="horizontal"
+    android:padding="16dp"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/selectable_med_item_background"
+    android:layout_margin="8dp"
+    android:foreground="?attr/selectableItemBackground"
+    >
+
+    <TextView
+        android:id="@+id/medNameTV"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:outlineProvider="bounds"
+        android:textStyle="bold"
+        android:textSize="18sp"
+        android:text="#000000"
+        android:fontFamily="@font/nunito_regular"
+        android:layout_weight="1"/>
+    <TextView
+        android:id="@+id/childNameTV"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="end"
+        android:textSize="18sp"
+        android:text="#000000"
+        android:fontFamily="@font/nunito_regular"
+        />
+
+
+</LinearLayout>

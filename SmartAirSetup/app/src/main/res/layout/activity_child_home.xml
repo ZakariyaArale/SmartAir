@@ -1,0 +1,383 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/background_colour"
+    tools:context=".ChildHomeActivity">
+
+    <!-- Notification Button -->
+    <ImageButton
+        android:id="@+id/notificationButton"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="16dp"
+        android:background="?attr/selectableItemBackgroundBorderless"
+        android:contentDescription="Notifications"
+        android:padding="6dp"
+        android:scaleType="fitCenter"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:tint="@color/button_icon_color"
+        app:srcCompat="@drawable/menu_notifications_button_logo" />
+
+    <!-- ============================================= -->
+    <!-- ==        TOP HEADER SECTION (NEW)         == -->
+    <!-- ============================================= -->
+
+    <TextView
+        android:id="@+id/greetingText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="64dp"
+        android:text="Hi, "
+        android:textColor="@android:color/black"
+        android:textSize="32sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/tasksText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="You have 0 tasks..."
+        android:textColor="@android:color/black"
+        android:textSize="16sp"
+        app:layout_constraintStart_toStartOf="@id/greetingText"
+        app:layout_constraintTop_toBottomOf="@id/greetingText" />
+
+    <com.google.android.material.imageview.ShapeableImageView
+        android:id="@+id/profileImage"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:layout_marginEnd="24dp"
+        android:src="@drawable/person"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@id/greetingText" />
+
+    <!-- ============================================= -->
+    <!-- ==   WHITE MAIN CONTENT PANEL (UPDATED)    == -->
+    <!-- ============================================= -->
+
+    <!-- This FrameLayout is now our white panel and Fragment container. -->
+    <FrameLayout
+        android:id="@+id/shortcutContainer"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginTop="32dp"
+        android:background="@drawable/main_content_background"
+        android:elevation="4dp"
+        android:backgroundTint="#E9E9E9"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tasksText">
+
+        <!--
+            Shortcuts and other content should now be placed INSIDE this FrameLayout
+            or inside the layout file of a Fragment that is shown INSIDE this FrameLayout.
+            For now, I am placing them directly here.
+        -->
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <!-- "Shortcuts" Title -->
+            <TextView
+                android:id="@+id/shortcutsTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="24dp"
+                android:layout_marginTop="24dp"
+                android:text="Shortcuts"
+                android:textColor="@android:color/black"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <!-- GridLayout for shortcut buttons -->
+            <GridLayout
+                android:id="@+id/shortcutsGrid"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginEnd="16dp"
+                android:columnCount="2"
+                android:rowCount="2"
+                android:useDefaultMargins="true"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/shortcutsTitle">
+
+                <!-- Shortcut Card: Inhaler Technique -->
+                <FrameLayout
+                    android:id="@+id/cardInhalerTechnique"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_columnWeight="1"
+                    android:background="@drawable/shortcut_button_background"
+                    android:padding="16dp"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:foreground="?attr/selectableItemBackgroundBorderless">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+
+                        <ImageButton
+                            android:id="@+id/buttonInhalerTechnique"
+                            android:layout_width="match_parent"
+                            android:layout_height="73dp"
+                            android:background="@android:color/transparent"
+                            android:contentDescription="Inhaler Technique"
+                            android:scaleType="fitCenter"
+                            android:src="@drawable/shortcut_technique_training"
+                            app:tint="#00BCD4" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="8dp"
+                            android:text="Inhaler Technique"
+                            android:textColor="@color/black"
+                            android:textSize="18dp"
+                            android:textStyle="bold"
+                            android:layout_gravity="center" />
+
+                    </LinearLayout>
+                </FrameLayout>
+
+                <!-- Shortcut Card: Take Medication -->
+                <FrameLayout
+                    android:id="@+id/cardTakeMedication"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_columnWeight="1"
+                    android:background="@drawable/shortcut_button_background"
+                    android:padding="16dp"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:foreground="?attr/selectableItemBackgroundBorderless">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+
+                        <ImageButton
+                            android:id="@+id/buttonTakeMedication"
+                            android:layout_width="match_parent"
+                            android:layout_height="74dp"
+                            android:background="@android:color/transparent"
+                            android:contentDescription="Take Medication"
+                            android:src="@drawable/shortcut_take_medication"
+                            android:scaleType="fitCenter"
+                            app:tint="#00BCD4" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="8dp"
+                            android:text="Take Medication"
+                            android:textColor="@color/black"
+                            android:textSize="18dp"
+                            android:textStyle="bold"
+                            android:layout_gravity="center" />
+                    </LinearLayout>
+
+                </FrameLayout>
+
+                <FrameLayout
+                    android:id="@+id/cardBadges"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_columnWeight="1"
+                    android:background="@drawable/shortcut_button_background"
+                    android:padding="16dp"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:foreground="?attr/selectableItemBackgroundBorderless">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+
+                        <ImageButton
+                            android:id="@+id/buttonBadges"
+                            android:layout_width="match_parent"
+                            android:layout_height="74dp"
+                            android:background="@android:color/transparent"
+                            android:contentDescription="My Badges"
+                            android:src="@drawable/badge"
+                            android:scaleType="fitCenter"
+                            app:tint="#00BCD4" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="8dp"
+                            android:text="My Badges"
+                            android:textColor="@color/black"
+                            android:textSize="18dp"
+                            android:textStyle="bold"
+                            android:layout_gravity="center" />
+                    </LinearLayout>
+
+                </FrameLayout>
+            </GridLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </FrameLayout>
+
+    <!-- BELOW THIS LINE ARE THE NAVIGATION MENU BUTTONS -->
+
+    <!-- BOTTOM NAV BACKGROUND -->
+    <View
+        android:id="@+id/bottomNavBackground"
+        android:layout_width="0dp"
+        android:layout_height="64dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="16dp"
+        android:background="@drawable/bottom_nav_background"
+        android:elevation="8dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <!-- Home Button + Text -->
+    <ImageButton
+        android:id="@+id/homeButton"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:background="?attr/selectableItemBackgroundBorderless"
+        android:contentDescription="Home"
+        android:elevation="9dp"
+        android:paddingTop="8dp"
+        android:scaleType="fitCenter"
+        app:layout_constraintBottom_toTopOf="@id/homeText"
+        app:layout_constraintEnd_toEndOf="@id/homeText"
+        app:layout_constraintStart_toStartOf="@id/homeText"
+        app:layout_constraintTop_toTopOf="@id/bottomNavBackground"
+        app:srcCompat="@drawable/menu_home_button_logo"
+        app:tint="@color/active_button_icon_color" />
+
+    <TextView
+        android:id="@+id/homeText"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:elevation="9dp"
+        android:gravity="center"
+        android:paddingBottom="4dp"
+        android:text="Home"
+        android:textColor="@color/active_button_icon_color"
+        android:textSize="10sp"
+        app:layout_constraintBottom_toBottomOf="@id/bottomNavBackground"
+        app:layout_constraintEnd_toStartOf="@+id/familyText"
+        app:layout_constraintHorizontal_chainStyle="spread"
+        app:layout_constraintStart_toStartOf="@id/bottomNavBackground" />
+
+    <!-- Family Button + Text -->
+    <ImageButton
+        android:id="@+id/familyButton"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:background="?attr/selectableItemBackgroundBorderless"
+        android:contentDescription="Family"
+        android:elevation="9dp"
+        android:paddingTop="8dp"
+        android:scaleType="fitCenter"
+        app:layout_constraintBottom_toTopOf="@id/familyText"
+        app:layout_constraintEnd_toEndOf="@id/familyText"
+        app:layout_constraintStart_toStartOf="@id/familyText"
+        app:layout_constraintTop_toTopOf="@id/bottomNavBackground"
+        app:srcCompat="@drawable/menu_family_button_logo"
+        app:tint="@color/button_icon_color" />
+
+    <TextView
+        android:id="@+id/familyText"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:elevation="9dp"
+        android:gravity="center"
+        android:paddingBottom="4dp"
+        android:text="Family"
+        android:textColor="@color/button_icon_color"
+        android:textSize="10sp"
+        app:layout_constraintBottom_toBottomOf="@id/bottomNavBackground"
+        app:layout_constraintEnd_toStartOf="@+id/emergencyText"
+        app:layout_constraintStart_toEndOf="@+id/homeText" />
+
+    <!-- Emergency Button + Text -->
+    <ImageButton
+        android:id="@+id/emergencyButton"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:background="?attr/selectableItemBackgroundBorderless"
+        android:contentDescription="Emergency"
+        android:elevation="9dp"
+        android:paddingTop="8dp"
+        android:scaleType="fitCenter"
+        app:layout_constraintBottom_toTopOf="@id/emergencyText"
+        app:layout_constraintEnd_toEndOf="@id/emergencyText"
+        app:layout_constraintStart_toStartOf="@id/emergencyText"
+        app:layout_constraintTop_toTopOf="@id/bottomNavBackground"
+        app:srcCompat="@drawable/menu_emergency_button_logo"
+        app:tint="@color/button_icon_color" />
+
+    <TextView
+        android:id="@+id/emergencyText"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:elevation="9dp"
+        android:gravity="center"
+        android:paddingBottom="4dp"
+        android:text="Emergency"
+        android:textColor="@color/button_icon_color"
+        android:textSize="10sp"
+        app:layout_constraintBottom_toBottomOf="@id/bottomNavBackground"
+        app:layout_constraintEnd_toStartOf="@+id/settingsText"
+        app:layout_constraintStart_toEndOf="@+id/familyText" />
+
+    <!-- Settings Button + Text -->
+    <ImageButton
+        android:id="@+id/settingsButton"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:background="?attr/selectableItemBackgroundBorderless"
+        android:contentDescription="Settings"
+        android:elevation="9dp"
+        android:paddingTop="8dp"
+        android:scaleType="fitCenter"
+        app:layout_constraintBottom_toTopOf="@id/settingsText"
+        app:layout_constraintEnd_toEndOf="@id/settingsText"
+        app:layout_constraintStart_toStartOf="@id/settingsText"
+        app:layout_constraintTop_toTopOf="@id/bottomNavBackground"
+        app:srcCompat="@drawable/menu_settings_button_logo"
+        app:tint="@color/button_icon_color" />
+
+    <TextView
+        android:id="@+id/settingsText"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:elevation="9dp"
+        android:gravity="center"
+        android:paddingBottom="4dp"
+        android:text="Settings"
+        android:textColor="@color/button_icon_color"
+        android:textSize="10sp"
+        app:layout_constraintBottom_toBottomOf="@id/bottomNavBackground"
+        app:layout_constraintEnd_toEndOf="@id/bottomNavBackground"
+        app:layout_constraintStart_toEndOf="@+id/emergencyText" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

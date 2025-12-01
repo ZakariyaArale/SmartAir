@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#DFF3FF"
+    android:padding="16dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/textScheduleTitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Controller medication schedule"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            android:fontFamily="@font/nunito_regular" />
+
+        <TextView
+            android:id="@+id/textScheduleChildName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Child: "
+            android:layout_marginTop="8dp"
+            android:fontFamily="@font/nunito_medium" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="On which days is controller medication planned?"
+            android:layout_marginTop="16dp" />
+
+        <!-- Day-of-week checkboxes -->
+        <CheckBox
+            android:id="@+id/checkMon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Monday" />
+        <CheckBox
+            android:id="@+id/checkTue"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Tuesday" />
+        <CheckBox
+            android:id="@+id/checkWed"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Wednesday" />
+        <CheckBox
+            android:id="@+id/checkThu"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Thursday" />
+        <CheckBox
+            android:id="@+id/checkFri"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Friday" />
+        <CheckBox
+            android:id="@+id/checkSat"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Saturday" />
+        <CheckBox
+            android:id="@+id/checkSun"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Sunday" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="How many doses per planned day?"
+            android:layout_marginTop="16dp" />
+
+        <EditText
+            android:id="@+id/editDosesPerDay"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="number"
+            android:hint="e.g. 2" />
+
+        <Button
+            android:id="@+id/buttonSaveSchedule"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Save schedule"
+            android:layout_marginTop="24dp"
+            android:backgroundTint="@color/button_icon_color" />
+
+        <Button
+            android:id="@+id/backButton"
+            android:layout_width="wrap_content"
+            android:layout_height="48dp"
+            android:layout_marginTop="24dp"
+            android:layout_marginBottom="24dp"
+            android:layout_gravity="center_horizontal"
+            android:background="@android:color/transparent"
+            android:fontFamily="@font/nunito_medium"
+            android:text="@string/back_button"
+            android:textColor="#2E7D32"
+            android:textSize="22sp" />
+
+    </LinearLayout>
+</ScrollView>

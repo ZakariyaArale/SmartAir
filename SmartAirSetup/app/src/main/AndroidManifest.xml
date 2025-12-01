@@ -1,0 +1,207 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.example.smartairsetup">
+
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
+    <uses-permission android:name="android.permission.SCHEDULE_EXACT_ALARM" />
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission
+        android:name="android.permission.WRITE_EXTERNAL_STORAGE"
+        android:maxSdkVersion="28" />
+
+    <application
+        android:allowBackup="true"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:roundIcon="@mipmap/ic_launcher_round"
+        android:supportsRtl="true"
+        android:theme="@style/Theme.SmartAirSetup">
+        <!--
+        <activity
+            android:name=".TechniqueTraining1"
+            android:exported="false" />
+            -->
+        <activity
+            android:name=".TechniqueTrainingVideo"
+            android:exported="false" />
+        <activity
+            android:name=".ChildSettingsActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ParentSettingsActivity"
+            android:exported="false" />
+        <activity
+            android:name=".RecordMedUsageActivity"
+            android:exported="false" />
+        <activity
+            android:name=".PrePostCheckActivity"
+            android:exported="false" />
+        <activity
+            android:name=".RecheckActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ProviderChildPortalActivity"
+            android:exported="false" />
+        <activity
+            android:name=".MedicationInventoryActivity"
+            android:exported="false" />
+        <activity
+            android:name=".AddEditMedicationActivity"
+            android:exported="false" />
+        <activity
+            android:name=".DailyCheckIn"
+            android:exported="false" /> <!-- Add-child screen (parent-only) -->
+        <activity
+            android:name=".AddChildActivity"
+            android:exported="false" /> <!-- Signup screen -->
+        <activity
+            android:name=".SignupActivity"
+            android:exported="false" /> <!-- Login screen -->
+        <activity
+            android:name=".LoginActivity"
+            android:exported="false" />
+        <activity
+            android:name=".OnboardingActivity"
+            android:exported="false" />
+        <activity
+            android:name=".OnboardingActivity2"
+            android:exported="false" />
+        <activity
+            android:name=".OnboardingActivity3"
+            android:exported="false" />
+        <activity
+            android:name=".OnboardingActivity4"
+            android:exported="false" /> <!-- Main launcher screen -->
+        <activity
+            android:name=".ShareWithProviderActivity"
+            android:exported="false" /> <!-- Parent -->
+        <activity
+            android:name=".ProviderHomeActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ParentHomeActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ParentFamilyActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ParentBadgeSettingsActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ChildHomeActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ChildFamilyActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ChildBadgesActivity"
+            android:exported="false" /> <!--  -->
+        <activity
+            android:name=".HistoryActivity"
+            android:exported="false" />
+        <activity
+            android:name=".PBActivity"
+            android:exported="false" />
+        <activity
+            android:name=".PEFActivity"
+            android:exported="false" />
+        <activity
+            android:name=".EmergencySelectorActivity"
+            android:exported="false" />
+        <activity
+            android:name=".GreenCardActivity"
+            android:exported="false" />
+        <activity
+            android:name=".YellowCardActivity"
+            android:exported="false" />
+        <activity
+            android:name=".RedCardActivity"
+            android:exported="false" />
+        <activity
+            android:name=".OptionalDataActivity"
+            android:exported="false" />
+        <activity
+            android:name=".EmergencyActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ZoneActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ZoneActivityChild"
+            android:exported="false" />
+        <activity
+            android:name=".EmergencyActivity_Child"
+            android:exported="false" />
+        <activity
+            android:name=".RedFlagsActivity_Child"
+            android:exported="false" />
+        <activity
+            android:name=".MedicationReportActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ChildOverviewActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ControllerScheduleActivity"
+            android:exported="false" />
+        <activity
+            android:name=".SymptomTrendActivity"
+            android:exported="false" />
+        <activity
+            android:name=".RedFlagsActivity"
+            android:exported="false" />
+        <activity
+            android:name=".PDFStoreActivity"
+            android:exported="false" />
+        <activity
+            android:name=".PDFGenerator"
+            android:exported="false" />
+        <activity
+            android:name=".MainActivity"
+            android:exported="true"/>
+
+        <activity
+            android:name=".TechniqueTraining"
+            android:exported="true" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".ProviderInviteAcceptActivity"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <!-- Custom scheme deep link -->
+                <data
+                    android:host="invite"
+                    android:scheme="smartair" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".InviteProviderActivity"
+            android:exported="false" />
+
+        <receiver
+            android:name=".NotificationReceiver"
+            android:exported="true" />
+
+        <provider
+            android:name="androidx.core.content.FileProvider"
+            android:authorities="${applicationId}.fileprovider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/file_paths" />
+        </provider>
+    </application>
+
+</manifest>

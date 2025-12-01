@@ -1,0 +1,157 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".TechniqueTraining"
+    android:background="#DFF3FF"
+    android:padding="20dp"
+    >
+
+    <TextView
+        android:id="@+id/Tutorial1TitleTV"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="36dp"
+        android:layout_marginEnd="16dp"
+        android:fontFamily="@font/nunito_regular"
+        android:gravity="center"
+        android:text='Medication Technique Training'
+        android:textColor="#2E7D32"
+        android:textSize="34sp"
+        android:textStyle="normal"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.454"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/promptTV"
+        android:layout_width="350dp"
+        android:layout_height="163dp"
+        android:layout_marginStart="3dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="3dp"
+        android:fontFamily="@font/nunito_medium"
+        android:text="Step 1: Shake inhaler and remove cap"
+        android:textColor="#666666"
+        android:textSize="20sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/Tutorial1TitleTV" />
+
+    <!--
+    <Button
+        android:id="@+id/makeLogButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Make Log!"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+       -->
+
+    <Button
+        android:id="@+id/nextPromptButton"
+        android:layout_width="167dp"
+        android:layout_height="69dp"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="32dp"
+        android:backgroundTint="#2E7D32"
+        android:text="Next Step"
+        android:textColor="@android:color/white"
+        android:textSize="20sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/promptTV" />
+
+    <Button
+        android:id="@+id/yesButton"
+        android:layout_width="150dp"
+        android:layout_height="77dp"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginEnd="32dp"
+        android:backgroundTint="#2E7D32"
+        android:text="Yes"
+        android:textColor="@android:color/white"
+        android:textSize="20sp"
+        android:visibility="invisible"
+        app:layout_constraintEnd_toStartOf="@+id/noButton"
+        app:layout_constraintHorizontal_bias="0.88"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/nextPromptButton" />
+
+    <Button
+        android:id="@+id/noButton"
+        android:layout_width="150dp"
+        android:layout_height="77dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginEnd="36dp"
+        android:backgroundTint="#2E7D32"
+        android:text="No"
+        android:textColor="@android:color/white"
+        android:textSize="20sp"
+        android:visibility="invisible"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/nextPromptButton" />
+
+    <Button
+        android:id="@+id/videoButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="24dp"
+        android:text="watch a technique video!"
+        android:textSize="20dp"
+        android:backgroundTint="#2E7D32"
+        app:layout_constraintBottom_toTopOf="@+id/techniqueExitButton"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <Button
+        android:id="@+id/maskTipsButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="24dp"
+        android:text="Get Tips for Mask/Spacers"
+        android:textSize="20dp"
+        android:backgroundTint="#2E7D32"
+        app:layout_constraintBottom_toTopOf="@+id/videoButton"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <Button
+        android:id="@+id/techniqueExitButton"
+        android:layout_width="154dp"
+        android:layout_height="58dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginBottom="30dp"
+        android:background="@android:color/transparent"
+        android:fontFamily="@font/nunito_medium"
+        android:text="Exit"
+        android:textColor="#2E7D32"
+        android:textSize="30sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <Button
+        android:id="@+id/techniqueFinishButton"
+        android:layout_width="154dp"
+        android:layout_height="58dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="30dp"
+        android:background="@android:color/transparent"
+        android:fontFamily="@font/nunito_medium"
+        android:text="Finish"
+        android:textColor="#2E7D32"
+        android:textSize="30sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

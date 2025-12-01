@@ -1,0 +1,175 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#DFF3FF"
+    android:padding="20dp"
+    tools:layout_editor_absoluteX="0dp"
+    tools:layout_editor_absoluteY="0dp">
+
+    <Button
+        android:id="@+id/checkInBackButton"
+        android:layout_width="154dp"
+        android:layout_height="58dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginBottom="30dp"
+        android:background="@android:color/transparent"
+        android:fontFamily="@font/nunito_medium"
+        android:text="Back (add to value xml)"
+        android:textColor="#2E7D32"
+        android:textSize="30sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <Button
+        android:id="@+id/checkInNextButton"
+        android:layout_width="154dp"
+        android:layout_height="58dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="30dp"
+        android:background="@android:color/transparent"
+        android:fontFamily="@font/nunito_medium"
+        android:text="Next (add to value xml)"
+        android:textColor="#2E7D32"
+        android:textSize="30sp"
+        android:enabled="false"
+        android:alpha="0.5"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <TextView
+        android:id="@+id/medCheckInTitleTV"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="36dp"
+        android:layout_marginEnd="16dp"
+        android:fontFamily="@font/nunito_regular"
+        android:gravity="center"
+        android:text='Pre Medication Check'
+        android:textColor="#2E7D32"
+        android:textSize="34sp"
+        android:textStyle="normal"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.454"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/medCheckBreathingTitle"
+        android:layout_width="351dp"
+        android:layout_height="39dp"
+        android:layout_marginStart="3dp"
+        android:layout_marginTop="24dp"
+        android:layout_marginEnd="3dp"
+        android:fontFamily="@font/nunito_medium"
+        android:text="How Is Your Breathing?(add to values xml) "
+        android:textColor="#666666"
+        android:textSize="20sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/medCheckInTitleTV" />
+
+
+    <TextView
+        android:id="@+id/checkFeelingTV"
+        android:layout_width="345dp"
+        android:layout_height="68dp"
+        android:layout_marginStart="3dp"
+        android:layout_marginTop="24dp"
+        android:layout_marginEnd="3dp"
+        android:fontFamily="@font/nunito_medium"
+        android:text="How are you feeling after taking your Medication:"
+        android:textColor="#666666"
+        android:textSize="20sp"
+        android:visibility="invisible"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/BreathingSG" />
+
+    <RadioGroup
+            android:id="@+id/BreathingSG"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintTop_toBottomOf="@+id/medCheckBreathingTitle"
+            android:layout_marginTop="5dp">
+
+            <RadioButton
+                android:id="@+id/opt1"
+                android:layout_width="wrap_content"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:text="Very Bad"
+                android:textColor="@color/black"
+                android:textSize="18sp"
+
+                />
+
+            <RadioButton
+                android:id="@+id/opt2"
+                android:layout_width="wrap_content"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:text="Bad"
+                android:textColor="@color/black"
+                android:textSize="18sp"
+
+                />
+
+            <RadioButton
+                android:id="@+id/opt3"
+                android:layout_width="wrap_content"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:text="Normal"
+                android:textColor="@color/black"
+                android:textSize="18sp"
+
+                 />
+
+            <RadioButton
+                android:id="@+id/opt4"
+                android:layout_width="wrap_content"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:text="Good"
+                android:textColor="@color/black"
+                android:textSize="18sp"
+
+                 />
+
+            <RadioButton
+                android:id="@+id/opt5"
+                android:layout_width="wrap_content"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:text="Very Good"
+                android:textColor="@color/black"
+                android:textSize="18sp"
+                />
+        </RadioGroup>
+
+    <Spinner
+        android:id="@+id/feelingSpinner"
+        android:layout_width="281dp"
+        android:layout_height="47dp"
+        android:layout_marginStart="45dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="45dp"
+        android:visibility="invisible"
+        android:fontFamily="@font/nunito_medium"
+        android:hint="Please Select"
+        android:spinnerMode="dropdown"
+        android:textColor="@color/black"
+        android:textSize="20sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/checkFeelingTV"
+        tools:textColorHint="#666666" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
