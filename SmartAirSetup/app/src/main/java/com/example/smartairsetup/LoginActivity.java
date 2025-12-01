@@ -1,215 +1,80 @@
 package com.example.smartairsetup;
 
 import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
 import android.os.Bundle;
-import android.text.TextUtils;
-import android.util.Log;
-import android.util.Patterns;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.firestore.FirebaseFirestore;
+/**
+ * View for login screen (handles UI)
+ */
+public class LoginActivity extends AppCompatActivity implements LoginView {
 
-public class LoginActivity extends AppCompatActivity {
+    private EditText editTextIdentifier, editTextPassword;
+    private Button buttonSignIn, backButton;
+    private TextView textViewError, textViewForgotPassword;
 
-    private EditText editTextIdentifier; // email (parent/provider) OR child username
-    private EditText editTextPassword;
-    private Button buttonSignIn;
-    private TextView textViewError;
-    private TextView textViewForgotPassword;
-    private Button backButton;
-
-    private FirebaseAuth mAuth;
-    private FirebaseFirestore db;
+    private LoginPresenter presenter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
-        mAuth = FirebaseAuth.getInstance();
-        db = FirebaseFirestore.getInstance();
-
-        backButton = findViewById(R.id.backButton);
-        backButton.setOnClickListener(v -> onBackPressed());
-
         editTextIdentifier = findViewById(R.id.editTextIdentifier);
         editTextPassword = findViewById(R.id.editTextPassword);
         buttonSignIn = findViewById(R.id.buttonSignIn);
+        backButton = findViewById(R.id.backButton);
         textViewError = findViewById(R.id.textViewError);
         textViewForgotPassword = findViewById(R.id.textViewForgotPassword);
 
-        buttonSignIn.setOnClickListener(v -> handleSignIn());
-        textViewForgotPassword.setOnClickListener(v -> handleForgotPassword());
-        Button backButton = findViewById(R.id.backButton);
+        presenter = new LoginPresenter(this, new LoginModel(), new AndroidEmailVerifier());
+
+        buttonSignIn.setOnClickListener(v ->
+                presenter.handleSignIn(editTextIdentifier.getText().toString().trim(),
+                        editTextPassword.getText().toString())
+        );
+
+        textViewForgotPassword.setOnClickListener(v ->
+                presenter.handleForgotPassword(editTextIdentifier.getText().toString().trim())
+        );
+
         backButton.setOnClickListener(v -> finish());
     }
 
-    private void handleSignIn() {
-        textViewError.setVisibility(View.GONE);
+    @Override
+    public void showError(String message) {
+        textViewError.setText(message);
+        textViewError.setVisibility(View.VISIBLE);
+    }
+
+    @Override
+    public void clearError() {
         textViewError.setText("");
-
-        String identifier = editTextIdentifier.getText().toString().trim();
-        String password = editTextPassword.getText().toString();
-
-        if (TextUtils.isEmpty(identifier)) {
-            editTextIdentifier.setError("Email or username is required");
-            editTextIdentifier.requestFocus();
-            return;
-        }
-
-        if (TextUtils.isEmpty(password)) {
-            editTextPassword.setError("Password is required");
-            editTextPassword.requestFocus();
-            return;
-        }
-
-        buttonSignIn.setEnabled(false);
-
-        if (identifier.contains("@")) {
-            // Parent/provider login via Firebase Auth (email)
-            signInParentOrProvider(identifier, password);
-        } else {
-            // Child login via Firestore childAccounts
-            signInChild(identifier, password);
-        }
-    }
-
-    private void signInParentOrProvider(String email, String password) {
-        if (!Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
-            editTextIdentifier.setError("Enter a valid email");
-            editTextIdentifier.requestFocus();
-            buttonSignIn.setEnabled(true);
-            return;
-        }
-
-        mAuth.signInWithEmailAndPassword(email, password)
-                .addOnCompleteListener(this, task -> {
-                    if (task.isSuccessful() && mAuth.getCurrentUser() != null) {
-                        String uid = mAuth.getCurrentUser().getUid();
-                        fetchUserRoleAndNavigate(uid);
-                    } else {
-                        buttonSignIn.setEnabled(true);
-                        String message = "Sign in failed";
-                        if (task.getException() != null) {
-                            message = task.getException().getMessage();
-                        }
-                        textViewError.setText(message);
-                        textViewError.setVisibility(View.VISIBLE);
-                    }
-                });
-    }
-
-    private void signInChild(String username, String password) {
-        db.collection("childAccounts")
-                .document(username)
-                .get()
-                .addOnSuccessListener(doc -> {
-                    buttonSignIn.setEnabled(true);
-
-                    if (!doc.exists()) {
-                        textViewError.setText("No child account found with this username.");
-                        textViewError.setVisibility(View.VISIBLE);
-                        return;
-                    }
-
-                    String storedPassword = doc.getString("password");
-                    if (storedPassword == null || !storedPassword.equals(password)) {
-                        textViewError.setText("Incorrect password for this child account.");
-                        textViewError.setVisibility(View.VISIBLE);
-                        return;
-                    }
-
-                    String parentUid = doc.getString("parentUid");
-                    String childDocId = doc.getString("childDocId");
-
-                    // Go directly to ChildHomeActivity for child login
-                    Intent intent = new Intent(LoginActivity.this, ChildHomeActivity.class);
-                    intent.putExtra("PARENT_UID", parentUid);
-                    intent.putExtra("CHILD_ID", childDocId);
-                    Log.d("RedFlagsChild", "Logged in parentUID = " + parentUid + "Logged in childUID" + childDocId);
-                    startActivity(intent);
-                    finish();
-                })
-                .addOnFailureListener(e -> {
-                    buttonSignIn.setEnabled(true);
-                    textViewError.setText("Failed to sign in child: " + e.getMessage());
-                    textViewError.setVisibility(View.VISIBLE);
-                });
-    }
-
-    private void fetchUserRoleAndNavigate(String uid) {
-        db.collection("users")
-                .document(uid)
-                .get()
-                .addOnSuccessListener(document -> {
-                    buttonSignIn.setEnabled(true);
-
-                    if (document != null && document.exists()) {
-                        String role = document.getString("role");
-                        goToRoleHome(role);
-                    } else {
-                        goToRoleHome(null);
-                    }
-                })
-                .addOnFailureListener(e -> {
-                    buttonSignIn.setEnabled(true);
-                    textViewError.setText("Failed to load user role: " + e.getMessage());
-                    textViewError.setVisibility(View.VISIBLE);
-                });
-    }
-
-    private void handleForgotPassword() {
         textViewError.setVisibility(View.GONE);
-        String identifier = editTextIdentifier.getText().toString().trim();
-
-        if (TextUtils.isEmpty(identifier)) {
-            editTextIdentifier.setError("Enter your email to reset password");
-            editTextIdentifier.requestFocus();
-            return;
-        }
-
-        if (!identifier.contains("@")) {
-            // It's a child username; no Firebase reset
-            textViewError.setText("Password reset is only available for parent/provider emails.");
-            textViewError.setVisibility(View.VISIBLE);
-            return;
-        }
-
-        if (!Patterns.EMAIL_ADDRESS.matcher(identifier).matches()) {
-            editTextIdentifier.setError("Enter a valid email");
-            editTextIdentifier.requestFocus();
-            return;
-        }
-
-        mAuth.sendPasswordResetEmail(identifier)
-                .addOnCompleteListener(this, task -> {
-                    if (task.isSuccessful()) {
-                        Toast.makeText(
-                                LoginActivity.this,
-                                "Password reset email sent. Check your inbox.",
-                                Toast.LENGTH_LONG
-                        ).show();
-                    } else {
-                        String message = "Failed to send reset email";
-                        if (task.getException() != null) {
-                            message = task.getException().getMessage();
-                        }
-                        textViewError.setText(message);
-                        textViewError.setVisibility(View.VISIBLE);
-                    }
-                });
     }
 
-    private void goToRoleHome(String role) {
-        Intent intent;
+    @Override
+    public void enableSignInButton(boolean enable) {
+        buttonSignIn.setEnabled(enable);
+    }
 
+    @Override
+    public void navigateToChildHome(String parentUid, String childId) {
+        Intent intent = new Intent(this, ChildHomeActivity.class);
+        intent.putExtra("PARENT_UID", parentUid);
+        intent.putExtra("CHILD_ID", childId);
+        startActivity(intent);
+        finish();
+    }
+
+    @Override
+    public void navigateToRoleHome(String role) {
+        Intent intent;
         if ("parent".equals(role)) {
             intent = new Intent(this, ParentHomeActivity.class);
         } else if ("provider".equals(role)) {
@@ -217,8 +82,12 @@ public class LoginActivity extends AppCompatActivity {
         } else {
             intent = new Intent(this, MainActivity.class);
         }
-
         startActivity(intent);
         finish();
+    }
+
+    @Override
+    public void showToast(String message) {
+        Toast.makeText(this, message, Toast.LENGTH_LONG).show();
     }
 }
