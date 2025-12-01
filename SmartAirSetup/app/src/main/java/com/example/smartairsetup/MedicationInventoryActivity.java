@@ -166,8 +166,19 @@ public class MedicationInventoryActivity extends AppCompatActivity {
         // Make the container visible
         medDetailsSV.setVisibility(View.VISIBLE);
 
+        /*
+
+        This button is always disabled as deleting causes issues in logging.
+        As it wasn't a requirement to delete meds, we disabled this to avoid issues.
+
+        Future devs can use enabled boolean in medication fields and make certain lists
+        only contain enabled medications as they like
+
         deleteMedButton.setEnabled(true);
-        deleteMedButton.setAlpha(1f); //greys out buttons
+        deleteMedButton.setAlpha(1f);
+
+
+         */
         editMedButton.setEnabled(true);
         editMedButton.setAlpha(1f);
 
@@ -216,6 +227,9 @@ public class MedicationInventoryActivity extends AppCompatActivity {
     }
 
     private void setDeleteButton(){
+
+        //This Button is currently always disabled as it causes issues with medication logs.
+        //see comment in Show details
 
         deleteMedButton = findViewById(R.id.deleteMedButton);
         if (deleteMedButton != null) {
