@@ -17,6 +17,8 @@ import com.itextpdf.text.pdf.BaseFont;
 import com.itextpdf.text.pdf.PdfContentByte;
 import com.itextpdf.text.pdf.PdfWriter;
 
+import java.util.Calendar;
+import java.util.Date;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -24,9 +26,13 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Locale;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 public class PDFGenerator {
 
@@ -55,6 +61,9 @@ public class PDFGenerator {
                 String childDOB = childDoc.getString("dateOfBirth");
 
                 // Sharing flags
+                boolean shareRescueLogs = Boolean.TRUE.equals(childDoc.getBoolean("shareRescueLogs"));
+                boolean shareControllerSummary = Boolean.TRUE.equals(childDoc.getBoolean("shareControllerSummary"));
+                boolean shareSymptoms = Boolean.TRUE.equals(childDoc.getBoolean("shareSymptoms"));
                 boolean sharePEF = Boolean.TRUE.equals(childDoc.getBoolean("sharePEF"));
                 boolean shareTriageIncidents = Boolean.TRUE.equals(childDoc.getBoolean("shareTriageIncidents"));
                 boolean shareSummaryCharts = Boolean.TRUE.equals(childDoc.getBoolean("shareSummaryCharts"));
@@ -167,12 +176,29 @@ public class PDFGenerator {
                     }
                 }
 
+                String rescueControllerSummary = buildRescueControllerSummary(
+                        parentID,
+                        childID,
+                        startTimestamp,
+                        endTimestamp
+                );
+
+                // --- NEW: Symptom burden summary (problem days) ---
+                String symptomBurdenSummary = buildSymptomBurdenSummary(
+                        parentID,
+                        childID,
+                        startTimestamp,
+                        endTimestamp
+                );
+
                 createPdf(
                         childName,
                         childDOB,
                         parentEmail,
                         zoneTable.toString(),
                         triageEvents.toString(),
+                        rescueControllerSummary,
+                        symptomBurdenSummary,
                         greenCount,
                         yellowCount,
                         redCount,
@@ -182,6 +208,9 @@ public class PDFGenerator {
                         sharePEF,
                         shareTriageIncidents,
                         shareSummaryCharts,
+                        shareRescueLogs,
+                        shareControllerSummary,
+                        shareSymptoms,
                         pefDates,
                         pefValues
                 );
@@ -198,14 +227,19 @@ public class PDFGenerator {
     private void createPdf(String childName, String dob,
                            String parentEmail,
                            String zoneTable, String triageEvents,
+                           String rescueControllerSummary,
+                           String symptomBurdenSummary,
                            int greenCount, int yellowCount, int redCount, int totalCount,
-                           long startTimestamp, long endTimestamp, boolean sharePEF,
+                           long startTimestamp, long endTimestamp,
+                           boolean sharePEF,
                            boolean shareTriageIncidents,
                            boolean shareSummaryCharts,
+                           boolean shareRescueLogs,
+                           boolean shareControllerSummary,
+                           boolean shareSymptoms,
                            List<String> pefDates,
                            List<Integer> pefValues)
-
-    throws IOException, DocumentException {
+            throws IOException, DocumentException {
 
         Document document = new Document();
         OutputStream output;
@@ -263,26 +297,56 @@ public class PDFGenerator {
         document.add(new Paragraph("Email: " + parentEmail));
         document.add(new Paragraph("\n"));
 
-        // Zone Distribution
-        document.add(new Paragraph("3. Zone Distribution (PEF)", font));
-        if (sharePEF) {
-            document.add(new Paragraph(zoneTable));
+        // 3. Rescue Frequency & Controller Adherence
+        document.add(new Paragraph("3. Rescue Frequency & Controller Adherence", font));
+        if (shareRescueLogs || shareControllerSummary) {
+            if (rescueControllerSummary == null || rescueControllerSummary.trim().isEmpty()) {
+                document.add(new Paragraph("No rescue/controller data available for this period."));
+            } else {
+                document.add(new Paragraph(rescueControllerSummary));
+            }
+        } else {
+            document.add(new Paragraph("Parent has chosen not to share rescue/controller information with the provider."));
         }
         document.add(new Paragraph("\n"));
 
-        // Triage events
-        document.add(new Paragraph("4. Noticeable Triage Events", font));
+        // 4. Symptom Burden (Problem Days)
+        document.add(new Paragraph("4. Symptom Burden (Problem Days)", font));
+        if (shareSymptoms) {
+            if (symptomBurdenSummary == null || symptomBurdenSummary.trim().isEmpty()) {
+                document.add(new Paragraph("No symptom check-ins recorded for this period."));
+            } else {
+                document.add(new Paragraph(symptomBurdenSummary));
+            }
+        } else {
+            document.add(new Paragraph("Parent has chosen not to share symptom history with the provider."));
+        }
+        document.add(new Paragraph("\n"));
+
+        // 5. Zone Distribution (PEF)
+        document.add(new Paragraph("5. Zone Distribution (PEF)", font));
+        if (sharePEF) {
+            document.add(new Paragraph(zoneTable));
+        } else {
+            document.add(new Paragraph("Parent has chosen not to share PEF-based zone history with the provider."));
+        }
+        document.add(new Paragraph("\n"));
+
+        // 6. Noticeable Triage Events
+        document.add(new Paragraph("6. Noticeable Triage Events", font));
         if (shareTriageIncidents) {
             if (triageEvents == null || triageEvents.isEmpty()) {
-                document.add(new Paragraph("No incidents recorded"));
+                document.add(new Paragraph("No incidents recorded."));
             } else {
                 document.add(new Paragraph(triageEvents));
             }
+        } else {
+            document.add(new Paragraph("Parent has chosen not to share triage incident details with the provider."));
         }
         document.add(new Paragraph("\n"));
 
         // Pie chart
-        document.add(new Paragraph("5. Zone Distribution Pie Chart (PEF)", font));
+        document.add(new Paragraph("7. Zone Distribution Pie Chart (PEF)", font));
         if (shareSummaryCharts) {
 
             PdfContentByte canvas = writer.getDirectContent();
@@ -329,8 +393,7 @@ public class PDFGenerator {
             document.newPage();
         }
         // Time-series chart
-        document.add(new Paragraph("6. Time-series chart (PEF over time)", font));
-
+        document.add(new Paragraph("8. Time-series chart (PEF over time)", font));
         if (sharePEF && pefValues != null && !pefValues.isEmpty()) {
             PdfContentByte chartCanvas = writer.getDirectContent();
 
@@ -565,6 +628,282 @@ public class PDFGenerator {
         ((android.app.Activity) context).runOnUiThread(() ->
                 Toast.makeText(context, "PDF saved: " + msg, Toast.LENGTH_LONG).show()
         );
+    }
+
+    // Helper to compute rescue frequency + controller adherence summary text
+    private String buildRescueControllerSummary(String parentID,
+                                                String childID,
+                                                long startTimestamp,
+                                                long endTimestamp) throws Exception {
+
+        // 1. Load controller schedule
+        DocumentSnapshot scheduleDoc = Tasks.await(
+                db.collection("users")
+                        .document(parentID)
+                        .collection("children")
+                        .document(childID)
+                        .collection("medicationSchedule")
+                        .document("controller")
+                        .get()
+        );
+
+        boolean mon = false, tue = false, wed = false, thu = false, fri = false, sat = false, sun = false;
+        int dosesPerDay = 0;
+
+        if (scheduleDoc.exists()) {
+            mon = Boolean.TRUE.equals(scheduleDoc.getBoolean("mon"));
+            tue = Boolean.TRUE.equals(scheduleDoc.getBoolean("tue"));
+            wed = Boolean.TRUE.equals(scheduleDoc.getBoolean("wed"));
+            thu = Boolean.TRUE.equals(scheduleDoc.getBoolean("thu"));
+            fri = Boolean.TRUE.equals(scheduleDoc.getBoolean("fri"));
+            sat = Boolean.TRUE.equals(scheduleDoc.getBoolean("sat"));
+            sun = Boolean.TRUE.equals(scheduleDoc.getBoolean("sun"));
+
+            Long dpd = scheduleDoc.getLong("dosesPerDay");
+            if (dpd != null) {
+                dosesPerDay = dpd.intValue();
+            }
+        }
+
+        // 2. Controller logs within window
+        QuerySnapshot controllerSnapshot = Tasks.await(
+                db.collection("users")
+                        .document(parentID)
+                        .collection("children")
+                        .document(childID)
+                        .collection("medicationLogs_controller")
+                        .get()
+        );
+
+        Set<String> controllerDays = new HashSet<>();
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.US);
+
+        for (QueryDocumentSnapshot doc : controllerSnapshot) {
+            Long ts = doc.getLong("timestamp");
+            if (ts == null || ts < startTimestamp || ts > endTimestamp) continue;
+
+            String dateStr = doc.getString("date");
+            if (dateStr == null) {
+                dateStr = dateFormat.format(new Date(ts));
+            }
+            controllerDays.add(dateStr);
+        }
+
+        // 3. Rescue logs within window
+        QuerySnapshot rescueSnapshot = Tasks.await(
+                db.collection("users")
+                        .document(parentID)
+                        .collection("children")
+                        .document(childID)
+                        .collection("medicationLogs_rescue")
+                        .get()
+        );
+
+        int totalRescueDoses = 0;
+        Set<String> rescueDays = new HashSet<>();
+
+        for (QueryDocumentSnapshot doc : rescueSnapshot) {
+            Long ts = doc.getLong("timestamp");
+            if (ts == null || ts < startTimestamp || ts > endTimestamp) continue;
+
+            String dateStr = doc.getString("date");
+            if (dateStr == null) {
+                dateStr = dateFormat.format(new Date(ts));
+            }
+
+            Long doseCountLong = doc.getLong("doseCount");
+            int doseCount = (doseCountLong != null) ? doseCountLong.intValue() : 0;
+            if (doseCount <= 0) doseCount = 1;
+
+            totalRescueDoses += doseCount;
+            if (dateStr != null) {
+                rescueDays.add(dateStr);
+            }
+        }
+
+        // 4. Planned vs completed controller days
+        Calendar cal = Calendar.getInstance();
+        cal.setTimeInMillis(startTimestamp);
+
+        Calendar endCal = Calendar.getInstance();
+        endCal.setTimeInMillis(endTimestamp);
+
+        int plannedDays = 0;
+        int completedDays = 0;
+
+        while (!cal.after(endCal)) {
+            int dow = cal.get(Calendar.DAY_OF_WEEK);
+            boolean scheduled = false;
+            switch (dow) {
+                case Calendar.MONDAY:    scheduled = mon; break;
+                case Calendar.TUESDAY:   scheduled = tue; break;
+                case Calendar.WEDNESDAY: scheduled = wed; break;
+                case Calendar.THURSDAY:  scheduled = thu; break;
+                case Calendar.FRIDAY:    scheduled = fri; break;
+                case Calendar.SATURDAY:  scheduled = sat; break;
+                case Calendar.SUNDAY:    scheduled = sun; break;
+            }
+
+            if (scheduled) {
+                plannedDays++;
+                String d = dateFormat.format(cal.getTime());
+                if (controllerDays.contains(d)) {
+                    completedDays++;
+                }
+            }
+
+            cal.add(Calendar.DAY_OF_YEAR, 1);
+        }
+
+        long daysInPeriod = 1L + (endTimestamp - startTimestamp) / (1000L * 60L * 60L * 24L);
+
+        double adherencePct = -1.0;
+        if (plannedDays > 0) {
+            adherencePct = (completedDays * 100.0) / plannedDays;
+        }
+
+        StringBuilder sb = new StringBuilder();
+
+        sb.append("Controller schedule during this period:\n");
+        if (scheduleDoc.exists()) {
+            sb.append("• Doses per scheduled day: ").append(dosesPerDay).append("\n");
+            sb.append("• Scheduled days of week: ");
+            List<String> days = new ArrayList<>();
+            if (mon) days.add("Mon");
+            if (tue) days.add("Tue");
+            if (wed) days.add("Wed");
+            if (thu) days.add("Thu");
+            if (fri) days.add("Fri");
+            if (sat) days.add("Sat");
+            if (sun) days.add("Sun");
+            if (days.isEmpty()) days.add("None");
+            sb.append(String.join(", ", days)).append("\n");
+        } else {
+            sb.append("• No controller schedule has been set for this child.\n");
+        }
+
+        sb.append("\nPlanned controller days in report window: ").append(plannedDays);
+        if (plannedDays > 0) {
+            sb.append("\nDays where controller was logged: ").append(completedDays);
+            sb.append(String.format(Locale.US,
+                    "\nController adherence: %.1f%% of planned days completed.",
+                    adherencePct));
+        } else {
+            sb.append("\nCannot compute adherence (no schedule).");
+        }
+
+        sb.append("\n\nRescue inhaler usage in report window:");
+        sb.append("\n• Days with any rescue use: ").append(rescueDays.size());
+        sb.append("\n• Total rescue doses (puffs logged): ").append(totalRescueDoses);
+
+        if (daysInPeriod > 0) {
+            double perWeek = (totalRescueDoses * 7.0) / daysInPeriod;
+            sb.append(String.format(Locale.US,
+                    "\n• Approximate average rescue doses per week: %.1f",
+                    perWeek));
+        }
+
+        return sb.toString();
+    }
+
+    // Helper to compute symptom burden summary (problem days)
+    private String buildSymptomBurdenSummary(String parentID,
+                                             String childID,
+                                             long startTimestamp,
+                                             long endTimestamp) throws Exception {
+
+        QuerySnapshot checkinsSnapshot = Tasks.await(
+                db.collection("users")
+                        .document(parentID)
+                        .collection("dailyCheckins")
+                        .whereEqualTo("childId", childID)
+                        .get()
+        );
+
+        if (checkinsSnapshot.isEmpty()) {
+            return "";
+        }
+
+        Map<String, Integer> scorePerDate = new HashMap<>();
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.US);
+
+        for (QueryDocumentSnapshot doc : checkinsSnapshot) {
+            Date createdAt = doc.getDate("createdAt");
+            if (createdAt == null) continue;
+
+            long ts = createdAt.getTime();
+            if (ts < startTimestamp || ts > endTimestamp) continue;
+
+            String dateStr = doc.getString("date");
+            if (dateStr == null) {
+                dateStr = dateFormat.format(createdAt);
+            }
+
+            String night = doc.getString("nightWaking");
+            String activity = doc.getString("activityLimits");
+            String cough = doc.getString("coughWheeze");
+
+            int score = 0;
+            if (isProblemSymptom(night)) score++;
+            if (isProblemSymptom(activity)) score++;
+            if (isProblemSymptom(cough)) score++;
+
+            Integer existing = scorePerDate.get(dateStr);
+            if (existing == null || score > existing) {
+                scorePerDate.put(dateStr, score);
+            }
+        }
+
+        if (scorePerDate.isEmpty()) {
+            return "No symptom check-ins recorded for this period.";
+        }
+
+        int mildDays = 0, moderateDays = 0, severeDays = 0, totalProblemDays = 0;
+        for (int score : scorePerDate.values()) {
+            if (score <= 0) continue;
+            totalProblemDays++;
+            if (score == 1) mildDays++;
+            else if (score == 2) moderateDays++;
+            else severeDays++;
+        }
+
+        if (totalProblemDays == 0) {
+            return "All recorded days were symptom-free (night waking, activity limits, cough/wheeze all OK).";
+        }
+
+        long daysInPeriod = 1L + (endTimestamp - startTimestamp) / (1000L * 60L * 60L * 24L);
+        double pctProblem = (daysInPeriod > 0)
+                ? (totalProblemDays * 100.0) / daysInPeriod
+                : 0.0;
+
+        StringBuilder sb = new StringBuilder();
+        sb.append("Days with any symptom problems in this period: ")
+                .append(totalProblemDays)
+                .append(" day(s).");
+
+        sb.append("\nBreakdown by maximum severity per day:");
+        if (mildDays > 0) {
+            sb.append("\n• Mild (1 problem area): ").append(mildDays).append(" day(s)");
+        }
+        if (moderateDays > 0) {
+            sb.append("\n• Moderate (2 problem areas): ").append(moderateDays).append(" day(s)");
+        }
+        if (severeDays > 0) {
+            sb.append("\n• Severe (3 problem areas): ").append(severeDays).append(" day(s)");
+        }
+
+        sb.append(String.format(Locale.US,
+                "\n\nThis corresponds to symptom problems on approximately %.1f%% of days in the report window.",
+                pctProblem));
+
+        return sb.toString();
+    }
+
+    // Helper used by buildSymptomBurdenSummary (same logic as SymptomTrendActivity)
+    private boolean isProblemSymptom(String value) {
+        if (value == null) return false;
+        value = value.toLowerCase(Locale.getDefault());
+        return value.contains("some") || value.contains("a_lot");
     }
 
     private void drawPieSlice(PdfContentByte canvas, float centerX, float centerY,
