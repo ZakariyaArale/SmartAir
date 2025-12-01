@@ -82,6 +82,7 @@ dependencies {
     androidTestImplementation(libs.espresso.core)
     androidTestImplementation(platform(libs.compose.bom))
     androidTestImplementation(libs.ui.test.junit4)
+    testImplementation("org.mockito:mockito-core:5.3.1")
 
     debugImplementation(libs.ui.tooling)
     debugImplementation(libs.ui.test.manifest)
