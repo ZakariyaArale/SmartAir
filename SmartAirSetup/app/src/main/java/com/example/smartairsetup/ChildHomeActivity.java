@@ -160,6 +160,22 @@ public class ChildHomeActivity extends AbstractNavigation {
             startActivity(newIntent);
         });
 
+        ImageButton techniqueTrainingButton = findViewById(R.id.buttonInhalerTechnique);
+        techniqueTrainingButton.setOnClickListener(v -> {
+            if (childId == null || childId.isEmpty()) {
+                Toast.makeText(
+                        ChildHomeActivity.this,
+                        "Please add a child first.",
+                        Toast.LENGTH_SHORT
+                ).show();
+                return;
+            }
+            Intent newIntent = new Intent(ChildHomeActivity.this, TechniqueTraining.class);
+            newIntent.putExtra("CHILD_ID", childId);
+            newIntent.putExtra("mode", "pre");
+            startActivity(newIntent);
+        });
+
         ImageButton checkZoneButton = findViewById(R.id.buttonCheckZone);
         checkZoneButton.setOnClickListener(v -> {
             if (childId == null || childId.isEmpty() || parentUid == null || parentUid.isEmpty()) {

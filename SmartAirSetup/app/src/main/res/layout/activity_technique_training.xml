@@ -61,7 +61,7 @@
         android:layout_width="167dp"
         android:layout_height="69dp"
         android:layout_marginStart="32dp"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="20dp"
         android:layout_marginEnd="32dp"
         android:backgroundTint="#2E7D32"
         android:text="Next Step"
@@ -84,7 +84,7 @@
         android:textSize="20sp"
         android:visibility="invisible"
         app:layout_constraintEnd_toStartOf="@+id/noButton"
-        app:layout_constraintHorizontal_bias="0.88"
+        app:layout_constraintHorizontal_bias="0.206"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/nextPromptButton" />
 
@@ -93,7 +93,7 @@
         android:layout_width="150dp"
         android:layout_height="77dp"
         android:layout_marginTop="20dp"
-        android:layout_marginEnd="36dp"
+        android:layout_marginEnd="32dp"
         android:backgroundTint="#2E7D32"
         android:text="No"
         android:textColor="@android:color/white"
@@ -153,5 +153,18 @@
         android:textSize="30sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
+
+    <TextView
+        android:id="@+id/pleaseLogTV"
+        android:layout_width="338dp"
+        android:layout_height="78dp"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="32dp"
+        android:text="Please Note: This does not update your medication logs, please log medication afterwards."
+        android:textSize="20sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/yesButton" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

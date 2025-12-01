@@ -192,7 +192,7 @@ public class TechniqueTraining extends AppCompatActivity {
                     noButton.setVisibility(TextView.INVISIBLE);
                     yesButton.setText("Continue");
                     continueMode = true;
-                    promptText.setText("Please wait 30 - 60 seconds. Timer started now");
+                    promptText.setText("Please wait 30 - 60 seconds between doses. Timer started now");
                     startGoodTimer();
 
                 }else{

@@ -97,6 +97,13 @@ public class AddEditMedicationActivity extends AppCompatActivity {
             passedChildUID= intent.getStringExtra("passedChildUID");
             passedMedID = intent.getStringExtra("passedMedID");
             getMedValues();
+
+            //don't allow for editing child as it causes weird things with medications logs,
+            // below code is still set up to allow for changing children to make this
+            // easier to implement if our app is chosen
+            childSpinner.setEnabled(false);
+            childSpinner.setAlpha(0.5f);
+
         } else {
             isEditMode = false;
         }
