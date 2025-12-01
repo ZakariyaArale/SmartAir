@@ -193,7 +193,7 @@
             android:exported="false" />
 
         <receiver
-            android:name=".notifcation.NotificationReceiver"
+            android:name=".notification.NotificationReceiver"
             android:exported="true" />
 
         <provider

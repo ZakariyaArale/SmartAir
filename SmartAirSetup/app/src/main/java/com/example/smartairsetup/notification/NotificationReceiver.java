@@ -1,4 +1,4 @@
-package com.example.smartairsetup.notifcation;
+package com.example.smartairsetup.notification;
 
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
@@ -15,6 +15,11 @@ public class NotificationReceiver extends BroadcastReceiver {
     private static final String CHANNEL_ID = "reminder_channel";
     private static final int NOTIFICATION_ID = 1;
 
+    //extras so we can customize alerts
+    public static final String EXTRA_TITLE = "extra_notification_title";
+    public static final String EXTRA_MESSAGE = "extra_notification_message";
+    public static final String EXTRA_ID = "extra_notification_id";
+
     @Override
     public void onReceive(Context context, Intent intent) {
         createNotificationChannelIfNeeded(context);
@@ -27,21 +32,35 @@ public class NotificationReceiver extends BroadcastReceiver {
             return;
         }
 
+        // Read optional title/message/id from extras.
+        String title = intent.getStringExtra(EXTRA_TITLE);
+        if (title == null || title.isEmpty()) {
+            title = "Fallback Reminder"; // fallback
+        }
+
+        String message = intent.getStringExtra(EXTRA_MESSAGE);
+        if (message == null || message.isEmpty()) {
+            message = "Your scheduled reminder is here!"; // fallback
+        }
+
+        int notificationId = intent.getIntExtra(EXTRA_ID, NOTIFICATION_ID);
+
+
         NotificationCompat.Builder builder = new NotificationCompat.Builder(context, CHANNEL_ID)
                 .setSmallIcon(android.R.drawable.ic_dialog_info)
-                .setContentTitle("Medication Reminder")
-                .setContentText("Your scheduled reminder is here!")
+                .setContentTitle(title)
+                .setContentText(message)
                 .setPriority(NotificationCompat.PRIORITY_HIGH)
                 .setAutoCancel(true);
 
         NotificationManagerCompat managerCompat = NotificationManagerCompat.from(context);
-        managerCompat.notify(NOTIFICATION_ID, builder.build());
+        managerCompat.notify(notificationId, builder.build());
     }
 
     private void createNotificationChannelIfNeeded(Context context) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            CharSequence name = "Reminders";
-            String description = "Channel for medication reminders";
+            CharSequence name = "Reminders & Alerts";
+            String description = "Channel for medication reminders and safety alerts";
             int importance = NotificationManager.IMPORTANCE_HIGH;
             NotificationChannel channel = new NotificationChannel(CHANNEL_ID, name, importance);
             channel.setDescription(description);

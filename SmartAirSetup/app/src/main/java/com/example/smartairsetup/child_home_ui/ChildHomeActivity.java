@@ -13,6 +13,9 @@ import com.example.smartairsetup.navigation.AbstractNavigation;
 import com.example.smartairsetup.badges.ChildBadgesActivity;
 import com.example.smartairsetup.checkin.PrePostCheckActivity;
 import com.example.smartairsetup.R;
+import com.example.smartairsetup.notification.NotificationPermissionsHelper;
+import com.example.smartairsetup.notification.NotificationReceiver;
+import com.example.smartairsetup.technique.TechniqueTraining;
 import com.example.smartairsetup.triage.RedFlagsActivity_Child;
 import com.example.smartairsetup.zone.ZoneActivityChild;
 import com.google.firebase.auth.FirebaseAuth;
@@ -102,10 +105,6 @@ public class ChildHomeActivity extends AbstractNavigation {
     protected int getLayoutResourceId() {
         return R.layout.activity_child_home;
     }
-
-    // -----------------------
-    // Load child + greeting
-    // -----------------------
 
     private void loadChild() {
         db.collection("users")
@@ -197,7 +196,50 @@ public class ChildHomeActivity extends AbstractNavigation {
             zoneIntent.putExtra("PARENT_UID", parentUid);
             startActivity(zoneIntent);
         });
+
+        // Alert button (bell icon at top-right)
+        ImageButton alertButton = findViewById(R.id.notificationButton);
+        alertButton.setOnClickListener(v -> {
+            if (childId == null || childId.isEmpty()) {
+                Toast.makeText(
+                        ChildHomeActivity.this,
+                        "Please add a child first.",
+                        Toast.LENGTH_SHORT
+                ).show();
+                return;
+            }
+
+            // For now I just send a simple alert notification.
+            // Ben can later make this include child name, triage info, etc.
+            sendSimpleAlertToParent();
+        });
+
     }
+
+    /*
+     * Simple prototype alert: child taps a button and a high-priority
+     * notification is shown. Your teammate can later change the title/message
+     * and when this is called (triage start, escalation, etc.).
+     */
+    private void sendSimpleAlertToParent() {
+        // Make sure notifications are allowed on this device.
+        if (!NotificationPermissionsHelper.ensureNotificationPermissions(this)) {
+            return;
+        }
+
+        Intent intent = new Intent(this, NotificationReceiver.class);
+        intent.putExtra(NotificationReceiver.EXTRA_TITLE, "Triage Alert");
+        intent.putExtra(
+                NotificationReceiver.EXTRA_MESSAGE,
+                "Your child has requested help. Open Smart Air for details."
+        );
+        // Give alerts a different ID from the default medication reminder
+        intent.putExtra(NotificationReceiver.EXTRA_ID, 100);
+
+        // Immediate broadcast – no AlarmManager, fires right away
+        sendBroadcast(intent);
+    }
+
 
     private void setGreeting(String name) {
         if (name != null && !name.isEmpty()) {
