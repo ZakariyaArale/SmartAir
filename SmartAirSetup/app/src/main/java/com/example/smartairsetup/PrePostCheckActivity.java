@@ -18,6 +18,7 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.HashMap;
@@ -159,7 +160,7 @@ public class PrePostCheckActivity extends AppCompatActivity {
 
                 if(mode != null && mode.equals("post")) {
 
-                    // 1️⃣ Fetch medication to get isRescue
+                    // Fetch medication to get isRescue
                     db.collection("users")
                             .document(parentUid)
                             .collection("children")
@@ -204,6 +205,20 @@ public class PrePostCheckActivity extends AppCompatActivity {
                                         });
 
                             });
+
+                    // Update puffsLeft in medication collection
+                    DocumentReference medRef = db.collection("users")
+                            .document(parentUid)
+                            .collection("children")
+                            .document(childId)
+                            .collection("medications")
+                            .document(medID);
+
+                    medRef.get().addOnSuccessListener(snapshot -> {
+                        Long currentPuffs = snapshot.getLong("puffsLeft");
+                        if (currentPuffs == null) currentPuffs = 0L;
+                        medRef.update("puffsLeft", Math.max(currentPuffs - passedDoseCount, 0));
+                    });
 
                     Intent intent = new Intent(this, ChildHomeActivity.class);
                     intent.putExtra("CHILD_ID", childId);

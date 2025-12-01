@@ -31,10 +31,6 @@ public class TechniqueTraining extends AppCompatActivity {
     private boolean continueMode;
     private boolean goodZone;
     private CountDownTimer goodTimer;
-
-    //temporary
-    private Button makeLogButton;
-    private Button nextPromptButton;
     private Button inhalerVideoButton;
     private Button finishButton;
     private Button promptButton;
@@ -88,7 +84,6 @@ public class TechniqueTraining extends AppCompatActivity {
 
     private void setIds(){
 
-        nextPromptButton = findViewById(R.id.nextPromptButton);
         inhalerVideoButton = findViewById(R.id.videoButton);
         finishButton = findViewById(R.id.techniqueFinishButton);
         promptButton = findViewById(R.id.nextPromptButton);

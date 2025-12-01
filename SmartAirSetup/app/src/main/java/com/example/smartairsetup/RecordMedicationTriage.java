@@ -40,12 +40,14 @@ public class RecordMedicationTriage extends AppCompatActivity {
         Intent incoming = getIntent();
         childUid = incoming.getStringExtra("CHILD_ID");
         parentUid = incoming.getStringExtra("PARENT_UID");
+
+        /*
         returnClassName = incoming.getStringExtra("returnClass");
 
         cantSpeakFullSentences = incoming.getBooleanExtra("cantSpeakFullSentences", false);
         chestRetractions = incoming.getBooleanExtra("chestRetractions", false);
         blueLipsNails = incoming.getBooleanExtra("blueLipsNails", false);
-
+        */
 
         if (childUid == null || parentUid == null) {
             Toast.makeText(this, "Missing parent or child UID", Toast.LENGTH_SHORT).show();
@@ -70,6 +72,10 @@ public class RecordMedicationTriage extends AppCompatActivity {
 
         // Back button: sends parent UID and red flags back
         backButton.setOnClickListener(v -> {
+
+            finish();
+
+            /*
             if (returnClassName != null && !returnClassName.isEmpty()) {
                 try {
                     Class<?> returnClass = Class.forName(returnClassName);
@@ -88,6 +94,8 @@ public class RecordMedicationTriage extends AppCompatActivity {
             } else {
                 finish();
             }
+
+             */
         });
     }
 
@@ -115,42 +123,54 @@ public class RecordMedicationTriage extends AppCompatActivity {
             return;
         }
 
-        String dateId = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(new Date());
-        DocumentReference triageRef = db.collection("users")
+        long now = System.currentTimeMillis();
+
+        // Make a med log to keep track of medication usage
+        // fetch isRescue
+        db.collection("users")
                 .document(parentUid)
                 .collection("children")
                 .document(childUid)
-                .collection("triage")
-                .document("logs")
-                .collection("entries")
-                .document(dateId);
+                .collection("medications")
+                .document(medUUID)
+                .get()
+                .addOnSuccessListener(doc -> {
 
-        Map<String, Object> medData = new HashMap<>();
-        medData.put("name", medName);
-        medData.put("med_UUID", medUUID);
-        medData.put("doseTaken", doseTaken);
-        medData.put("timestamp", System.currentTimeMillis());
+                    boolean isRescue = false;
+                    if (doc.exists() && doc.getBoolean("isRescue") != null) {
+                        isRescue = doc.getBoolean("isRescue");
+                    }
 
+                    // Build medLog entry
+                    Map<String, Object> medLog = new HashMap<>();
+                    medLog.put("timestamp", now);
+                    medLog.put("doseCount", doseTaken);
+                    medLog.put("medId", medUUID);
+                    medLog.put("childId", childUid);
 
-        triageRef.get().addOnSuccessListener(doc -> {
-            if (doc.exists()) {
-                Map<String, Object> updateMap = new HashMap<>();
-                updateMap.put("medications." + medUUID + "." + System.currentTimeMillis(), medData);
-                triageRef.update(updateMap)
-                        .addOnSuccessListener(a -> resetForm(chooseMedButton, doseInput))
-                        .addOnFailureListener(e -> Toast.makeText(this, "Error updating triage: " + e.getMessage(), Toast.LENGTH_SHORT).show());
-            } else {
-                Map<String, Object> medsMap = new HashMap<>();
-                medsMap.put("" + medUUID + "." + System.currentTimeMillis(), medData);
-                Map<String, Object> triageInit = new HashMap<>();
-                triageInit.put("medications", medsMap);
-                triageRef.set(triageInit)
-                        .addOnSuccessListener(a -> resetForm(chooseMedButton, doseInput))
-                        .addOnFailureListener(e -> Toast.makeText(this, "Failed to log medication: " + e.getMessage(), Toast.LENGTH_LONG).show());
-            }
-        });
+                    // triage has no pre/post feelings, so default values used
+                    medLog.put("preFeeling", -1);
+                    medLog.put("postFeeling", -1);
+                    medLog.put("feelingChange", "N/A");
 
-        // Update puffsLeft in medication collection
+                    medLog.put("isRescue", isRescue);
+
+                    // Save inside medLogs collection
+                    db.collection("users")
+                            .document(parentUid)
+                            .collection("children")
+                            .document(childUid)
+                            .collection("medLogs")
+                            .add(medLog)
+                            .addOnSuccessListener(ref ->
+                                    Toast.makeText(this, "Medication logged in medLogs", Toast.LENGTH_SHORT).show()
+                            )
+                            .addOnFailureListener(e ->
+                                    Toast.makeText(this, "Error saving med log: " + e.getMessage(), Toast.LENGTH_SHORT).show()
+                            );
+                });
+
+        //updates puff count
         DocumentReference medRef = db.collection("users")
                 .document(parentUid)
                 .collection("children")
@@ -163,7 +183,9 @@ public class RecordMedicationTriage extends AppCompatActivity {
             if (currentPuffs == null) currentPuffs = 0L;
             medRef.update("puffsLeft", Math.max(currentPuffs - doseTaken, 0));
         });
+
     }
+
 
     private void resetForm(Button chooseMedButton, EditText doseInput) {
         Toast.makeText(this, "Medication logged in triage", Toast.LENGTH_SHORT).show();

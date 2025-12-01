@@ -64,7 +64,12 @@ public class EmergencySelectorActivity extends AppCompatActivity {
         ChildDiaglog dialog = new ChildDiaglog(this, provider);
 
         chooseChildButton.setOnClickListener(v -> dialog.showSelectionDialog(chooseChildButton));
-        saveButton.setOnClickListener(v -> saveTriageLog());
+        saveButton.setOnClickListener(v -> {
+            saveTriageLog();
+            recordMedicationButton.setEnabled(true);
+            recordMedicationButton.setAlpha(1f);
+
+        });
 
         // Record Medication button → passes returnClass dynamically
         recordMedicationButton.setOnClickListener(v -> {
@@ -77,11 +82,11 @@ public class EmergencySelectorActivity extends AppCompatActivity {
             selectedChildUid = tag.toString();
             Intent intent = new Intent(EmergencySelectorActivity.this, RecordMedicationTriage.class);
             intent.putExtra("CHILD_ID", selectedChildUid);
-            intent.putExtra("returnClass", EmergencySelectorActivity.this.getClass().getName());
+            //intent.putExtra("returnClass", EmergencySelectorActivity.this.getClass().getName());
             intent.putExtra("PARENT_UID", parentUid);
-            intent.putExtra("cantSpeakFullSentences", cantSpeakFullSentences);
-            intent.putExtra("chestRetractions", chestRetractions);
-            intent.putExtra("blueLipsNails", blueLipsNails);
+            //intent.putExtra("cantSpeakFullSentences", cantSpeakFullSentences);
+            // intent.putExtra("chestRetractions", chestRetractions);
+            //intent.putExtra("blueLipsNails", blueLipsNails);
 
             Log.d("EmergencySelector", "Launching RecordMedicationTriage: childUid=" + selectedChildUid
                     + ", parentUid=" + parentUid
