@@ -7,6 +7,11 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import static org.mockito.Mockito.*;
 
+import com.example.smartairsetup.login.EmailValidator;
+import com.example.smartairsetup.login.LoginModel;
+import com.example.smartairsetup.login.LoginPresenter;
+import com.example.smartairsetup.login.LoginView;
+
 /**
  * Note that we've used ArgumentCaptor its a bit overkill but we've tested using branch coverage
  * apporach

@@ -17,155 +17,155 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.SmartAirSetup">
         <activity
-            android:name=".TechniqueTraining"
+            android:name=".technique.TechniqueTraining"
             android:exported="false" />
 
         <activity
-            android:name=".TechniqueTrainingVideo"
+            android:name=".technique.TechniqueTrainingVideo"
             android:exported="false" />
         <activity
-            android:name=".ChildSettingsActivity"
+            android:name=".child_home_ui.ChildSettingsActivity"
             android:exported="false" />
         <activity
-            android:name=".ParentSettingsActivity"
+            android:name=".parent_home_ui.ParentSettingsActivity"
             android:exported="false" />
         <activity
-            android:name=".RecordMedicationTriage"
+            android:name=".triage.RecordMedicationTriage"
             android:exported="false" />
         <activity
-            android:name=".RecordMedUsageActivity"
+            android:name=".medlog.RecordMedUsageActivity"
             android:exported="false" />
         <activity
-            android:name=".PrePostCheckActivity"
+            android:name=".checkin.PrePostCheckActivity"
             android:exported="false" />
         <activity
-            android:name=".RecheckActivity"
+            android:name=".triage.RecheckActivity"
             android:exported="false" />
         <activity
-            android:name=".ProviderChildPortalActivity"
+            android:name=".provider_home_ui.ProviderChildPortalActivity"
             android:exported="false" />
         <activity
-            android:name=".MedicationInventoryActivity"
+            android:name=".medlog.MedicationInventoryActivity"
             android:exported="false"/>
         <activity
-            android:name=".AddEditMedicationActivity"
+            android:name=".medlog.AddEditMedicationActivity"
             android:exported="false" />
         <activity
-            android:name=".DailyCheckIn"
+            android:name=".checkin.DailyCheckIn"
             android:exported="false" /> <!-- Add-child screen (parent-only) -->
         <activity
-            android:name=".AddChildActivity"
+            android:name=".login.AddChildActivity"
             android:exported="false" /> <!-- Signup screen -->
         <activity
-            android:name=".SignupActivity"
+            android:name=".login.SignupActivity"
             android:exported="false" /> <!-- Login screen -->
         <activity
-            android:name=".LoginActivity"
+            android:name=".login.LoginActivity"
             android:exported="false" />
         <activity
-            android:name=".OnboardingActivity"
+            android:name=".onboarding.OnboardingActivity"
             android:exported="false" />
         <activity
-            android:name=".OnboardingActivity2"
+            android:name=".onboarding.OnboardingActivity2"
             android:exported="false" />
         <activity
-            android:name=".OnboardingActivity3"
+            android:name=".onboarding.OnboardingActivity3"
             android:exported="false" />
         <activity
-            android:name=".OnboardingActivity4"
+            android:name=".onboarding.OnboardingActivity4"
             android:exported="false" /> <!-- Main launcher screen -->
         <activity
-            android:name=".ShareWithProviderActivity"
+            android:name=".sharing.ShareWithProviderActivity"
             android:exported="false" /> <!-- Parent -->
         <activity
-            android:name=".ProviderHomeActivity"
+            android:name=".provider_home_ui.ProviderHomeActivity"
             android:exported="false" />
         <activity
-            android:name=".ParentHomeActivity"
+            android:name=".parent_home_ui.ParentHomeActivity"
             android:exported="false" />
         <activity
-            android:name=".ParentFamilyActivity"
+            android:name=".parent_home_ui.ParentFamilyActivity"
             android:exported="false" />
         <activity
-            android:name=".ParentBadgeSettingsActivity"
+            android:name=".badges.ParentBadgeSettingsActivity"
             android:exported="false" />
         <activity
-            android:name=".ChildHomeActivity"
+            android:name=".child_home_ui.ChildHomeActivity"
             android:exported="false" />
         <activity
-            android:name=".ChildFamilyActivity"
+            android:name=".child_home_ui.ChildFamilyActivity"
             android:exported="false" />
         <activity
-            android:name=".ChildBadgesActivity"
+            android:name=".badges.ChildBadgesActivity"
             android:exported="false" /> <!--  -->
         <activity
-            android:name=".HistoryActivity"
+            android:name=".history.HistoryActivity"
             android:exported="false" />
         <activity
-            android:name=".PBActivity"
+            android:name=".pb.PBActivity"
             android:exported="false" />
         <activity
-            android:name=".PEFActivity"
+            android:name=".pef.PEFActivity"
             android:exported="false" />
         <activity
-            android:name=".EmergencySelectorActivity"
+            android:name=".triage.EmergencySelectorActivity"
             android:exported="false" />
         <activity
-            android:name=".GreenCardActivity"
+            android:name=".triage.GreenCardActivity"
             android:exported="false" />
         <activity
-            android:name=".YellowCardActivity"
+            android:name=".triage.YellowCardActivity"
             android:exported="false" />
         <activity
-            android:name=".RedCardActivity"
+            android:name=".triage.RedCardActivity"
             android:exported="false" />
         <activity
-            android:name=".OptionalDataActivity"
+            android:name=".triage.OptionalDataActivity"
             android:exported="false" />
         <activity
-            android:name=".EmergencyActivity"
+            android:name=".triage.EmergencyActivity"
             android:exported="false" />
         <activity
-            android:name=".ZoneActivity"
+            android:name=".zone.ZoneActivity"
             android:exported="false" />
         <activity
-            android:name=".ZoneActivityChild"
+            android:name=".zone.ZoneActivityChild"
             android:exported="false" />
         <activity
-            android:name=".EmergencySelectorActivity_Child"
+            android:name=".triage.EmergencySelectorActivity_Child"
             android:exported="false" />
         <activity
-            android:name=".OptionalDataActivity_Child"
+            android:name=".triage.OptionalDataActivity_Child"
             android:exported="false" />
         <activity
-            android:name=".EmergencyActivity_Child"
+            android:name=".triage.EmergencyActivity_Child"
             android:exported="false" />
         <activity
-            android:name=".RedFlagsActivity_Child"
+            android:name=".triage.RedFlagsActivity_Child"
             android:exported="false" />
         <activity
-            android:name=".MedicationReportActivity"
+            android:name=".medlog.MedicationReportActivity"
             android:exported="false" />
         <activity
-            android:name=".ChildOverviewActivity"
+            android:name=".child_home_ui.ChildOverviewActivity"
             android:exported="false" />
         <activity
-            android:name=".ControllerScheduleActivity"
+            android:name=".medlog.ControllerScheduleActivity"
             android:exported="false" />
         <activity
-            android:name=".SymptomTrendActivity"
+            android:name=".sharing.SymptomTrendActivity"
             android:exported="false" />
         <activity
-            android:name=".RedFlagsActivity"
+            android:name=".triage.RedFlagsActivity"
             android:exported="false" />
         <activity
-            android:name=".PDFStoreActivity"
+            android:name=".pdf.PDFStoreActivity"
             android:exported="false" />
         <activity
-            android:name=".ControllerLogActivity"
+            android:name=".medlog.ControllerLogActivity"
             android:exported="false" />
         <activity
-            android:name=".MainActivity"
+            android:name=".login.MainActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -174,7 +174,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".ProviderInviteAcceptActivity"
+            android:name=".provider_home_ui.ProviderInviteAcceptActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
@@ -189,11 +189,11 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".InviteProviderActivity"
+            android:name=".sharing.InviteProviderActivity"
             android:exported="false" />
 
         <receiver
-            android:name=".NotificationReceiver"
+            android:name=".notifcation.NotificationReceiver"
             android:exported="true" />
 
         <provider

@@ -7,6 +7,10 @@ import org.junit.Test;
 
 import static org.junit.Assert.*;
 
+import com.example.smartairsetup.pef.ChildStorage;
+import com.example.smartairsetup.pef.PEFActivity;
+import com.example.smartairsetup.pef.StorageChild;
+
 public class PefTest {
     @Rule
     public ActivityScenarioRule<PEFActivity> rule =

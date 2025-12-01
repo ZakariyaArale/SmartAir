@@ -7,7 +7,7 @@
     android:layout_height="match_parent"
     android:padding="16dp"
     android:background="#DFF3FF"
-    tools:context=".ParentBadgeSettingsActivity">
+    tools:context=".badges.ParentBadgeSettingsActivity">
 
     <!-- Top bar: Child selection + Back button -->
     <LinearLayout
