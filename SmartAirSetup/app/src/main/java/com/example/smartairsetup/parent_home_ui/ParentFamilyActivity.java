@@ -20,6 +20,7 @@ import com.example.smartairsetup.R;
 import com.example.smartairsetup.child_home_ui.ChildHomeActivity;
 import com.example.smartairsetup.onboarding.OnboardingActivity;
 import com.example.smartairsetup.triage.EmergencyActivity;
+import com.example.smartairsetup.triage.RedFlagsActivity;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -233,7 +234,13 @@ public class ParentFamilyActivity extends AbstractNavigation {
 
     @Override
     protected void onEmergencyClicked() {
-        startActivity(new Intent(this, EmergencyActivity.class));
+        Intent intent = new Intent(ParentFamilyActivity.this, RedFlagsActivity.class);
+        String parentUid = null;
+        if (mAuth.getCurrentUser() != null) {
+            parentUid = mAuth.getCurrentUser().getUid();
+        }
+        intent.putExtra("PARENT_UID", parentUid);
+        startActivity(intent);
     }
 
     @Override
