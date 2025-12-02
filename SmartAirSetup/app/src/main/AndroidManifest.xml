@@ -20,6 +20,9 @@
             android:name=".provider_home_ui.ProviderTriageIncidentsActivity"
             android:exported="false" />
         <activity
+            android:name=".history.IncidentLogActivity"
+            android:exported="false" />
+        <activity
             android:name=".provider_home_ui.ProviderTriggersActivity"
             android:exported="false" />
         <activity
