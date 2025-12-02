@@ -109,7 +109,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="12dp" />
 
-    <!-- IMPORTANT: ListView gets remaining space -->
+    <!-- ListView gets remaining space -->
     <ListView
         android:id="@+id/listHistory"
         android:layout_width="match_parent"

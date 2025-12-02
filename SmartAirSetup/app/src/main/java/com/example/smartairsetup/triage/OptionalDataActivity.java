@@ -70,7 +70,7 @@ public class OptionalDataActivity extends AppCompatActivity {
 
         saveButton.setOnClickListener(v -> saveTriageLog());
 
-        // Record Medication button → passes parent UID and red flags
+        // Record Medication button -> passes parent UID and red flags
         recordMedicationButton.setOnClickListener(v -> {
             Object tag = chooseChildButton.getTag();
             if (tag == null) {
@@ -132,7 +132,7 @@ public class OptionalDataActivity extends AppCompatActivity {
                     }
                 }
 
-                // --- CASE 2: No triage OR no zone → fall back to PEF/latest ---
+                // --- CASE 2: No triage OR no zone -> fall back to PEF/latest ---
                 DocumentReference latestPEFRef = db.collection("users")
                         .document(parentUid)
                         .collection("children")

@@ -217,10 +217,7 @@ public class AddEditMedicationActivity extends AppCompatActivity {
 
                 medData.put("notes", notes);
 
-                /*
-                Don't have way of getting this from user yet tk
-                 */
-                medData.put("reminderDays", new ArrayList<Integer>()); // tk have to update this
+                medData.put("reminderDays", new ArrayList<Integer>());
 
                 medData.put("active", true);
 

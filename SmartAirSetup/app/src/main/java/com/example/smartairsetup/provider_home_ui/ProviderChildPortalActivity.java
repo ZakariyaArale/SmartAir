@@ -113,7 +113,6 @@ public class ProviderChildPortalActivity extends AppCompatActivity {
             startActivity(i);
         });
 
-        // NEW routes
         btnController.setOnClickListener(v -> {
             Intent i = new Intent(this, ProviderControllerSummaryActivity.class);
             i.putExtra(EXTRA_PARENT_UID, parentUid);

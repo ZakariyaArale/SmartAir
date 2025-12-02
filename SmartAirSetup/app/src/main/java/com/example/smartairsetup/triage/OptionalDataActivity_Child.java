@@ -43,7 +43,7 @@ public class OptionalDataActivity_Child extends AppCompatActivity {
         Button backButton = findViewById(R.id.backButton);
         Button nextButton = findViewById(R.id.nextButton);
         followUpInput = findViewById(R.id.followUpInput);
-        chooseChildButton = findViewById(R.id.chooseChildButton); // New button
+        chooseChildButton = findViewById(R.id.chooseChildButton);
         Button recordMedicationButton = findViewById(R.id.recordMedicationButton);
 
         db = FirebaseFirestore.getInstance();

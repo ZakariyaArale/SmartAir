@@ -336,7 +336,7 @@ public class ChildHomeActivity extends AbstractNavigation {
                 );
     }
 
-    // Convert seconds → ms if needed
+    // Convert seconds -> ms if needed
     private long normalizeTimestamp(Long tsRaw) {
         long ts = tsRaw;
         if (ts < 10_000_000_000L) {

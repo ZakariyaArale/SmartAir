@@ -38,7 +38,6 @@
 
 
     <!-- This makes the title-->
-    <!-- Remember to replace hard coded text-->
     <TextView
         android:id="@+id/medCheckInTitleTV"
         android:layout_width="wrap_content"

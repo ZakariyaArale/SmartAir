@@ -34,7 +34,6 @@ public class InviteProviderActivity extends AppCompatActivity {
     private String childId;
     private String childName;
 
-    // keep last token so revoke/regenerate is easy
     private String currentToken = null;
 
     @Override
@@ -81,7 +80,6 @@ public class InviteProviderActivity extends AppCompatActivity {
             revokeTokenSilently(currentToken);
         }
 
-        // Firestore auto-id works great as token
         String token = db.collection("invites").document().getId();
 
         Calendar cal = Calendar.getInstance();

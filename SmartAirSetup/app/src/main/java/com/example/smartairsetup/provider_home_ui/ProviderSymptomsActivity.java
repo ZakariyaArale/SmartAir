@@ -109,7 +109,7 @@ public class ProviderSymptomsActivity extends AppCompatActivity {
                                 : TextUtils.join(", ", triggers);
 
                         items.add(new HistoryEntry(
-                                "Symptoms",                       // childName column in adapter
+                                "Symptoms",              // childName column in adapter
                                 date != null ? date : "Unknown",  // date
                                 night,                            // “Night:”
                                 activity,                         // “Activity:”
