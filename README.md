@@ -6,7 +6,7 @@ Smart Air helps parents, children, and healthcare providers track and manage ast
 ## Sample Credentials (from video)
 //TODO: BEN
   - Parent Email: Password:
-  - Child Email: Password:
+  - Child Username: Password:
   - Provider Email: Password:
 ---
 
