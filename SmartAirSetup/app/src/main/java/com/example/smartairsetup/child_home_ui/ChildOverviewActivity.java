@@ -8,15 +8,12 @@ import android.widget.Toast;
 import androidx.appcompat.app.AlertDialog;
 
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
 
-import com.example.smartairsetup.navigation.AbstractNavigation;
 import com.example.smartairsetup.medlog.ControllerScheduleActivity;
 import com.example.smartairsetup.R;
 import com.example.smartairsetup.sharing.SymptomTrendActivity;
-import com.example.smartairsetup.medlog.MedicationLogRepository;
 import com.example.smartairsetup.medlog.MedicationReportActivity;
-import com.example.smartairsetup.parent_home_ui.ParentHomeActivity;
-import com.example.smartairsetup.pdf.PDFStoreActivity;
 import com.example.smartairsetup.sharing.ShareWithProviderActivity;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.CollectionReference;
@@ -26,7 +23,7 @@ import com.google.firebase.firestore.QueryDocumentSnapshot;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ChildOverviewActivity extends AbstractNavigation {
+public class ChildOverviewActivity extends AppCompatActivity {
 
     public static final String EXTRA_CHILD_ID = "extra_child_id";
     public static final String EXTRA_CHILD_NAME = "extra_child_name";
@@ -52,6 +49,8 @@ public class ChildOverviewActivity extends AbstractNavigation {
 
         mAuth = FirebaseAuth.getInstance();
         db = FirebaseFirestore.getInstance();
+
+        setContentView(R.layout.activity_child_overview);
 
         textChildSummary = findViewById(R.id.textChildSummary);
 
@@ -211,44 +210,5 @@ public class ChildOverviewActivity extends AbstractNavigation {
                 .addOnFailureListener(e ->
                         textChildSummary.setText("Could not load summary: " + e.getMessage())
                 );
-    }
-
-    // ----- Navigation hooks -----
-
-    @Override
-    @androidx.annotation.LayoutRes
-    protected int getLayoutResourceId() {
-        return R.layout.activity_child_overview;
-    }
-
-    @Override
-    protected void onHomeClicked() {
-        // Parent home (the shortcuts and child summary page)
-        Intent intent = new Intent(this, ParentHomeActivity.class);
-        intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
-        startActivity(intent);
-    }
-
-    @Override
-    protected void onFamilyClicked() {
-        // Where “family/children” nav goes in the rest of the app.
-        // If your app uses ChildHomeActivity or AddChildActivity, use that one:
-        Intent intent = new Intent(this, ChildHomeActivity.class);
-        // or: new Intent(this, AddChildActivity.class);
-        intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
-        startActivity(intent);
-    }
-
-    @Override
-    protected void onSettingsClicked() {
-        // TODO: Parent settings screen if you create one later
-    }
-
-    @Override
-    protected void onEmergencyClicked() {
-        // Emergency plan / PDF
-        Intent intent = new Intent(this, PDFStoreActivity.class);
-        intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
-        startActivity(intent);
     }
 }
