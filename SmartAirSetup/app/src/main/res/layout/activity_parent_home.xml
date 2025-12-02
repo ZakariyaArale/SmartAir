@@ -318,7 +318,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="12dp"
                 android:backgroundTint="@color/button_icon_color"
-                android:text="Zone" />
+                android:text="Today Zone" />
 
             <TextView
                 android:id="@+id/tagSharedZone"
@@ -476,7 +476,7 @@
         android:elevation="9dp"
         android:gravity="center"
         android:paddingBottom="4dp"
-        android:text="Emergency"
+        android:text="Have Trouble Breathing"
         android:textColor="@color/button_icon_color"
         android:textSize="10sp"
         app:layout_constraintBottom_toBottomOf="@id/bottomNavBackground"

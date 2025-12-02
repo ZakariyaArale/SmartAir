@@ -48,7 +48,6 @@ public class PEFActivity extends AppCompatActivity {
 
         db = FirebaseFirestore.getInstance();
 
-        // Get current logged-in user's UID
         parentID = FirebaseAuth.getInstance().getCurrentUser() != null
                 ? FirebaseAuth.getInstance().getCurrentUser().getUid()
                 : null;
@@ -59,7 +58,6 @@ public class PEFActivity extends AppCompatActivity {
             return;
         }
 
-        // Child selection dialog
         ProcessChildren provider = new FireBaseProcessChild();
         ChildDiaglog childDiaglog = new ChildDiaglog(this, provider);
         chooseChildButton.setOnClickListener(v -> childDiaglog.showSelectionDialog(chooseChildButton));
@@ -103,15 +101,13 @@ public class PEFActivity extends AppCompatActivity {
     }
 
     private void saveChildPEFToFirebase(String childUid, String childName, StorageChild entry) {
-
-        // Use today's date dynamically
         String todayDate = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(new Date());
 
         var childRef = db.collection("users").document(parentID).collection("children").document(childUid);
         var logsCollection = childRef.collection("PEF").document("logs").collection("daily");
         var latestRef = childRef.collection("PEF").document("latest");
 
-        // Get PB from child document
+
         childRef.get().addOnSuccessListener(childDoc -> {
             Long pbValue = childDoc.getLong("pb");
             long pb = pbValue != null ? pbValue : 0;
@@ -121,12 +117,11 @@ public class PEFActivity extends AppCompatActivity {
                 return;
             }
 
-            // Check if log for today exists
             var todayLogRef = logsCollection.document(todayDate);
             todayLogRef.get().addOnSuccessListener(todayDoc -> {
                 long oldDaily = todayDoc.getLong("dailyPEF") != null ? todayDoc.getLong("dailyPEF") : 0;
 
-                // Only overwrite if new dailyPEF is greater
+                // Only overwrite if new dailyPEF is greater (piazza)
                 if (entry.getDailyPEF() >= oldDaily) {
                     String zone = computeZone(entry.getDailyPEF(), pb);
 
@@ -143,7 +138,6 @@ public class PEFActivity extends AppCompatActivity {
                             .addOnSuccessListener(a -> Toast.makeText(this, "PEF log updated", Toast.LENGTH_SHORT).show())
                             .addOnFailureListener(e -> Log.e("PEFActivity", "Error updating log", e));
 
-                    // Update latest
                     Map<String, Object> latestData = new HashMap<>();
                     latestData.put("dailyPEF", entry.getDailyPEF());
                     latestData.put("prePEF", entry.getPrePEF());
