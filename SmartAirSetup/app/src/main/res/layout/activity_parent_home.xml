@@ -16,6 +16,7 @@
         android:layout_marginTop="16dp"
         android:layout_marginEnd="28dp"
         android:paddingBottom="8dp"
+        android:paddingTop="15dp"
         android:text="Parent Home"
         android:textColor="#1B4F72"
         android:textSize="24sp"

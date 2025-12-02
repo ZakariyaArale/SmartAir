@@ -74,14 +74,7 @@ public class ParentBadgeSettingsActivity extends AppCompatActivity {
     // ------------------------------
 
     private void setupBackButton() {
-        backButton.setOnClickListener(view -> {
-            Intent intent = new Intent(
-                    ParentBadgeSettingsActivity.this,
-                    ParentHomeActivity.class
-            );
-            startActivity(intent);
-            finish();
-        });
+        backButton.setOnClickListener(v -> finish());
     }
 
     private void setupChildrenSpinner() {

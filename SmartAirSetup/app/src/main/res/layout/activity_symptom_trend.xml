@@ -5,7 +5,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:background="#DFF3FF"
-    android:padding="16dp">
+    android:padding="45dp">
 
     <TextView
         android:id="@+id/textTrendTitle"

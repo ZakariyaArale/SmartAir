@@ -10,24 +10,47 @@
     tools:context=".badges.ParentBadgeSettingsActivity">
 
     <!-- Top bar: Child selection + Back button -->
+
+    <!-- Title -->
+
+    <!-- High-quality technique sessions target -->
+
+    <!-- Low rescue month (≤ X rescue days / 30 days) -->
+
+    <!-- Save button -->
+    <EditText
+        android:id="@+id/editLowRescueDays"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:hint="Default: 4"
+        android:inputType="number"
+        android:maxLines="1"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/textLowRescueDaysLabel" />
+
     <LinearLayout
         android:id="@+id/topBar"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
+        android:layout_marginTop="56dp"
         android:gravity="center_vertical"
-        app:layout_constraintTop_toTopOf="parent"
+        android:orientation="horizontal"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent">
+        app:layout_constraintTop_toTopOf="parent">
 
         <TextView
             android:id="@+id/textSelectChildLabel"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Child:"
+            android:textColor="@color/button_icon_color"
             android:textSize="14sp"
-            android:textStyle="bold"
-            android:textColor="@color/button_icon_color" />
+            android:textStyle="bold" />
 
         <Spinner
             android:id="@+id/spinnerChildren"
@@ -48,77 +71,68 @@
             android:textSize="18sp" />
     </LinearLayout>
 
-    <!-- Title -->
     <TextView
-        android:id="@+id/textBadgeSettingsTitle"
+        android:id="@+id/textLowRescueDaysLabel"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:text="Badge Goals Settings"
-        android:textSize="20sp"
-        android:textStyle="bold"
-        android:textColor="@color/button_icon_color"
-        android:layout_marginTop="16dp"
-        app:layout_constraintTop_toBottomOf="@id/topBar"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
-
-    <!-- High-quality technique sessions target -->
-    <TextView
-        android:id="@+id/textTechniqueSessionsLabel"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:text="High-quality technique sessions badge: target count"
+        android:layout_marginTop="12dp"
+        android:text="Low rescue month: max rescue days in 30 days"
         android:textSize="14sp"
-        android:layout_marginTop="24dp"
-        app:layout_constraintTop_toBottomOf="@id/textBadgeSettingsTitle"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+        app:layout_constraintTop_toBottomOf="@id/editTechniqueSessions" />
 
     <EditText
         android:id="@+id/editTechniqueSessions"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:inputType="number"
+        android:layout_marginTop="4dp"
         android:hint="Default: 10"
-        android:maxLines="1"
-        app:layout_constraintTop_toBottomOf="@id/textTechniqueSessionsLabel"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
-
-    <!-- Low rescue month (≤ X rescue days / 30 days) -->
-    <TextView
-        android:id="@+id/textLowRescueDaysLabel"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:text="Low rescue month: max rescue days in 30 days"
-        android:textSize="14sp"
-        android:layout_marginTop="16dp"
-        app:layout_constraintTop_toBottomOf="@id/editTechniqueSessions"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
-
-    <EditText
-        android:id="@+id/editLowRescueDays"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
         android:inputType="number"
-        android:hint="Default: 4"
         android:maxLines="1"
-        app:layout_constraintTop_toBottomOf="@id/textLowRescueDaysLabel"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+        app:layout_constraintTop_toBottomOf="@id/textTechniqueSessionsLabel" />
 
-    <!-- Save button -->
+    <TextView
+        android:id="@+id/textTechniqueSessionsLabel"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:text="High-quality technique sessions badge: target count"
+        android:textSize="14sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/textBadgeSettingsTitle" />
+
+    <TextView
+        android:id="@+id/textBadgeSettingsTitle"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:text="Badge Goals Settings"
+        android:textColor="@color/button_icon_color"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/topBar" />
+
     <Button
         android:id="@+id/buttonSaveBadgeSettings"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:text="Save badge goals"
-        android:layout_marginTop="24dp"
+        android:layout_marginTop="20dp"
         android:backgroundTint="@color/button_icon_color"
-        app:layout_constraintTop_toBottomOf="@id/editLowRescueDays"
+        android:text="Save badge goals"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+        app:layout_constraintTop_toBottomOf="@id/editLowRescueDays" />
 
     <include
         android:id="@+id/safetyNote"
