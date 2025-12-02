@@ -1,19 +1,8 @@
 package com.example.smartairsetup.medlog;
 
-import static com.example.smartairsetup.notification.RapidRescueCountHelper.checkRescueRepeats;
-
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.View;
-import android.widget.ArrayAdapter;
-import android.widget.Button;
-import android.widget.RadioButton;
-import android.widget.RadioGroup;
-import android.widget.Spinner;
-import android.widget.TextView;
-import android.widget.Toast;
-
+import android.widget.*;
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
@@ -32,244 +21,221 @@ import java.util.Map;
 
 public class PrePostCheckActivity extends AppCompatActivity {
 
-    TextView checkInTitleTV;
-    TextView  checkFeelingTitleTV;
-    Button nextButton;
+    // UI
+    private TextView checkInTitleTV, checkFeelingTitleTV;
+    private Button nextButton;
+    private RadioGroup segmentGroup;
+    private Spinner feelingSpinner;
 
-    RadioGroup segmentGroup;
-    RadioButton opt1;
-    RadioButton opt2;
-    RadioButton opt3;
-    RadioButton opt4;
-    RadioButton opt5;
-    Spinner feelingSpinner;
+    // Radio buttons
+    private RadioButton opt1, opt2, opt3, opt4, opt5;
+    private int selectedBreathingScore = 0;
 
-    int selected;
-
-    //passed information for log/other uses
-    String mode;
-    String childId;
-    int passedFeeling;
-    int passedDoseCount;
-    long passedTimestamp;
-    String medID;
+    // Passed values
+    private String mode;
+    private String childId;
+    private int preFeeling;
+    private int doseCount;
+    private String medID;
 
     private FirebaseAuth mAuth;
     private FirebaseFirestore db;
     private String parentUid;
 
-
-
+    private long timestampNow;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_pre_post_check);
+
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
-            Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
+            Insets sys = insets.getInsets(WindowInsetsCompat.Type.systemBars());
+            v.setPadding(sys.left, sys.top, sys.right, sys.bottom);
             return insets;
         });
 
         mAuth = FirebaseAuth.getInstance();
         db = FirebaseFirestore.getInstance();
-
-        if (mAuth.getCurrentUser() != null) {
-            parentUid = mAuth.getCurrentUser().getUid();
-        } else {
-            finish(); // Should never happen, but safe
-        }
-
+        parentUid = mAuth.getCurrentUser() != null ? mAuth.getCurrentUser().getUid() : null;
 
         getIds();
-        Intent intent = getIntent();
-        mode = intent.getStringExtra("mode");
-        childId = getIntent().getStringExtra("CHILD_ID");
+        loadIntentValues();
 
-        if(mode != null && mode.equals("post")){
-            setUpPostCheck();
-            getPassedInfo();
+        if ("post".equals(mode)) setupPostUI();
+
+        setupButtons();
+        setupSegmentListener();
+    }
+
+    private void loadIntentValues() {
+        Intent i = getIntent();
+        mode = i.getStringExtra("mode");
+        childId = i.getStringExtra("CHILD_ID");
+
+        if (childId == null) {
+            Toast.makeText(this, "Missing child info", Toast.LENGTH_LONG).show();
+            finish();
         }
 
-        setBackButton();
-        setNextButton();
-        setSegmentGroup();
-
+        if ("post".equals(mode)) {
+            preFeeling = i.getIntExtra("PRE_FEELING", -1);
+            doseCount = i.getIntExtra("DOSE_COUNT", 0);
+            medID = i.getStringExtra("MED_ID");
+        }
     }
 
-    private void getPassedInfo(){
-
-        //prior to taking medication breath rating 1 = very bad, 5 = very good. (range from 1 -5)
-        passedFeeling = getIntent().getIntExtra("PRE_FEELING", -1);
-        passedDoseCount = getIntent().getIntExtra("DOSE_COUNT", 0);
-        passedTimestamp = getIntent().getLongExtra("TIME_STAMP", 0);
-        medID = getIntent().getStringExtra("MED_ID");
-
-    }
-
-    private void getIds(){
-
+    private void getIds() {
         opt1 = findViewById(R.id.opt1);
         opt2 = findViewById(R.id.opt2);
         opt3 = findViewById(R.id.opt3);
         opt4 = findViewById(R.id.opt4);
         opt5 = findViewById(R.id.opt5);
         segmentGroup = findViewById(R.id.BreathingSG);
+
         checkInTitleTV = findViewById(R.id.medCheckInTitleTV);
         checkFeelingTitleTV = findViewById(R.id.checkFeelingTV);
         nextButton = findViewById(R.id.checkInNextButton);
-
+        feelingSpinner = findViewById(R.id.feelingSpinner);
     }
 
-    private void setUpPostCheck(){
-
+    private void setupPostUI() {
         checkInTitleTV.setText("Post Medication Check");
         nextButton.setText("Finish");
 
-        //makes second question visible
-        checkFeelingTitleTV.setVisibility(View.VISIBLE);
-        setUpSpinner();
+        checkFeelingTitleTV.setVisibility(TextView.VISIBLE);
+        feelingSpinner.setVisibility(TextView.VISIBLE);
 
-    }
-
-    private void setUpSpinner(){
-
-        feelingSpinner = findViewById(R.id.feelingSpinner);
-
-        feelingSpinner.setVisibility(View.VISIBLE);
-
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(
-                this,
-                android.R.layout.simple_spinner_item,
-                new String[]{"Worse", "Same", "Better"}
-        );
+        ArrayAdapter<String> adapter =
+                new ArrayAdapter<>(this, android.R.layout.simple_spinner_item,
+                        new String[]{"Worse", "Same", "Better"});
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-
         feelingSpinner.setAdapter(adapter);
-
     }
 
-    private void setBackButton() {
-        Button backButton = findViewById(R.id.checkInBackButton);
-        if (backButton != null) {
-            backButton.setOnClickListener(v -> {
-                finish();
-            });
-        }
-    }
-
-    private void setNextButton() {
-        Button nextButton = findViewById(R.id.checkInNextButton);
+    private void setupButtons() {
+        findViewById(R.id.checkInBackButton).setOnClickListener(v -> finish());
 
         nextButton.setOnClickListener(v -> {
-
-            if (mode != null && mode.equals("post")) {
-
-                // Fetch medication to confirm if it's a rescue med
-                final boolean[] isRescue = {false};   // <-- FIX HERE
-
-                db.collection("users")
-                        .document(parentUid)
-                        .collection("children")
-                        .document(childId)
-                        .collection("medications")
-                        .document(medID)
-                        .get()
-                        .addOnSuccessListener(doc -> {
-
-                            if (doc.exists() && doc.getBoolean("isRescue") != null) {
-                                isRescue[0] = doc.getBoolean("isRescue");
-                            }
-
-                            // Build med log entry
-                            Map<String, Object> medLog = new HashMap<>();
-                            medLog.put("timestamp", passedTimestamp);
-                            medLog.put("doseCount", passedDoseCount);
-                            medLog.put("medId", medID);
-                            medLog.put("childId", childId);
-                            medLog.put("preFeeling", passedFeeling);
-                            medLog.put("postFeeling", selected);
-                            medLog.put("isRescue", isRescue[0]);
-
-                            String feelingChange = feelingSpinner.getSelectedItem().toString();
-                            medLog.put("feelingChange", feelingChange);
-
-                            // Immediate alert if Worse after dose
-                            if (feelingChange.equals("Worse")) {
-                                AlertHelper.sendAlertToParent(parentUid, childId, "WORSE_AFTER_DOSE", this);
-                            }
-
-                            // Save the log FIRST
-                            db.collection("users")
-                                    .document(parentUid)
-                                    .collection("children")
-                                    .document(childId)
-                                    .collection("medLogs")
-                                    .add(medLog)
-                                    .addOnSuccessListener(docRef -> {
-
-                                        // ONLY check rapid rescue repeats if rescue
-                                        if (isRescue[0]) {
-                                            checkRescueRepeats(parentUid, childId, moreThanTwo -> {
-                                                if (moreThanTwo) {
-                                                    AlertHelper.sendAlertToParent(parentUid, childId, "RESCUE_REPEATED", this);
-                                                }
-                                            });
-                                        }
-
-                                        // Update medication puffs left
-                                        DocumentReference medRef = db.collection("users")
-                                                .document(parentUid)
-                                                .collection("children")
-                                                .document(childId)
-                                                .collection("medications")
-                                                .document(medID);
-
-                                        medRef.get().addOnSuccessListener(snapshot -> {
-                                            Long puffs = snapshot.getLong("puffsLeft");
-                                            if (puffs == null) puffs = 0L;
-                                            medRef.update("puffsLeft", Math.max(puffs - passedDoseCount, 0));
-                                        });
-
-                                        Toast.makeText(this, "Medication log saved!", Toast.LENGTH_SHORT).show();
-
-                                        Intent i = new Intent(this, ChildHomeActivity.class);
-                                        i.putExtra("CHILD_ID", childId);
-                                        startActivity(i);
-                                        finish();
-                                    })
-                                    .addOnFailureListener(e ->
-                                            Toast.makeText(this, "Failed to save log", Toast.LENGTH_SHORT).show()
-                                    );
-                        });
-
+            if ("pre".equals(mode)) {
+                openRecordMedUsage();
             } else {
-                // PRE mode
-                Intent i = new Intent(this, RecordMedUsageActivity.class);
-                i.putExtra("CHILD_ID", childId);
-                i.putExtra("PRE_FEELING", selected);
-                startActivity(i);
+                savePostLog();
             }
         });
     }
 
-
-
-    private void setSegmentGroup(){
-
+    private void setupSegmentListener() {
         segmentGroup.setOnCheckedChangeListener((group, checkedId) -> {
-            selected = 0;
-            if(opt1.isChecked()){selected = 1;}
-            else if(opt2.isChecked()){selected = 2;}
-            else if(opt3.isChecked()){selected = 3;}
-            else if(opt4.isChecked()){selected = 4;}
-            else if(opt5.isChecked()){selected = 5;}
+            if (opt1.isChecked()) selectedBreathingScore = 1;
+            else if (opt2.isChecked()) selectedBreathingScore = 2;
+            else if (opt3.isChecked()) selectedBreathingScore = 3;
+            else if (opt4.isChecked()) selectedBreathingScore = 4;
+            else if (opt5.isChecked()) selectedBreathingScore = 5;
+
             nextButton.setEnabled(true);
             nextButton.setAlpha(1f);
-
         });
-
     }
 
+    private void openRecordMedUsage() {
+        Intent i = new Intent(this, RecordMedUsageActivity.class);
+        i.putExtra("mode", "post");
+        i.putExtra("CHILD_ID", childId);
+        i.putExtra("PRE_FEELING", selectedBreathingScore);
+        startActivity(i);
+    }
+
+
+    // ------------------------------
+    // POST MODE LOGGING + ALERTS
+    // ------------------------------
+    private void savePostLog() {
+
+        timestampNow = System.currentTimeMillis();
+
+        // Fetch medication to see if rescue
+        db.collection("users").document(parentUid)
+                .collection("children").document(childId)
+                .collection("medications").document(medID)
+                .get()
+                .addOnSuccessListener(doc -> {
+
+                    boolean isRescue = doc.exists() && Boolean.TRUE.equals(doc.getBoolean("isRescue"));
+
+                    Map<String, Object> log = new HashMap<>();
+                    log.put("timestamp", timestampNow);
+                    log.put("doseCount", doseCount);
+                    log.put("medId", medID);
+                    log.put("childId", childId);
+                    log.put("preFeeling", preFeeling);
+                    log.put("postFeeling", selectedBreathingScore);
+                    log.put("isRescue", isRescue);
+
+                    String feelingChange = feelingSpinner.getSelectedItem().toString();
+                    log.put("feelingChange", feelingChange);
+
+                    if (feelingChange.equals("Worse"))
+                        AlertHelper.sendAlertToParent(parentUid, childId, "WORSE_AFTER_DOSE", this);
+
+                    saveLogToFirestore(log, isRescue);
+                });
+    }
+
+    private void saveLogToFirestore(Map<String, Object> log, boolean isRescue) {
+
+        db.collection("users").document(parentUid)
+                .collection("children").document(childId)
+                .collection("medLogs")
+                .add(log)
+                .addOnSuccessListener(ref -> {
+
+                    if (isRescue) checkRapidRescue();
+
+                    updatePuffsLeft();
+                    Toast.makeText(this, "Medication log saved!", Toast.LENGTH_SHORT).show();
+
+                    Intent i = new Intent(this, ChildHomeActivity.class);
+                    i.putExtra("CHILD_ID", childId);
+                    startActivity(i);
+                    finish();
+                });
+    }
+
+    // ------------------------------
+    // RAPID RESCUE CHECK (3 IN 3H + BUFFER)
+    // ------------------------------
+    private void checkRapidRescue() {
+
+        long buffer = 10 * 1000; // 10-second buffer
+        long cutoff = timestampNow - (3 * 60 * 60 * 1000) - buffer;
+
+        db.collection("users").document(parentUid)
+                .collection("children").document(childId)
+                .collection("medLogs")
+                .whereEqualTo("isRescue", true)
+                .whereGreaterThanOrEqualTo("timestamp", cutoff)
+                .get()
+                .addOnSuccessListener(snap -> {
+
+                    int count = snap.size();
+
+                    if (count >= 3) {
+                        AlertHelper.sendAlertToParent(parentUid, childId, "RESCUE_REPEATED", this);
+                    }
+                });
+    }
+
+    private void updatePuffsLeft() {
+        DocumentReference medRef = db.collection("users").document(parentUid)
+                .collection("children").document(childId)
+                .collection("medications").document(medID);
+
+        medRef.get().addOnSuccessListener(doc -> {
+            Long left = doc.getLong("puffsLeft");
+            left = (left == null ? 0 : left - doseCount);
+            medRef.update("puffsLeft", Math.max(left, 0));
+        });
+    }
 }
