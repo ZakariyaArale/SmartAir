@@ -27,7 +27,6 @@ import com.example.smartairsetup.pef.PEFActivity;
 import com.example.smartairsetup.triage.RedFlagsActivity;
 import com.example.smartairsetup.zone.ZoneActivity;
 import com.example.smartairsetup.notification.AlertHelper;
-
 import com.google.firebase.firestore.DocumentChange;
 import com.google.firebase.firestore.ListenerRegistration;
 import com.google.firebase.Timestamp;
@@ -528,8 +527,4 @@ public class ParentHomeActivity extends AbstractNavigation {
     protected void onSettingsClicked() {
         startActivity(new Intent(ParentHomeActivity.this, ParentSettingsActivity.class));
     }
-
-
-
-
 }
