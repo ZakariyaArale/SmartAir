@@ -11,6 +11,7 @@ import android.widget.Toast;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 
+import com.example.smartairsetup.history.IncidentLogActivity;
 import com.example.smartairsetup.navigation.AbstractNavigation;
 import com.example.smartairsetup.login.AddChildActivity;
 import com.example.smartairsetup.child_home_ui.ChildOverviewActivity;
@@ -183,6 +184,11 @@ public class ParentHomeActivity extends AbstractNavigation {
         Button buttonControllerLog = findViewById(R.id.buttonControllerLog);
         buttonControllerLog.setOnClickListener(v -> {
             startActivity(new Intent(this, ControllerLogActivity.class));
+        });
+
+        Button buttonIncidentLogs = findViewById(R.id.buttonIncidentLogs);
+        buttonIncidentLogs.setOnClickListener(v -> {
+            startActivity(new Intent(this, IncidentLogActivity.class));
         });
 
         // --- Child summary card ---
