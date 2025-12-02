@@ -93,7 +93,7 @@ Smart Air helps parents, children, and healthcare providers track and manage ast
 
 ---
 
-## **Medication Logging (MedLog)**
+## **Medication Logging**
 - **Parent:** Adds medication inventory under `Medication Inventory`. Can view medication logs under `Medication Logs`.
 - **Child:** Logs medication via `Take Medication`.
 
