@@ -13,6 +13,7 @@ import com.example.smartairsetup.navigation.AbstractNavigation;
 import com.example.smartairsetup.badges.ChildBadgesActivity;
 import com.example.smartairsetup.checkin.PrePostCheckActivity;
 import com.example.smartairsetup.R;
+import com.example.smartairsetup.technique.TechniqueTraining;
 import com.example.smartairsetup.triage.RedFlagsActivity_Child;
 import com.example.smartairsetup.zone.ZoneActivityChild;
 import com.google.firebase.auth.FirebaseAuth;

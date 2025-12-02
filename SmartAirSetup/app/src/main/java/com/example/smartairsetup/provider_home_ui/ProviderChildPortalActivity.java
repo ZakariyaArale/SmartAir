@@ -3,6 +3,7 @@ package com.example.smartairsetup.provider_home_ui;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -69,10 +70,36 @@ public class ProviderChildPortalActivity extends AppCompatActivity {
             btnCharts.setVisibility(shareCharts ? View.VISIBLE : View.GONE);
         });
 
-        // Wire these to real “provider read-only screens” when you build them:
-        btnRescue.setOnClickListener(v -> Toast.makeText(this, "Rescue logs (shared)", Toast.LENGTH_SHORT).show());
-        btnSymptoms.setOnClickListener(v -> Toast.makeText(this, "Symptoms (shared)", Toast.LENGTH_SHORT).show());
-        btnPEF.setOnClickListener(v -> Toast.makeText(this, "PEF (shared)", Toast.LENGTH_SHORT).show());
-        btnCharts.setOnClickListener(v -> Toast.makeText(this, "Charts (shared)", Toast.LENGTH_SHORT).show());
+        btnRescue.setOnClickListener(v -> {
+            Intent i = new Intent(this, ProviderRescueLogsActivity.class);
+            i.putExtra(EXTRA_PARENT_UID, parentUid);
+            i.putExtra(EXTRA_CHILD_ID, childId);
+            i.putExtra(EXTRA_CHILD_NAME, childName);
+            startActivity(i);
+        });
+
+        btnSymptoms.setOnClickListener(v -> {
+            Intent i = new Intent(this, ProviderSymptomsActivity.class);
+            i.putExtra(EXTRA_PARENT_UID, parentUid);
+            i.putExtra(EXTRA_CHILD_ID, childId);
+            i.putExtra(EXTRA_CHILD_NAME, childName);
+            startActivity(i);
+        });
+
+        btnPEF.setOnClickListener(v -> {
+            Intent i = new Intent(this, ProviderPefActivity.class);
+            i.putExtra(EXTRA_PARENT_UID, parentUid);
+            i.putExtra(EXTRA_CHILD_ID, childId);
+            i.putExtra(EXTRA_CHILD_NAME, childName);
+            startActivity(i);
+        });
+
+        btnCharts.setOnClickListener(v -> {
+            Intent i = new Intent(this, ProviderChartsActivity.class);
+            i.putExtra(EXTRA_PARENT_UID, parentUid);
+            i.putExtra(EXTRA_CHILD_ID, childId);
+            i.putExtra(EXTRA_CHILD_NAME, childName);
+            startActivity(i);
+        });
     }
 }
