@@ -13,6 +13,7 @@ import com.example.smartairsetup.navigation.AbstractNavigation;
 import com.example.smartairsetup.badges.ChildBadgesActivity;
 import com.example.smartairsetup.checkin.PrePostCheckActivity;
 import com.example.smartairsetup.R;
+import com.example.smartairsetup.notification.AlertHelper;
 import com.example.smartairsetup.notification.NotificationPermissionsHelper;
 import com.example.smartairsetup.notification.NotificationReceiver;
 import com.example.smartairsetup.technique.TechniqueTraining;
@@ -222,55 +223,11 @@ public class ChildHomeActivity extends AbstractNavigation {
                     Toast.LENGTH_SHORT
             ).show();
         }
-                sendSimpleAlertToParent();
+            //a helper method that deals with sending alerts
+            AlertHelper.sendAlertToParent(parentUid, childId, "This is a test Alert!", this);
         });
 
     }
-
-    /*
-     * Simple prototype alert: child taps a button and a high-priority
-     * notification is shown. Your teammate can later change the title/message
-     * and when this is called (triage start, escalation, etc.).
-     */
-    private void sendSimpleAlertToParent() {
-        if (childId == null || childId.isEmpty()) {
-            Toast.makeText(this, "Please add a child first.", Toast.LENGTH_SHORT).show();
-            return;
-        }
-
-        if (parentUid == null || parentUid.isEmpty()) {
-            Toast.makeText(this, "Parent account not found.", Toast.LENGTH_SHORT).show();
-            return;
-        }
-
-        // 1) Send alert to Firestore (cloud)
-        AlertRepository alertRepo = new AlertRepository();
-        String message = "Your child has requested help. Open Smart Air for details.";
-
-        alertRepo.sendAlert(
-                parentUid,
-                childId,
-                "TRIAGE_START",
-                message,
-                aVoid -> Toast.makeText(this, "Alert sent to parent.", Toast.LENGTH_SHORT).show(),
-                e -> Toast.makeText(this, "Failed to send alert: " + e.getMessage(), Toast.LENGTH_LONG).show()
-        );
-
-        /*
-        //sends a local notification you can see - useful for testing solo
-        if (!NotificationPermissionsHelper.ensureNotificationPermissions(this)) {
-            return;
-        }
-
-        Intent intent = new Intent(this, NotificationReceiver.class);
-        intent.putExtra(NotificationReceiver.EXTRA_TITLE, "Triage Alert");
-        intent.putExtra(NotificationReceiver.EXTRA_MESSAGE, message);
-        intent.putExtra(NotificationReceiver.EXTRA_ID, (int) System.currentTimeMillis());
-        sendBroadcast(intent);
-
-         */
-    }
-
     private void setGreeting(String name) {
         if (name != null && !name.isEmpty()) {
             String message = "Hi, " + name;
@@ -431,6 +388,7 @@ public class ChildHomeActivity extends AbstractNavigation {
             intent.putExtra("CHILD_ID", childId);
             intent.putExtra("PARENT_UID", parentUid);
         }
+        AlertHelper.sendAlertToParent(parentUid, childId, "TRIAGE_START", this);
         startActivity(intent);
     }
 

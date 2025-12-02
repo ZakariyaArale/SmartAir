@@ -37,11 +37,9 @@ import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
-import com.google.firebase.messaging.FirebaseMessaging;
 
 import java.text.DateFormat;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.Date;
 
@@ -49,9 +47,7 @@ public class ParentHomeActivity extends AbstractNavigation {
 
     private FirebaseAuth mAuth;
     private FirebaseFirestore db;
-
     private Button buttonAddChild;
-
     private final List<String> childNames = new ArrayList<>();
     private final List<String> childIds = new ArrayList<>();
 
@@ -326,8 +322,8 @@ public class ParentHomeActivity extends AbstractNavigation {
                 );
     }
 
-    // ---------------- Shared-with-provider tags ----------------
 
+    //Shared-with-provider tags
     private void hideAllShareTags() {
         setTagVisible(tagSharedRescue, false);
         setTagVisible(tagSharedSymptoms, false);
@@ -475,20 +471,16 @@ public class ParentHomeActivity extends AbstractNavigation {
                         String message = doc.getString("message");
                         if (message == null) message = "Alert from your child.";
 
-                        showAlertNotification(type, message);
+                        if (!NotificationPermissionsHelper.ensureNotificationPermissions(this)) {
+                            return;
+                        }
+
+                        AlertHelper.showAlert(this, type, message);
 
                         // Mark as handled so we don't spam the parent
                         doc.getReference().update("handled", true);
                     }
                 });
-    }
-
-    private void showAlertNotification(String type, String message) {
-
-        if (!NotificationPermissionsHelper.ensureNotificationPermissions(this)) {
-            return;
-        }
-        AlertHelper.showAlert(this, type, message);
     }
 
     private void launchDailyCheckIn(String childId, String childName) {
