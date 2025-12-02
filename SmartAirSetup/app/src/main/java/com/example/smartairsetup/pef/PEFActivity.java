@@ -84,8 +84,8 @@ public class PEFActivity extends AppCompatActivity {
     private String computeZone(long dailyPEF, long pb) {
         if (dailyPEF <= 0 || pb <= 0) return null;
         double percentage = (double) dailyPEF / pb;
-        if (percentage >= 0.8) return "GREEN";
-        else if (percentage >= 0.5) return "YELLOW";
+        if (percentage >= 0.8) {return "GREEN";}
+        else if (percentage >= 0.5) {return "YELLOW";}
         else
             if(mode != null && mode.equals("child"))
                 AlertHelper.sendAlertToParent(parentID, childUid, "RED_ZONE", this);

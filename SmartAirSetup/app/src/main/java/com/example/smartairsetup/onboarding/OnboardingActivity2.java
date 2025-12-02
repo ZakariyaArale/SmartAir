@@ -72,7 +72,7 @@ public class OnboardingActivity2 extends AbstractOnboarding {
         if (skipButton != null) {
             skipButton.setOnClickListener(v -> {
 
-                // If this is a child onboarding, skip → ChildHomeActivity
+                // If this is a child onboarding, skip -> ChildHomeActivity
                 if (parentUid != null && childId != null) {
                     Intent intent = new Intent(this, ChildHomeActivity.class);
                     intent.putExtra("PARENT_UID", parentUid);

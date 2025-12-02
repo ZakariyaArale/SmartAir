@@ -59,21 +59,6 @@ public class AlertHelper {
         }
 
         sendAlertToFirestore(parentUid, childId, type, passedActivity);
-
-        /*
-        //sends a local notification you can see - useful for testing solo
-        if (!NotificationPermissionsHelper.ensureNotificationPermissions(this)) {
-            return;
-        }
-
-        Intent intent = new Intent(this, NotificationReceiver.class);
-        intent.putExtra(NotificationReceiver.EXTRA_TITLE, "Triage Alert");
-        intent.putExtra(NotificationReceiver.EXTRA_MESSAGE, message);
-        intent.putExtra(NotificationReceiver.EXTRA_ID, (int) System.currentTimeMillis());
-        sendBroadcast(intent);
-
-         */
-
     }
 
     private static void sendAlertToFirestore(String parentUid, String childId, String type, Activity passedActivity){

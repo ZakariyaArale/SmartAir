@@ -23,9 +23,6 @@
         app:tint="@color/button_icon_color"
         app:srcCompat="@drawable/menu_notifications_button_logo" />
 
-    <!-- ============================================= -->
-    <!-- ==        TOP HEADER SECTION (NEW)         == -->
-    <!-- ============================================= -->
 
     <TextView
         android:id="@+id/greetingText"

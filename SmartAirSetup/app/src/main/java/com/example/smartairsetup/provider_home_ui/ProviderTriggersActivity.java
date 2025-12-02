@@ -73,7 +73,7 @@ public class ProviderTriggersActivity extends AppCompatActivity {
                 .document(parentUid)
                 .collection("dailyCheckins")
                 .whereEqualTo("childId", childId)
-                .orderBy("date", Query.Direction.DESCENDING) // date is yyyy-MM-dd (string), this sorts correctly
+                .orderBy("date", Query.Direction.DESCENDING) // date is yyyy-MM-dd (string)
                 .limit(180)
                 .addSnapshotListener((snap, err) -> {
                     if (err != null) {
