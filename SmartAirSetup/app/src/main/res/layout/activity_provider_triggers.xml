@@ -25,11 +25,13 @@
     <Button
         android:id="@+id/backButton"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="48dp"
         android:layout_marginStart="12dp"
         android:layout_marginTop="8dp"
         android:background="@android:color/transparent"
         android:fontFamily="@font/nunito_medium"
+        android:paddingStart="8dp"
+        android:paddingEnd="8dp"
         android:text="@string/back_button"
         android:textColor="#2E7D32"
         android:textSize="20sp"
@@ -77,11 +79,12 @@
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginTop="10dp"
+        android:layout_marginBottom="8dp"
         android:background="@drawable/main_content_background"
         android:backgroundTint="@color/white"
         android:elevation="4dp"
         app:layout_constraintTop_toBottomOf="@id/summaryCard"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/safetyNote"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent">
 
@@ -93,5 +96,17 @@
             android:dividerHeight="8dp"
             android:padding="12dp"/>
     </FrameLayout>
+
+    <include
+        android:id="@+id/safetyNote"
+        layout="@layout/view_safety_note"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="8dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
