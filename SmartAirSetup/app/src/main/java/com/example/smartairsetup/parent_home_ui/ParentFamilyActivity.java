@@ -3,6 +3,7 @@ package com.example.smartairsetup.parent_home_ui;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -17,6 +18,7 @@ import com.example.smartairsetup.navigation.AbstractNavigation;
 import com.example.smartairsetup.login.AddChildActivity;
 import com.example.smartairsetup.R;
 import com.example.smartairsetup.child_home_ui.ChildHomeActivity;
+import com.example.smartairsetup.onboarding.OnboardingActivity;
 import com.example.smartairsetup.triage.EmergencyActivity;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentSnapshot;
@@ -24,37 +26,42 @@ import com.google.firebase.firestore.FirebaseFirestore;
 
 public class ParentFamilyActivity extends AbstractNavigation {
 
+    private static final String TAG = "ParentFamilyActivity";
+
     private FirebaseAuth mAuth;
     private FirebaseFirestore db;
 
     private LinearLayout familyListContainer;
     private Button addMemberButton;
 
-    // Tracks the currently visible confirmation panel
     private View currentConfirmationView;
-
-    // Tracks the currently selected child row
     private View currentSelectedRow;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+        super.onCreate(savedInstanceState); // AbstractNavigation sets the layout
 
         mAuth = FirebaseAuth.getInstance();
         db = FirebaseFirestore.getInstance();
 
+        // Find views AFTER setContentView
         familyListContainer = findViewById(R.id.familyListContainer);
         addMemberButton = findViewById(R.id.addMemberButton);
 
-        loadChildrenFromFirestore();
+        if (addMemberButton == null) {
+            Log.e(TAG, "addMemberButton is NULL! Check activity_parent_family.xml layout.");
+        } else {
+            Log.d(TAG, "addMemberButton found, setting click listener.");
 
-        addMemberButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
+            addMemberButton.setOnClickListener(view -> {
+                Log.d(TAG, "Add Member button clicked!");
                 Intent intent = new Intent(ParentFamilyActivity.this, AddChildActivity.class);
                 startActivity(intent);
-            }
-        });
+                Log.d(TAG, "Intent to AddChildActivity started.");
+            });
+        }
+
+        loadChildrenFromFirestore();
     }
 
     @Override
@@ -92,6 +99,7 @@ public class ParentFamilyActivity extends AbstractNavigation {
                     }
                 })
                 .addOnFailureListener(e -> {
+                    Log.e(TAG, "Failed to load children", e);
                     Toast.makeText(this, "Failed to load children.", Toast.LENGTH_SHORT).show();
                 });
     }
@@ -111,48 +119,32 @@ public class ParentFamilyActivity extends AbstractNavigation {
         roleText.setText(role);
         avatarImage.setImageResource(R.drawable.person);
 
-        rowView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                showConfirmationForChild(childId, name, rowView);
-            }
-        });
+        rowView.setOnClickListener(view -> showConfirmationForChild(childId, name, rowView));
 
         familyListContainer.addView(rowView);
     }
 
     private void showConfirmationForChild(String childId, String name, View rowView) {
-        // Reset background of previously selected row
         if (currentSelectedRow != null && currentSelectedRow != rowView) {
             currentSelectedRow.setBackgroundColor(Color.TRANSPARENT);
         }
 
-        // Set background of newly selected row to gray
         rowView.setBackgroundColor(Color.parseColor("#DDDDDD"));
         currentSelectedRow = rowView;
 
-        // Remove existing confirmation panel if any
         if (currentConfirmationView != null) {
             ViewGroup parent = (ViewGroup) currentConfirmationView.getParent();
-            if (parent != null) {
-                parent.removeView(currentConfirmationView);
-            }
+            if (parent != null) parent.removeView(currentConfirmationView);
             currentConfirmationView = null;
         }
 
-        // Create a small confirmation panel under the selected row
         LinearLayout confirmLayout = new LinearLayout(this);
         confirmLayout.setOrientation(LinearLayout.VERTICAL);
         confirmLayout.setBackgroundColor(Color.parseColor("#EEF5FF"));
         int paddingHorizontal = dpToPx(16);
         int paddingVerticalTop = dpToPx(8);
         int paddingVerticalBottom = dpToPx(16);
-        confirmLayout.setPadding(
-                paddingHorizontal,
-                paddingVerticalTop,
-                paddingHorizontal,
-                paddingVerticalBottom
-        );
+        confirmLayout.setPadding(paddingHorizontal, paddingVerticalTop, paddingHorizontal, paddingVerticalBottom);
 
         TextView message = new TextView(this);
         message.setText("You will be redirected to " + name + "'s page.");
@@ -160,13 +152,6 @@ public class ParentFamilyActivity extends AbstractNavigation {
 
         Button goButton = new Button(this);
         goButton.setText("Go to child page");
-
-        LinearLayout.LayoutParams messageParams = new LinearLayout.LayoutParams(
-                LinearLayout.LayoutParams.MATCH_PARENT,
-                LinearLayout.LayoutParams.WRAP_CONTENT
-        );
-        messageParams.bottomMargin = dpToPx(8);
-        message.setLayoutParams(messageParams);
 
         confirmLayout.addView(message);
         confirmLayout.addView(goButton);
@@ -180,28 +165,74 @@ public class ParentFamilyActivity extends AbstractNavigation {
 
         currentConfirmationView = confirmLayout;
 
-        goButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(ParentFamilyActivity.this, ChildHomeActivity.class);
-                intent.putExtra("CHILD_ID", childId);
-                intent.putExtra("CHILD_NAME", name);
-                startActivity(intent);
+        goButton.setOnClickListener(view -> {
+            Log.d(TAG, "Go to child page clicked: " + name);
+
+            String parentUid = mAuth.getCurrentUser() != null ? mAuth.getCurrentUser().getUid() : null;
+            if (parentUid == null) {
+                Toast.makeText(this, "Parent UID not available.", Toast.LENGTH_SHORT).show();
+                return;
             }
+
+            // Check childAccounts for firstTime
+            db.collection("childAccounts")
+                    .whereEqualTo("childDocId", childId)
+                    .whereEqualTo("parentUid", parentUid)
+                    .get()
+                    .addOnSuccessListener(querySnapshot -> {
+                        if (!querySnapshot.isEmpty()) {
+                            boolean firstTimeFound = false;
+                            for (DocumentSnapshot doc : querySnapshot) {
+                                Boolean firstTime = doc.getBoolean("firstTime");
+                                if (firstTime != null && firstTime) {
+                                    firstTimeFound = true;
+
+                                    // Update firstTime to false
+                                    doc.getReference().update("firstTime", false)
+                                            .addOnSuccessListener(aVoid -> Log.d(TAG, "firstTime set to false"))
+                                            .addOnFailureListener(e -> Log.e(TAG, "Failed to update firstTime", e));
+
+                                    // Navigate to onboarding
+                                    Intent onboardingIntent = new Intent(ParentFamilyActivity.this, OnboardingActivity.class);
+                                    onboardingIntent.putExtra("PARENT_UID", parentUid);
+                                    onboardingIntent.putExtra("CHILD_ID", childId);
+                                    onboardingIntent.putExtra("firstTime", true);
+                                    startActivity(onboardingIntent);
+                                    finish();
+                                    return;
+                                }
+                            }
+                            // If no firstTime true, go to ChildHomeActivity
+                            if (!firstTimeFound) {
+                                Intent childIntent = new Intent(ParentFamilyActivity.this, ChildHomeActivity.class);
+                                childIntent.putExtra("CHILD_ID", childId);
+                                childIntent.putExtra("CHILD_NAME", name);
+                                startActivity(childIntent);
+                            }
+                        } else {
+                            Log.e(TAG, "No matching child found in childAccounts");
+                            // Fallback to ChildHomeActivity
+                            Intent childIntent = new Intent(ParentFamilyActivity.this, ChildHomeActivity.class);
+                            childIntent.putExtra("CHILD_ID", childId);
+                            childIntent.putExtra("CHILD_NAME", name);
+                            startActivity(childIntent);
+                        }
+                    })
+                    .addOnFailureListener(e -> {
+                        Log.e(TAG, "Failed to query childAccounts", e);
+                        Toast.makeText(this, "Error checking child account.", Toast.LENGTH_SHORT).show();
+                    });
         });
     }
 
     private int dpToPx(int dp) {
         float density = getResources().getDisplayMetrics().density;
-        float value = dp * density + 0.5f;
-        return (int) value;
+        return (int) (dp * density + 0.5f);
     }
 
     @Override
     protected void onHomeClicked() {
-        Intent intent = new Intent(this, ParentHomeActivity.class);
-        intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
-        startActivity(intent);
+        startActivity(new Intent(this, ParentHomeActivity.class).addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT));
     }
 
     @Override
@@ -211,13 +242,11 @@ public class ParentFamilyActivity extends AbstractNavigation {
 
     @Override
     protected void onEmergencyClicked() {
-        Intent intent = new Intent(this, EmergencyActivity.class);
-        startActivity(intent);
+        startActivity(new Intent(this, EmergencyActivity.class));
     }
 
     @Override
     protected void onSettingsClicked() {
-        Intent intent = new Intent(this, ParentSettingsActivity.class);
-        startActivity(intent);
+        startActivity(new Intent(this, ParentSettingsActivity.class));
     }
 }

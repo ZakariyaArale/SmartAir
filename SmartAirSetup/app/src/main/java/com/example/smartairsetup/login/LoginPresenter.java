@@ -1,8 +1,9 @@
 package com.example.smartairsetup.login;
 
 /**
- * Presenter for login screen (handles business logic), note some buisness logic relating to
- * db is in the model. This is the only way that we can do Junit tests.
+ * Presenter for login screen (handles business logic), note some business logic relating to
+ * db is in the model. This is the only way that we can do Junit tests as per video instrcutions
+ * in quercus
  */
 public class LoginPresenter {
 
@@ -54,8 +55,12 @@ public class LoginPresenter {
         } else {
             model.signInChild(identifier, password, new LoginModel.ChildSignInCallback() {
                 @Override
-                public void onSuccess(String parentUid, String childDocId) {
-                    view.navigateToChildHome(parentUid, childDocId);
+                public void onSuccess(String parentUid, String childDocId, boolean firstTime) {
+                    if (firstTime) {
+                        view.navigateToChildOnboarding(parentUid, childDocId);
+                    } else {
+                        view.navigateToChildHome(parentUid, childDocId);
+                    }
                 }
 
                 @Override
@@ -64,6 +69,7 @@ public class LoginPresenter {
                     view.showError(errorMessage);
                 }
             });
+
         }
     }
 

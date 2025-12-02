@@ -56,13 +56,11 @@ public class ChildHomeActivity extends AbstractNavigation {
         Intent intent = getIntent();
         FirebaseUser currentUser = mAuth.getCurrentUser();
 
-        Log.d("RedFlagsChild", "Logged in UID = " + currentUser);
-
-// Case 1: parent/provider logged in with FirebaseAuth
+        // Case 1: parent/provider logged in with FirebaseAuth
         if (currentUser != null) {
             parentUid = currentUser.getUid();
         }
-// Case 2: child login (no FirebaseAuth user, we rely on intent extras)
+        // Case 2: child login (no FirebaseAuth user, rely on intent extras)
         else if (intent != null) {
             parentUid = intent.getStringExtra("PARENT_UID");
         }
@@ -72,12 +70,11 @@ public class ChildHomeActivity extends AbstractNavigation {
             return;
         }
 
-// Child id is always passed via intent
+        // Child id is always passed via intent
         if (intent != null) {
             childId = intent.getStringExtra("CHILD_ID");
             if (childId == null || childId.isEmpty()) {
-                // Backward compatibility if you ever used CHILD_DOC_ID
-                childId = intent.getStringExtra("CHILD_DOC_ID");
+                childId = intent.getStringExtra("CHILD_DOC_ID"); // backward compatibility
             }
         }
 
@@ -86,6 +83,39 @@ public class ChildHomeActivity extends AbstractNavigation {
             return;
         }
 
+
+        CollectionReference childAccountsRef = db.collection("childAccounts");
+
+
+        childAccountsRef
+                .whereEqualTo("childDocId", childId)
+                .whereEqualTo("parentUid", parentUid)
+                .get()
+                .addOnSuccessListener(querySnapshot -> {
+                    if (!querySnapshot.isEmpty()) {
+                        for (QueryDocumentSnapshot doc : querySnapshot) {
+                            Boolean firstTime = doc.getBoolean("firstTime");
+                            if (firstTime != null && firstTime) {
+                                // Update firstTime to false
+                                doc.getReference()
+                                        .update("firstTime", false)
+                                        .addOnSuccessListener(aVoid ->
+                                                Log.d("ChildHome", "firstTime set to false"))
+                                        .addOnFailureListener(e ->
+                                                Log.e("ChildHome", "Failed to update firstTime", e));
+
+                                // Optional: notify the child
+                                Toast.makeText(this, "Welcome! First time setup.", Toast.LENGTH_SHORT).show();
+                            }
+                        }
+                    } else {
+                        Log.e("ChildHome", "No matching child found in childAccounts");
+                    }
+                })
+                .addOnFailureListener(e ->
+                        Log.e("ChildHome", "Failed to query childAccounts", e));
+
+        // Continue normal initialization
         greetingText = findViewById(R.id.greetingText);
         techniqueStreakText = findViewById(R.id.techniqueStreakText);
         controllerStreakText = findViewById(R.id.controllerStreakText);
@@ -98,6 +128,7 @@ public class ChildHomeActivity extends AbstractNavigation {
                 Toast.makeText(this, "Notifications coming soon.", Toast.LENGTH_SHORT).show()
         );
     }
+
 
     @Override
     protected int getLayoutResourceId() {
@@ -162,22 +193,6 @@ public class ChildHomeActivity extends AbstractNavigation {
                 return;
             }
             Intent newIntent = new Intent(ChildHomeActivity.this, PrePostCheckActivity.class);
-            newIntent.putExtra("CHILD_ID", childId);
-            newIntent.putExtra("mode", "pre");
-            startActivity(newIntent);
-        });
-
-        ImageButton techniqueTrainingButton = findViewById(R.id.buttonInhalerTechnique);
-        techniqueTrainingButton.setOnClickListener(v -> {
-            if (childId == null || childId.isEmpty()) {
-                Toast.makeText(
-                        ChildHomeActivity.this,
-                        "Please add a child first.",
-                        Toast.LENGTH_SHORT
-                ).show();
-                return;
-            }
-            Intent newIntent = new Intent(ChildHomeActivity.this, TechniqueTraining.class);
             newIntent.putExtra("CHILD_ID", childId);
             newIntent.putExtra("mode", "pre");
             startActivity(newIntent);

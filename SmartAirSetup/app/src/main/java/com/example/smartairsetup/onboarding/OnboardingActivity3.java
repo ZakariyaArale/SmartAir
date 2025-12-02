@@ -5,9 +5,15 @@ import android.os.Bundle;
 import android.widget.Button;
 
 import com.example.smartairsetup.R;
+import com.example.smartairsetup.child_home_ui.ChildHomeActivity;
 import com.example.smartairsetup.login.SignupActivity;
 
 public class OnboardingActivity3 extends AbstractOnboarding {
+
+    private String parentUid;
+    private String childId;
+    private boolean firstTime;
+
     @Override
     protected int getLayoutId() {
         return R.layout.activity_onboarding3;
@@ -16,6 +22,11 @@ public class OnboardingActivity3 extends AbstractOnboarding {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        // Retrieve child onboarding data
+        parentUid = getIntent().getStringExtra("PARENT_UID");
+        childId = getIntent().getStringExtra("CHILD_ID");
+        firstTime = getIntent().getBooleanExtra("firstTime", false);
 
         setNextButton();
         setBackButton();
@@ -26,7 +37,14 @@ public class OnboardingActivity3 extends AbstractOnboarding {
         Button nextButton = findViewById(R.id.nextButton);
         if (nextButton != null) {
             nextButton.setOnClickListener(v -> {
+
                 Intent intent = new Intent(this, OnboardingActivity4.class);
+
+                // Pass onboarding data forward
+                if (parentUid != null) intent.putExtra("PARENT_UID", parentUid);
+                if (childId != null) intent.putExtra("CHILD_ID", childId);
+                intent.putExtra("firstTime", firstTime);
+
                 startActivity(intent);
             });
         }
@@ -36,7 +54,14 @@ public class OnboardingActivity3 extends AbstractOnboarding {
         Button backButton = findViewById(R.id.backButton);
         if (backButton != null) {
             backButton.setOnClickListener(v -> {
+
                 Intent intent = new Intent(this, OnboardingActivity2.class);
+
+                // Pass onboarding data backward
+                if (parentUid != null) intent.putExtra("PARENT_UID", parentUid);
+                if (childId != null) intent.putExtra("CHILD_ID", childId);
+                intent.putExtra("firstTime", firstTime);
+
                 startActivity(intent);
             });
         }
@@ -46,6 +71,18 @@ public class OnboardingActivity3 extends AbstractOnboarding {
         Button skipButton = findViewById(R.id.skipButton);
         if (skipButton != null) {
             skipButton.setOnClickListener(v -> {
+
+                // If this is a child → skip goes to child home
+                if (parentUid != null && childId != null) {
+                    Intent intent = new Intent(this, ChildHomeActivity.class);
+                    intent.putExtra("PARENT_UID", parentUid);
+                    intent.putExtra("CHILD_ID", childId);
+                    startActivity(intent);
+                    finish();
+                    return;
+                }
+
+                // Otherwise fallback to normal skip
                 Intent intent = new Intent(this, SignupActivity.class);
                 startActivity(intent);
             });

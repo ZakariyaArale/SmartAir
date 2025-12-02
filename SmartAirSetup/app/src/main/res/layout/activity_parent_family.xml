@@ -21,53 +21,34 @@
         android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
     <!-- Add Member Button -->
     <Button
         android:id="@+id/addMemberButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
         android:layout_marginEnd="16dp"
         android:text="Add Member"
         android:backgroundTint="@color/button_icon_color"
-        app:layout_constraintBottom_toBottomOf="@id/titleFamilyMembers"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@id/titleFamilyMembers" />
-
-    <!--
-    ============================================================
-    ==      CARD VIEW FOR THE FAMILY MEMBERS LIST             ==
-    ============================================================
-    -->
-
-
-    <include
-        android:id="@+id/safetyNote"
-        layout="@layout/view_safety_note"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginEnd="16dp"
-        android:layout_marginBottom="8dp"
+        android:elevation="12dp"
+        app:layout_constraintTop_toBottomOf="@id/titleFamilyMembers"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintBottom_toTopOf="@id/bottomNavBackground" />
-    <!-- BELOW THIS LINE ARE THE NAVIGATION MENU BUTTONS -->
+        app:layout_constraintEnd_toEndOf="parent" />
 
-    <!-- BOTTOM NAV BACKGROUND -->
+    <!-- Scrollable Family List -->
     <ScrollView
         android:id="@+id/familyTableCard"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
+        android:layout_height="0dp"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp"
         android:layout_marginEnd="16dp"
+        android:layout_marginTop="16dp"
         android:background="@color/white"
-        app:cardCornerRadius="12dp"
-        app:cardElevation="4dp"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/addMemberButton"
+        app:layout_constraintBottom_toTopOf="@id/safetyNote"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/titleFamilyMembers">
+        app:layout_constraintEnd_toEndOf="parent">
 
         <!-- Container for dynamic rows -->
         <LinearLayout
@@ -79,7 +60,20 @@
 
     </ScrollView>
 
+    <!-- Safety Note -->
+    <include
+        android:id="@+id/safetyNote"
+        layout="@layout/view_safety_note"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="8dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/bottomNavBackground" />
 
+    <!-- Bottom Navigation Background -->
     <View
         android:id="@+id/bottomNavBackground"
         android:layout_width="0dp"
