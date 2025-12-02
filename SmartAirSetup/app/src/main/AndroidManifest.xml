@@ -20,6 +20,9 @@
             android:name=".provider_home_ui.ProviderTriageIncidentsActivity"
             android:exported="false" />
         <activity
+            android:name=".history.IncidentLogActivity"
+            android:exported="false" />
+        <activity
             android:name=".provider_home_ui.ProviderTriggersActivity"
             android:exported="false" />
         <activity
@@ -56,7 +59,7 @@
             android:name=".medlog.RecordMedUsageActivity"
             android:exported="false" />
         <activity
-            android:name=".checkin.PrePostCheckActivity"
+            android:name=".medlog.PrePostCheckActivity"
             android:exported="false" />
         <activity
             android:name=".triage.RecheckActivity"
@@ -213,7 +216,7 @@
             android:exported="false" />
 
         <receiver
-            android:name=".notifcation.NotificationReceiver"
+            android:name=".notification.NotificationReceiver"
             android:exported="true" />
 
         <provider

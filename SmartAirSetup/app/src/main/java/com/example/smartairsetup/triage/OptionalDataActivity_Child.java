@@ -164,7 +164,7 @@ public class OptionalDataActivity_Child extends AppCompatActivity {
                     if (snapshot.exists() && snapshot.getString("zone") != null) {
                         launchZoneActivity(snapshot.getString("zone"));
                     } else {
-                        Toast.makeText(this, "Please ask parent to record PEF", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(this, "Please record PEF", Toast.LENGTH_SHORT).show();
                     }
                 }).addOnFailureListener(e ->
                         Toast.makeText(this, "Failed to fetch PEF: " + e.getMessage(), Toast.LENGTH_SHORT).show()

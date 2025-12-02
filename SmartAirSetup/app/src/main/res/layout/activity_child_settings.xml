@@ -5,13 +5,14 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/background_colour"
     tools:context=".child_home_ui.ChildSettingsActivity">
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
         <Button
             android:layout_width="match_parent"
-            android:layout_height="36dp"
+            android:layout_height="match_parent"
             android:text="Sign Out"
             android:id="@+id/buttonSignOut"
             android:backgroundTint="@color/button_icon_color" />

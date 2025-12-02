@@ -1,5 +1,8 @@
-package com.example.smartairsetup.checkin;
+package com.example.smartairsetup.medlog;
 
+import static com.example.smartairsetup.notification.RapidRescueCountHelper.checkRescueRepeats;
+
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -19,7 +22,7 @@ import androidx.core.view.WindowInsetsCompat;
 
 import com.example.smartairsetup.R;
 import com.example.smartairsetup.child_home_ui.ChildHomeActivity;
-import com.example.smartairsetup.medlog.RecordMedUsageActivity;
+import com.example.smartairsetup.notification.AlertHelper;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -156,89 +159,102 @@ public class PrePostCheckActivity extends AppCompatActivity {
         }
     }
 
-    private void setNextButton(){
+    private void setNextButton() {
         Button nextButton = findViewById(R.id.checkInNextButton);
-        if (nextButton != null) {
-            nextButton.setOnClickListener(v -> {
 
-                if(mode != null && mode.equals("post")) {
+        nextButton.setOnClickListener(v -> {
 
-                    // Fetch medication to get isRescue
-                    db.collection("users")
-                            .document(parentUid)
-                            .collection("children")
-                            .document(childId)
-                            .collection("medications")
-                            .document(medID)
-                            .get()
-                            .addOnSuccessListener(doc -> {
+            if (mode != null && mode.equals("post")) {
 
-                                boolean isRescue = false;
-                                if (doc.exists() && doc.getBoolean("isRescue") != null) {
+                // Fetch medication to confirm if it's a rescue med
+                final boolean[] isRescue = {false};   // <-- FIX HERE
 
-                                    isRescue = doc.getBoolean("isRescue");
+                db.collection("users")
+                        .document(parentUid)
+                        .collection("children")
+                        .document(childId)
+                        .collection("medications")
+                        .document(medID)
+                        .get()
+                        .addOnSuccessListener(doc -> {
 
-                                }
-                                // Build log entry
-                                Map<String, Object> medLogs = new HashMap<>();
-                                medLogs.put("timestamp", passedTimestamp);
-                                medLogs.put("doseCount", passedDoseCount);
-                                medLogs.put("medId", medID);
-                                medLogs.put("childId", childId);
-                                medLogs.put("preFeeling", passedFeeling);
-                                medLogs.put("postFeeling", selected);
-                                medLogs.put("feelingChange",
-                                        feelingSpinner.getSelectedItem().toString());
-                                medLogs.put("isRescue", isRescue);
+                            if (doc.exists() && doc.getBoolean("isRescue") != null) {
+                                isRescue[0] = doc.getBoolean("isRescue");
+                            }
 
-                                // Save to Firebase
-                                db.collection("users")
-                                        .document(parentUid)
-                                        .collection("children")
-                                        .document(childId)
-                                        .collection("medLogs")
-                                        .add(medLogs)
-                                        .addOnSuccessListener(docRef -> {
-                                            Toast.makeText(this, "Medication log saved!", Toast.LENGTH_SHORT).show();
-                                            finish(); // go back or go somewhere else
-                                        })
-                                        .addOnFailureListener(e -> {
-                                            Toast.makeText(this, "Error saving log", Toast.LENGTH_SHORT).show();
-                                            e.printStackTrace();
+                            // Build med log entry
+                            Map<String, Object> medLog = new HashMap<>();
+                            medLog.put("timestamp", passedTimestamp);
+                            medLog.put("doseCount", passedDoseCount);
+                            medLog.put("medId", medID);
+                            medLog.put("childId", childId);
+                            medLog.put("preFeeling", passedFeeling);
+                            medLog.put("postFeeling", selected);
+                            medLog.put("isRescue", isRescue[0]);
+
+                            String feelingChange = feelingSpinner.getSelectedItem().toString();
+                            medLog.put("feelingChange", feelingChange);
+
+                            // Immediate alert if Worse after dose
+                            if (feelingChange.equals("Worse")) {
+                                AlertHelper.sendAlertToParent(parentUid, childId, "WORSE_AFTER_DOSE", this);
+                            }
+
+                            // Save the log FIRST
+                            db.collection("users")
+                                    .document(parentUid)
+                                    .collection("children")
+                                    .document(childId)
+                                    .collection("medLogs")
+                                    .add(medLog)
+                                    .addOnSuccessListener(docRef -> {
+
+                                        // ONLY check rapid rescue repeats if rescue
+                                        if (isRescue[0]) {
+                                            checkRescueRepeats(parentUid, childId, moreThanTwo -> {
+                                                if (moreThanTwo) {
+                                                    AlertHelper.sendAlertToParent(parentUid, childId, "RESCUE_REPEATED", this);
+                                                }
+                                            });
+                                        }
+
+                                        // Update medication puffs left
+                                        DocumentReference medRef = db.collection("users")
+                                                .document(parentUid)
+                                                .collection("children")
+                                                .document(childId)
+                                                .collection("medications")
+                                                .document(medID);
+
+                                        medRef.get().addOnSuccessListener(snapshot -> {
+                                            Long puffs = snapshot.getLong("puffsLeft");
+                                            if (puffs == null) puffs = 0L;
+                                            medRef.update("puffsLeft", Math.max(puffs - passedDoseCount, 0));
                                         });
 
-                            });
+                                        Toast.makeText(this, "Medication log saved!", Toast.LENGTH_SHORT).show();
 
-                    // Update puffsLeft in medication collection
-                    DocumentReference medRef = db.collection("users")
-                            .document(parentUid)
-                            .collection("children")
-                            .document(childId)
-                            .collection("medications")
-                            .document(medID);
+                                        Intent i = new Intent(this, ChildHomeActivity.class);
+                                        i.putExtra("CHILD_ID", childId);
+                                        startActivity(i);
+                                        finish();
+                                    })
+                                    .addOnFailureListener(e ->
+                                            Toast.makeText(this, "Failed to save log", Toast.LENGTH_SHORT).show()
+                                    );
+                        });
 
-                    medRef.get().addOnSuccessListener(snapshot -> {
-                        Long currentPuffs = snapshot.getLong("puffsLeft");
-                        if (currentPuffs == null) currentPuffs = 0L;
-                        medRef.update("puffsLeft", Math.max(currentPuffs - passedDoseCount, 0));
-                    });
-
-                    Intent intent = new Intent(this, ChildHomeActivity.class);
-                    intent.putExtra("CHILD_ID", childId);
-                    startActivity(intent);
-
-                }else{
-                    Intent intent = new Intent(this, RecordMedUsageActivity.class);
-                    intent.putExtra("CHILD_ID", childId);
-                    intent.putExtra("PRE_FEELING", selected); //passes user choice
-                    startActivity(intent);
-                }
-
-            });
-
-        }
-
+            } else {
+                // PRE mode
+                Intent i = new Intent(this, RecordMedUsageActivity.class);
+                i.putExtra("CHILD_ID", childId);
+                i.putExtra("PRE_FEELING", selected);
+                startActivity(i);
+            }
+        });
     }
+
+
 
     private void setSegmentGroup(){
 

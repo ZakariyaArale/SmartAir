@@ -75,6 +75,7 @@ dependencies {
     implementation(libs.material3)
     implementation(libs.activity)
     implementation(libs.recyclerview)
+    implementation(libs.firebase.messaging)
 
     // --- Tests (from origin/main + compose tests) ---
     testImplementation(libs.junit)

@@ -1,4 +1,4 @@
-package com.example.smartairsetup.checkin;
+package com.example.smartairsetup.medlog;
 
 public interface DateCalculations {
 

@@ -1,4 +1,4 @@
-package com.example.smartairsetup.notifcation;
+package com.example.smartairsetup.notification;
 
 import android.app.Activity;
 import android.app.AlarmManager;

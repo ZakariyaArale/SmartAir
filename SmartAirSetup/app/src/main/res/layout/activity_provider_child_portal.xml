@@ -52,6 +52,14 @@
         android:layout_marginTop="12dp"
         android:backgroundTint="#2E7D32"
         android:textColor="@android:color/white"/>
+    <Button
+        android:id="@+id/btnPDF"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="PDF"
+        android:layout_marginTop="12dp"
+        android:backgroundTint="#2E7D32"
+        android:textColor="@android:color/white"/>
 
     <!-- NEW: Controller adherence summary -->
     <Button

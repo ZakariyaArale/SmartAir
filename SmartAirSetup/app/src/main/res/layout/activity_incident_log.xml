@@ -7,10 +7,10 @@
     android:padding="16dp">
 
     <TextView
-        android:id="@+id/textHistoryTitle"
+        android:id="@+id/textIncidentLogs"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="History"
+        android:text="Incident Logs"
         android:textSize="22sp"
         android:textStyle="bold"
         android:textColor="#1B4F72" />
@@ -28,73 +28,19 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
 
-    <!-- Date range -->
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Date range (YYYY-MM-DD)"
-        android:layout_marginTop="12dp" />
-
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal">
-
-        <EditText
-            android:id="@+id/editStartDate"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:hint="Start" />
-
-        <EditText
-            android:id="@+id/editEndDate"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:layout_marginStart="8dp"
-            android:hint="End" />
-    </LinearLayout>
-
-    <!-- Trigger filter -->
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Filter by trigger"
-        android:layout_marginTop="12dp" />
-
-    <Spinner
-        android:id="@+id/spinnerTriggerFilter"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
-
-    <!-- Symptom filter -->
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Filter by symptom"
-        android:layout_marginTop="12dp" />
-
-    <Spinner
-        android:id="@+id/spinnerSymptomFilter"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:orientation="horizontal"/>
 
     <Button
-        android:id="@+id/buttonApplyFilters"
+        android:id="@+id/buttonGetLogs"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Apply filters"
+        android:text="Get Logs"
         android:backgroundTint="@color/button_icon_color"
         android:layout_marginTop="12dp" />
 
-    <Button
-        android:id="@+id/buttonExportCSV"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:backgroundTint="@color/button_icon_color"
-        android:text="Export as CSV"
-        android:layout_marginTop="12dp" />
     <Button
         android:id="@+id/buttonBack"
         android:layout_width="match_parent"

@@ -11,6 +11,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.smartairsetup.R;
+import com.example.smartairsetup.pdf.PDFStoreActivity;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 
@@ -46,13 +47,12 @@ public class ProviderChildPortalActivity extends AppCompatActivity {
         Button back = findViewById(R.id.backButton);
         back.setOnClickListener(v -> finish());
 
-        // Existing buttons
         Button btnRescue = findViewById(R.id.btnProviderRescueLogs);
         Button btnSymptoms = findViewById(R.id.btnProviderSymptoms);
         Button btnPEF = findViewById(R.id.btnProviderPEF);
         Button btnCharts = findViewById(R.id.btnProviderCharts);
+        Button btnPDF = findViewById(R.id.btnPDF);
 
-        // NEW buttons
         Button btnController = findViewById(R.id.btnProviderControllerSummary);
         Button btnTriggers = findViewById(R.id.btnProviderTriggers);
         Button btnTriage = findViewById(R.id.btnProviderTriageIncidents);
@@ -139,6 +139,14 @@ public class ProviderChildPortalActivity extends AppCompatActivity {
             i.putExtra(EXTRA_CHILD_ID, childId);
             i.putExtra(EXTRA_CHILD_NAME, childName);
             startActivity(i);
+        });
+
+        btnPDF.setOnClickListener(v -> {
+            Intent intent = new Intent(this, PDFStoreActivity.class);
+            intent.putExtra("PARENT_UID", parentUid);
+            intent.putExtra("CHILD_ID", childId);
+            intent.putExtra("CHILD_NAME", childName);
+            startActivity(intent);
         });
     }
 }

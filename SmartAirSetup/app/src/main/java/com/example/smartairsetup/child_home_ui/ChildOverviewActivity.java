@@ -45,8 +45,6 @@ public class ChildOverviewActivity extends AbstractNavigation {
     private String parentUid;
     private String selectedChildId;
     private String selectedChildName;
-    private Button buttonLogControllerDoseNow;
-    private MedicationLogRepository medicationLogRepository;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -94,25 +92,6 @@ public class ChildOverviewActivity extends AbstractNavigation {
             intent.putExtra(ShareWithProviderActivity.EXTRA_CHILD_ID, selectedChildId);
             intent.putExtra(ShareWithProviderActivity.EXTRA_CHILD_NAME, selectedChildName);
             startActivity(intent);
-        });
-
-        medicationLogRepository = new MedicationLogRepository();
-
-        buttonLogControllerDoseNow = findViewById(R.id.buttonLogControllerDoseNow);
-        buttonLogControllerDoseNow.setOnClickListener(v -> {
-            if (!ensureChildSelected()) return;
-
-            // For now: assume each tap = 1 dose
-            medicationLogRepository.logControllerDose(
-                    selectedChildId,
-                    1,
-                    unused -> Toast.makeText(this,
-                            "Controller dose logged for " + selectedChildName,
-                            Toast.LENGTH_SHORT).show(),
-                    e -> Toast.makeText(this,
-                            "Failed to log controller dose: " + e.getMessage(),
-                            Toast.LENGTH_LONG).show()
-            );
         });
 
         buttonOpenMedicationReport.setOnClickListener(v -> {

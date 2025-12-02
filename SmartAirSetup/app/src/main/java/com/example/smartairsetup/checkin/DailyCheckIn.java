@@ -33,6 +33,7 @@ public class DailyCheckIn extends AppCompatActivity {
     private RadioGroup radioCoughWheeze;
     private TextView textCheckInError;
     private Button buttonSubmit;
+    private Button buttonBack;
 
     private FirebaseAuth mAuth;
     private FirebaseFirestore db;
@@ -78,6 +79,7 @@ public class DailyCheckIn extends AppCompatActivity {
         radioCoughWheeze = findViewById(R.id.radioCoughWheeze);
         textCheckInError = findViewById(R.id.textCheckInError);
         buttonSubmit = findViewById(R.id.buttonSubmitCheckIn);
+        buttonBack = findViewById(R.id.buttonBack);
         checkTriggerExercise = findViewById(R.id.checkTriggerExercise);
         checkTriggerColdAir = findViewById(R.id.checkTriggerColdAir);
         checkTriggerDustPets = findViewById(R.id.checkTriggerDustPets);
@@ -85,8 +87,8 @@ public class DailyCheckIn extends AppCompatActivity {
         checkTriggerIllness = findViewById(R.id.checkTriggerIllness);
         checkTriggerOdors = findViewById(R.id.checkTriggerOdors);
 
-
         buttonSubmit.setOnClickListener(v -> submitCheckIn());
+        buttonBack.setOnClickListener(v -> finish());
     }
 
     private void submitCheckIn() {
@@ -199,8 +201,4 @@ public class DailyCheckIn extends AppCompatActivity {
         return text;
     }
 
-    public static interface ChildFetchListener {
-        void onChildrenLoaded(List<UserID> children);
-        void onError(Exception e);
-    }
 }

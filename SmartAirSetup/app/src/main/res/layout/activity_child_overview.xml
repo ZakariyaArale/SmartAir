@@ -85,14 +85,6 @@
                 android:backgroundTint="@color/button_icon_color" />
 
             <Button
-                android:id="@+id/buttonLogControllerDoseNow"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="12dp"
-                android:text="Log controller dose now"
-                android:backgroundTint="@color/button_icon_color" />
-
-            <Button
                 android:id="@+id/buttonOpenMedicationReport"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
