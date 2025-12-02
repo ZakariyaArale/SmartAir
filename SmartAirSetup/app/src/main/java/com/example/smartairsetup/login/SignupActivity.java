@@ -74,7 +74,7 @@ public class SignupActivity extends AppCompatActivity {
 
         buttonSignup.setEnabled(false);
 
-        String email = signupEmail.getText().toString().trim();
+        String email = signupEmail.getText().toString().trim().toLowerCase();
         String password = signupPassword.getText().toString();
         String role = getSelectedRole();
 

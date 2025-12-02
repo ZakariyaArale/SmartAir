@@ -7,16 +7,15 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:padding="24dp">
+        android:padding="50dp">
 
         <Button
             android:id="@+id/buttonSignOut"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Sign out"
             android:backgroundTint="@color/button_icon_color"
-            android:textColor="@android:color/white"
-            />
+            android:text="Sign out"
+            android:textColor="@android:color/white" />
 
         <TextView
             android:id="@+id/textProviderHomeTitle"
