@@ -81,7 +81,7 @@ public class ChildBadgesActivity extends AppCompatActivity {
         }
 
         // Default description in case Firestore does not have target field yet
-        textBadgeTechniqueDesc.setText("Use perfect inhaler technique 10 times.");
+        textBadgeTechniqueDesc.setText(R.string.use_perfect_inhaler_technique_10_times);
 
         CollectionReference badgesRef = db.collection("users")
                 .document(parentUid)

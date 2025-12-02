@@ -1,5 +1,6 @@
 package com.example.smartairsetup.child_home_ui;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.widget.Button;
@@ -13,7 +14,6 @@ import com.example.smartairsetup.navigation.AbstractNavigation;
 import com.example.smartairsetup.medlog.ControllerScheduleActivity;
 import com.example.smartairsetup.R;
 import com.example.smartairsetup.sharing.SymptomTrendActivity;
-import com.example.smartairsetup.medlog.MedicationLogRepository;
 import com.example.smartairsetup.medlog.MedicationReportActivity;
 import com.example.smartairsetup.parent_home_ui.ParentHomeActivity;
 import com.example.smartairsetup.pdf.PDFStoreActivity;
@@ -34,12 +34,7 @@ public class ChildOverviewActivity extends AbstractNavigation {
     private FirebaseAuth mAuth;
     private FirebaseFirestore db;
     private TextView textChildSummary;
-    private Button buttonOpenSchedule;
-    private Button buttonOpenSymptomTrend;
-    private Button buttonOpenMedicationReport;
-    private Button buttonWhatProviderSees;
     private Button buttonSelectChild;
-    private Button backButton;
     private final List<String> childNames = new ArrayList<>();
     private final List<String> childIds = new ArrayList<>();
     private String parentUid;
@@ -55,15 +50,15 @@ public class ChildOverviewActivity extends AbstractNavigation {
 
         textChildSummary = findViewById(R.id.textChildSummary);
 
-        buttonOpenSchedule = findViewById(R.id.buttonOpenSchedule);
-        buttonOpenSymptomTrend = findViewById(R.id.buttonOpenSymptomTrend);
-        buttonOpenMedicationReport = findViewById(R.id.buttonOpenMedicationReport);
-        buttonWhatProviderSees = findViewById(R.id.buttonWhatProviderSees);
-        backButton = findViewById(R.id.backButton);
+        Button buttonOpenSchedule = findViewById(R.id.buttonOpenSchedule);
+        Button buttonOpenSymptomTrend = findViewById(R.id.buttonOpenSymptomTrend);
+        Button buttonOpenMedicationReport = findViewById(R.id.buttonOpenMedicationReport);
+        Button buttonWhatProviderSees = findViewById(R.id.buttonWhatProviderSees);
+        Button backButton = findViewById(R.id.backButton);
         backButton.setOnClickListener(v -> finish());
 
         buttonOpenSchedule.setOnClickListener(v -> {
-            if (!ensureChildSelected()) return;
+            if (childNotSelected()) return;
             Intent intent = new Intent(ChildOverviewActivity.this, ControllerScheduleActivity.class);
             intent.putExtra(ControllerScheduleActivity.EXTRA_CHILD_ID, selectedChildId);
             intent.putExtra(ControllerScheduleActivity.EXTRA_CHILD_NAME, selectedChildName);
@@ -71,7 +66,7 @@ public class ChildOverviewActivity extends AbstractNavigation {
         });
 
         buttonOpenSymptomTrend.setOnClickListener(v -> {
-            if (!ensureChildSelected()) return;
+            if (childNotSelected()) return;
             Intent intent = new Intent(ChildOverviewActivity.this, SymptomTrendActivity.class);
             intent.putExtra(SymptomTrendActivity.EXTRA_CHILD_ID, selectedChildId);
             intent.putExtra(SymptomTrendActivity.EXTRA_CHILD_NAME, selectedChildName);
@@ -79,7 +74,7 @@ public class ChildOverviewActivity extends AbstractNavigation {
         });
 
         buttonOpenMedicationReport.setOnClickListener(v -> {
-            if (!ensureChildSelected()) return;
+            if (childNotSelected()) return;
             Intent intent = new Intent(ChildOverviewActivity.this, MedicationReportActivity.class);
             intent.putExtra(MedicationReportActivity.EXTRA_CHILD_ID, selectedChildId);
             intent.putExtra(MedicationReportActivity.EXTRA_CHILD_NAME, selectedChildName);
@@ -87,7 +82,7 @@ public class ChildOverviewActivity extends AbstractNavigation {
         });
 
         buttonWhatProviderSees.setOnClickListener(v -> {
-            if (!ensureChildSelected()) return;
+            if (childNotSelected()) return;
             Intent intent = new Intent(ChildOverviewActivity.this, ShareWithProviderActivity.class);
             intent.putExtra(ShareWithProviderActivity.EXTRA_CHILD_ID, selectedChildId);
             intent.putExtra(ShareWithProviderActivity.EXTRA_CHILD_NAME, selectedChildName);
@@ -95,7 +90,7 @@ public class ChildOverviewActivity extends AbstractNavigation {
         });
 
         buttonOpenMedicationReport.setOnClickListener(v -> {
-            if (!ensureChildSelected()) return;
+            if (childNotSelected()) return;
             Intent intent = new Intent(ChildOverviewActivity.this, MedicationReportActivity.class);
             intent.putExtra(MedicationReportActivity.EXTRA_CHILD_ID, selectedChildId);
             intent.putExtra(MedicationReportActivity.EXTRA_CHILD_NAME, selectedChildName);
@@ -115,14 +110,15 @@ public class ChildOverviewActivity extends AbstractNavigation {
         loadChildren();
     }
 
-    private boolean ensureChildSelected() {
+    private boolean childNotSelected() {
         if (selectedChildId == null) {
             Toast.makeText(this, "Please select a child first.", Toast.LENGTH_SHORT).show();
-            return false;
+            return true;
         }
-        return true;
+        return false;
     }
 
+    @SuppressLint("SetTextI18n")
     private void loadChildren() {
         if (mAuth.getCurrentUser() == null) {
             Toast.makeText(this, "Not signed in", Toast.LENGTH_SHORT).show();
@@ -192,6 +188,7 @@ public class ChildOverviewActivity extends AbstractNavigation {
                 .show();
     }
 
+    @SuppressLint("SetTextI18n")
     private void loadOverviewForChild(String childId, String childName) {
         // For now, we’ll show weekly rescue count as a simple summary
         db.collection("users")

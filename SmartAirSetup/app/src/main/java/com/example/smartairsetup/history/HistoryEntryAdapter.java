@@ -42,11 +42,11 @@ public class HistoryEntryAdapter extends ArrayAdapter<HistoryEntry> {
 
         textChild.setText(entry.childName);
         textDate.setText(entry.date);
-        textNight.setText("Night: " + entry.night);
-        textActivity.setText("Activity: " + entry.activity);
-        textCough.setText("Cough/wheeze: " + entry.cough);
-        textTriggers.setText("Triggers: " + entry.triggers);
-        textAuthor.setText("Author: " + entry.author);
+        textNight.setText(getContext().getString(R.string.history_night, entry.night));
+        textActivity.setText(getContext().getString(R.string.history_activity, entry.activity));
+        textCough.setText(getContext().getString(R.string.history_cough, entry.cough));
+        textTriggers.setText(getContext().getString(R.string.history_triggers, entry.triggers));
+        textAuthor.setText(getContext().getString(R.string.history_author, entry.author));
 
         return view;
     }

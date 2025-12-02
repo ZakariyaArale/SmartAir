@@ -193,7 +193,7 @@
                 android:textSize="20sp" />
 
 
-            <Switch
+            <androidx.appcompat.widget.SwitchCompat
                 android:id="@+id/rescueMedSwitch"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"

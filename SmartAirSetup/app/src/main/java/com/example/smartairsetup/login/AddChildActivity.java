@@ -42,9 +42,6 @@ public class AddChildActivity extends AppCompatActivity {
         mAuth = FirebaseAuth.getInstance();
         db = FirebaseFirestore.getInstance();
 
-        Button backButton1 = findViewById(R.id.backButton);
-        backButton1.setOnClickListener(v -> getOnBackPressedDispatcher().onBackPressed());
-
         editChildUsername = findViewById(R.id.editChildUsername);
         editChildPassword = findViewById(R.id.editChildPassword);
         editChildConfirmPassword = findViewById(R.id.editChildConfirmPassword);
@@ -61,7 +58,7 @@ public class AddChildActivity extends AppCompatActivity {
 
     private void saveChild() {
         textChildError.setVisibility(View.GONE);
-        textChildError.setText("");
+        textChildError.setText(null);
 
         String username = editChildUsername.getText().toString().trim();
         String password = editChildPassword.getText().toString();
@@ -71,37 +68,37 @@ public class AddChildActivity extends AppCompatActivity {
         String notes = editChildNotes.getText().toString().trim();
 
         if (TextUtils.isEmpty(username)) {
-            editChildUsername.setError("Username is required");
+            editChildUsername.setError(getString(R.string.error_username_required));
             editChildUsername.requestFocus();
             return;
         }
 
         if (TextUtils.isEmpty(password)) {
-            editChildPassword.setError("Password is required");
+            editChildPassword.setError(getString(R.string.error_password_required));
             editChildPassword.requestFocus();
             return;
         }
 
         if (password.length() < 6) {
-            editChildPassword.setError("Password must be at least 6 characters");
+            editChildPassword.setError(getString(R.string.error_password_length));
             editChildPassword.requestFocus();
             return;
         }
 
         if (!password.equals(confirmPassword)) {
-            editChildConfirmPassword.setError("Passwords do not match");
+            editChildConfirmPassword.setError(getString(R.string.error_password_mismatch));
             editChildConfirmPassword.requestFocus();
             return;
         }
 
         if (TextUtils.isEmpty(name)) {
-            editChildName.setError("Child name is required");
+            editChildName.setError(getString(R.string.error_child_name_required));
             editChildName.requestFocus();
             return;
         }
 
         if (TextUtils.isEmpty(dob)) {
-            editChildDob.setError("Date of birth is required");
+            editChildDob.setError(getString(R.string.error_dob_required));
             editChildDob.requestFocus();
             return;
         }
@@ -111,10 +108,11 @@ public class AddChildActivity extends AppCompatActivity {
                 : null;
 
         if (parentUid == null) {
-            textChildError.setText("You must be logged in as a parent.");
+            textChildError.setText(R.string.error_must_be_logged_in_parent);
             textChildError.setVisibility(View.VISIBLE);
             return;
         }
+
 
         buttonSaveChild.setEnabled(false);
 
@@ -124,7 +122,7 @@ public class AddChildActivity extends AppCompatActivity {
                 .get()
                 .addOnSuccessListener(doc -> {
                     if (doc.exists()) {
-                        textChildError.setText("This username is already taken. Choose another one.");
+                        textChildError.setText(R.string.error_child_username_taken);
                         textChildError.setVisibility(View.VISIBLE);
                         buttonSaveChild.setEnabled(true);
                     } else {
@@ -133,7 +131,9 @@ public class AddChildActivity extends AppCompatActivity {
                     }
                 })
                 .addOnFailureListener(e -> {
-                    textChildError.setText("Failed to check username: " + e.getMessage());
+                    textChildError.setText(
+                            getString(R.string.error_failed_check_username, e.getMessage())
+                    );
                     textChildError.setVisibility(View.VISIBLE);
                     buttonSaveChild.setEnabled(true);
                 });
@@ -189,13 +189,17 @@ public class AddChildActivity extends AppCompatActivity {
                                 finish();
                             })
                             .addOnFailureListener(e -> {
-                                textChildError.setText("Failed to save child account: " + e.getMessage());
+                                textChildError.setText(
+                                        getString(R.string.error_failed_save_child_account, e.getMessage())
+                                );
                                 textChildError.setVisibility(View.VISIBLE);
                                 buttonSaveChild.setEnabled(true);
                             });
                 })
                 .addOnFailureListener(e -> {
-                    textChildError.setText("Failed to add child: " + e.getMessage());
+                    textChildError.setText(
+                            getString(R.string.error_failed_add_child, e.getMessage())
+                    );
                     textChildError.setVisibility(View.VISIBLE);
                     buttonSaveChild.setEnabled(true);
                 });

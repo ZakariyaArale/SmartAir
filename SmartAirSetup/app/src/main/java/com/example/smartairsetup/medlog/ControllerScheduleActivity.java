@@ -63,7 +63,9 @@ public class ControllerScheduleActivity extends AppCompatActivity {
         Button backButton = findViewById(R.id.backButton);
         backButton.setOnClickListener(v -> finish());
 
-        textScheduleChildName.setText("Child: " + childName);
+        textScheduleChildName.setText(
+                getString(R.string.schedule_child_label, childName)
+        );
 
         loadExistingSchedule();
 

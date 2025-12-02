@@ -58,7 +58,6 @@ public class MedicationReportActivity extends AppCompatActivity {
         textReportChildName.setText("Child: " + childName);
         textReportRange.setText("Range: last 30 days");
 
-        // Story 2: this is the key call
         loadControllerAdherence();
     }
 

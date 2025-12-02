@@ -3,6 +3,7 @@ package com.example.smartairsetup.history;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.os.Build;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.widget.ArrayAdapter;
@@ -128,10 +129,13 @@ public class HistoryActivity extends AppCompatActivity {
         values.put(MediaStore.Downloads.MIME_TYPE, "text/csv");
         values.put(MediaStore.Downloads.RELATIVE_PATH, Environment.DIRECTORY_DOWNLOADS);
 
-        android.net.Uri uri = getContentResolver().insert(
-                MediaStore.Downloads.EXTERNAL_CONTENT_URI,
-                values
-        );
+        android.net.Uri uri = null;
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+            uri = getContentResolver().insert(
+                    MediaStore.Downloads.EXTERNAL_CONTENT_URI,
+                    values
+            );
+        }
 
         if (uri == null) {
             Toast.makeText(this, "Could not create file in Downloads.", Toast.LENGTH_LONG).show();
@@ -253,9 +257,12 @@ public class HistoryActivity extends AppCompatActivity {
             historyAdapter.notifyDataSetChanged();
 
             textSymptomSummary.setText(
-                    "Days with night waking: " + nightProblemDays + "\n" +
-                            "Days with activity limits: " + activityProblemDays + "\n" +
-                            "Days with cough/wheeze: " + coughProblemDays
+                    getString(
+                            R.string.symptom_summary,
+                            nightProblemDays,
+                            activityProblemDays,
+                            coughProblemDays
+                    )
             );
 
             loadZoneHistory(uid, filterChildId, start, end, hasDateRange);

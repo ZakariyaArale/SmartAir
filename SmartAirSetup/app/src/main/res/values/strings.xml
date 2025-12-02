@@ -107,6 +107,128 @@
     <string name="child_password">Child password</string>
     <string name="add_child">Add child</string>
     <string name="child_username">Child username</string>
+    <string name="please_select_an_option">Please select an option.</string>
+    <string name="your_technique_completed_streak_is_0">Your technique-completed streak is: 0</string>
+    <string name="your_controller_day_streak_is_0">Your controller-day streak is: 0</string>
+    <string name="your_controller_day_streak_is">Your controller-day streak is: </string>
+    <string name="your_teqnique_completed_streak_is">Your technique-completed streak is: </string>
+    <string name="use_perfect_inhaler_technique_10_times">Use perfect inhaler technique 10 times.</string>
 
+
+    <string name="tech_step1_no_mask">Step 1: Shake inhaler and remove cap</string>
+    <string name="tech_step2_no_mask">Step 2: Exhale gently away from the mouthpiece</string>
+    <string name="tech_step3_no_mask">Step 3: Place mouthpiece in mouth and tightly seal lips around it</string>
+    <string name="tech_step4_no_mask">Step 4: Take a slow, deep breath and press canister once.</string>
+    <string name="tech_step5_no_mask">Step 5: Hold your breath ≈10 seconds (or as long as comfortable)</string>
+    <string name="tech_is_another_dose_prescribed">Is another dose prescribed?</string>
+    <string name="tech_step6_no_mask">Step 6: Replace cap and rinse mouth if using a steroid inhaler</string>
+    <string name="tech_finished">Great Job! You\'re done! click finish now!</string>
+
+    <!-- Technique training: mask toggle button -->
+    <string name="tech_mask_tips_button">Get Tips for Mask/Spacers</string>
+    <string name="tech_mask_basic_inhaler_button">Go back to basic inhaler</string>
+
+    <!-- Technique training: yes/continue + timer message -->
+    <string name="tech_continue">Continue</string>
+    <string name="tech_yes">Yes</string>
+    <string name="tech_wait_between_doses">Please wait 30 – 60 seconds between doses. Timer started now</string>
+
+    <!-- Technique training: MASK branch steps -->
+    <string name="tech_step1_mask">Step 1: Attach the spacer to the inhaler mouthpiece. Shake the inhaler</string>
+    <string name="tech_step2_mask">Step 2: Exhale gently away from the inhaler</string>
+    <string name="tech_step3_mask">Step 3: Put the spacer mouthpiece between your teeth and seal lips, or place face mask onto face if using mask</string>
+    <string name="tech_step4_mask">Step 4: Take a slow, deep breath and press canister once. If using mask or mouthpiece inhale 3 – 5 times to get all medication</string>
+    <string name="tech_step6_mask">Step 6: Replace cap and rinse mouth if using a steroid inhaler</string>
+
+    <!-- History entry labels -->
+    <string name="history_night">Night: %1$s</string>
+    <string name="history_activity">Activity: %1$s</string>
+    <string name="history_cough">Cough/wheeze: %1$s</string>
+    <string name="history_triggers">Triggers: %1$s</string>
+    <string name="history_author">Author: %1$s</string>
+
+    <!-- History symptom summary -->
+    <string name="symptom_summary">
+    Days with night waking: %1$d\nDays with activity limits: %2$d\nDays with cough/wheeze: %3$d</string>
+
+    <!-- Daily check-in header -->
+    <string name="check_in_for_child">Check-in for %1$s</string>
+
+    <!-- Daily check-in error messages -->
+    <string name="checkin_error_must_be_logged_in">You must be logged in to complete a check-in.</string>
+    <string name="checkin_error_answer_all">Please answer all questions.</string>
+    <string name="checkin_error_failed_to_save">Failed to save check-in: %1$s</string>
+
+    <!-- AddChildActivity: field validation errors -->
+    <string name="error_username_required">Username is required</string>
+    <string name="error_password_required">Password is required</string>
+    <string name="error_password_length">Password must be at least 6 characters</string>
+    <string name="error_password_mismatch">Passwords do not match</string>
+    <string name="error_child_name_required">Child name is required</string>
+    <string name="error_dob_required">Date of birth is required</string>
+
+    <!-- AddChildActivity: status / error messages -->
+    <string name="error_must_be_logged_in_parent">You must be logged in as a parent.</string>
+    <string name="error_child_username_taken">This username is already taken. Choose another one.</string>
+    <string name="error_failed_check_username">Failed to check username: %1$s</string>
+    <string name="error_failed_save_child_account">Failed to save child account: %1$s</string>
+    <string name="error_failed_add_child">Failed to add child: %1$s</string>
+
+    <!-- AddChildActivity: success toast -->
+    <string name="toast_child_added_success">Child added successfully</string>
+
+    <!-- Shared date format (yyyy-MM-dd) -->
+    <string name="date_format_ymd">%1$d-%2$d-%3$d</string>
+
+    <!-- Add/Edit Medication screen: save button text -->
+    <string name="save_changes">Save Changes</string>
+    <string name="add_medication">Add Medication</string>
+
+    <!-- Add/Edit Medication screen: auth error -->
+    <string name="err_parent_must_be_logged_in">You must be logged in as a parent.</string>
+
+    <!-- Add/Edit Medication screen: Toast messages -->
+    <string name="toast_med_moved_updated">Medication moved &amp; updated!</string>
+    <string name="toast_failed_write_new_child">Failed writing to new child</string>
+    <string name="toast_failed_remove_old_child">Failed removing from old child</string>
+    <string name="toast_med_updated">Medication updated!</string>
+    <string name="toast_failed_update_medication">FAILED TO UPDATE MEDICATION</string>
+    <string name="toast_med_added">Medication added!</string>
+    <string name="toast_failed_add_medication">FAILED TO ADD MEDICATION</string>
+
+    <!-- Add/Edit Medication screen: validation messages -->
+    <string name="error_medication_name_required">Medication name is required</string>
+    <string name="error_select_purchase_date">Please select a purchase date</string>
+    <string name="error_purchase_date_invalid">Purchase Date Format is Invalid</string>
+    <string name="error_select_expiry_date">Please select an expiry date</string>
+    <string name="error_expiry_date_invalid">Expiry Date Format is Invalid</string>
+
+    <string name="medication_logs">Medication Logs</string>
+
+    <!-- Controller schedule screen -->
+    <string name="schedule_child_label">Child: %1$s</string>
+
+    <!-- Medication inventory: details header formats -->
+    <string name="med_name_child_format">%1$s  -  %2$s</string>
+    <string name="med_name_child_rescue_format">%1$s  -  %2$s  -  Rescue</string>
+    <string name="med_purchased_format">Purchased: %1$d/%2$d/%3$d</string>
+    <string name="med_expires_format">Expires: %1$d/%2$d/%3$d</string>
+    <string name="med_doses_left">Doses left: %1$d</string>
+    <string name="med_additional_notes">Additional Notes: %1$s</string>
+
+    <!-- Delete medication dialog -->
+    <string name="dialog_delete_med_title">Are you sure?</string>
+    <string name="dialog_delete_med_message">
+Once your medication is deleted it will be erased permanently, you cannot recover it.
+</string>
+    <string name="dialog_delete_med_positive">Yes! Delete it.</string>
+    <string name="dialog_delete_med_negative">Maybe Later</string>
+
+    <!-- Toast messages -->
+    <string name="toast_no_med_selected">No medication selected.</string>
+    <string name="toast_med_deleted">Medication deleted!</string>
+    <string name="toast_failed_delete_med">Failed to delete: %1$s</string>
+    <string name="toast_notification_scheduled">Notification scheduled for 1 minute from now!</string>
+    <string name="toast_cannot_schedule_exact_alarm">Unable to schedule exact alarm on this device.</string>
 
 </resources>

@@ -148,14 +148,14 @@ public class ChildHomeActivity extends AbstractNavigation {
                         loadTechniqueStreak();
                     } else {
                         Toast.makeText(this, "Child not found.", Toast.LENGTH_SHORT).show();
-                        techniqueStreakText.setText("Your technique-completed streak is: 0");
-                        controllerStreakText.setText("Your controller-day streak is: 0");
+                        techniqueStreakText.setText(R.string.your_technique_completed_streak_is_0);
+                        controllerStreakText.setText(R.string.your_controller_day_streak_is_0);
                     }
                 })
                 .addOnFailureListener(e -> {
                     Toast.makeText(this, "Failed to load child.", Toast.LENGTH_SHORT).show();
-                    techniqueStreakText.setText("Your technique-completed streak is: 0");
-                    controllerStreakText.setText("Your controller-day streak is: 0");
+                    techniqueStreakText.setText(R.string.your_technique_completed_streak_is_0);
+                    controllerStreakText.setText(R.string.your_controller_day_streak_is_0);
                 });
     }
 
@@ -287,11 +287,11 @@ public class ChildHomeActivity extends AbstractNavigation {
 
                     int streak = computeConsecutiveDayStreak(controllerDays);
                     controllerStreakText.setText(
-                            "Your controller-day streak is: " + streak
+                            R.string.your_controller_day_streak_is + streak
                     );
                 })
                 .addOnFailureListener(e ->
-                        controllerStreakText.setText("Your controller-day streak is: 0")
+                        controllerStreakText.setText(R.string.your_controller_day_streak_is_0)
                 );
     }
 
@@ -328,11 +328,11 @@ public class ChildHomeActivity extends AbstractNavigation {
 
                     int streak = computeConsecutiveDayStreak(techniqueDays);
                     techniqueStreakText.setText(
-                            "Your technique-completed streak is: " + streak
+                            R.string.your_teqnique_completed_streak_is + streak
                     );
                 })
                 .addOnFailureListener(e ->
-                        techniqueStreakText.setText("Your technique-completed streak is: 0")
+                        techniqueStreakText.setText(R.string.your_technique_completed_streak_is_0)
                 );
     }
 

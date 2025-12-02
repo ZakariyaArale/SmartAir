@@ -9,7 +9,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.NumberPicker;
 import android.widget.Spinner;
-import android.widget.Switch;
+import androidx.appcompat.widget.SwitchCompat;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
@@ -39,7 +39,7 @@ public class AddEditMedicationActivity extends AppCompatActivity {
     private NumberPicker doseCountNP;
     private EditText notesET;
     private Spinner childSpinner;
-    private Switch rescueMedSwitch;
+    private SwitchCompat rescueMedSwitch;
 
     private FirebaseFirestore db;
 
@@ -136,10 +136,23 @@ public class AddEditMedicationActivity extends AppCompatActivity {
 
         medNameET.setText(med.getName());
         notesET.setText(med.getNotes());
-        purchaseDateET.setText(med.getPurchaseYear() + "-" +(med.getPurchaseMonth())
-                + "-" +(med.getPurchaseDay()));
-        expiryDateET.setText(med.getExpiryYear() + "-" +(med.getExpiryMonth())
-                + "-" +(med.getExpiryDay()));
+        purchaseDateET.setText(
+                getString(
+                        R.string.date_format_ymd,
+                        med.getPurchaseYear(),
+                        med.getPurchaseMonth(),
+                        med.getPurchaseDay()
+                )
+        );
+
+        expiryDateET.setText(
+                getString(
+                        R.string.date_format_ymd,
+                        med.getExpiryYear(),
+                        med.getExpiryMonth(),
+                        med.getExpiryDay()
+                )
+        );
         doseCountNP.setValue(med.getPuffsLeft());
         rescueMedSwitch.setChecked(med.getisRescue());
 
@@ -170,9 +183,9 @@ public class AddEditMedicationActivity extends AppCompatActivity {
 
             //set's text to reflect if user is editing or adding a med
             if (isEditMode) {
-                saveButton.setText("Save Changes");
+                saveButton.setText(R.string.save_changes);
             } else {
-                saveButton.setText("Add Medication");
+                saveButton.setText(R.string.add_medication);
             }
 
             saveButton.setOnClickListener(v -> {
@@ -335,11 +348,12 @@ public class AddEditMedicationActivity extends AppCompatActivity {
 
             DatePickerDialog dialog = new DatePickerDialog(
                     this,
-                    (view, y, m, d) ->
-                    {
-                        DateET.setText(y + "-" + (m + 1) + "-" + d);
-                        DateET.setError(null); //manually gets rid of error message as user
-                        // technically isn't editing the editText
+                    (view, y, m, d) -> {
+                        DateET.setText(
+                                getString(R.string.date_format_ymd, y, m + 1, d)
+                        );
+                        // Manually clear error because user technically isn't typing
+                        DateET.setError(null);
                     },
                     year, month, day
             );

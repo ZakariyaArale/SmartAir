@@ -183,25 +183,54 @@ public class MedicationInventoryActivity extends AppCompatActivity {
 
         String rescueText;
         // Fill in the details
-        if (medList.getMed().getisRescue()){
-            rescueText = "  -  Rescue";
-        }else{
-            rescueText = "";
+        if (medList.getMed().getisRescue()) {
+            medNameTV.setText(
+                    getString(
+                            R.string.med_name_child_rescue_format,
+                            medList.getMed().getName(),
+                            medList.getChildName()
+                    )
+            );
+        } else {
+            medNameTV.setText(
+                    getString(
+                            R.string.med_name_child_format,
+                            medList.getMed().getName(),
+                            medList.getChildName()
+                    )
+            );
         }
 
-        medNameTV.setText(medList.getMed().getName() + "  -  " + medList.getChildName()
-                + rescueText);
-        purchaseDateTV.setText("Purchased: "
-                + medList.getMed().getPurchaseDay() + "/"
-                + medList.getMed().getPurchaseMonth() + "/"
-                + medList.getMed().getPurchaseYear());
-        expiryDateTV.setText("Expires: "
-                + medList.getMed().getExpiryDay() + "/"
-                + medList.getMed().getExpiryMonth() + "/"
-                + medList.getMed().getExpiryYear());
-        doseLeftTV.setText("Doses left: " +medList.getMed().getPuffsLeft());
-        medNotesTV.setText("Additional Notes: " + medList.getMed().getNotes());
+        purchaseDateTV.setText(
+                getString(
+                        R.string.med_purchased_format,
+                        medList.getMed().getPurchaseDay(),
+                        medList.getMed().getPurchaseMonth(),
+                        medList.getMed().getPurchaseYear()
+                )
+        );
 
+        expiryDateTV.setText(
+                getString(
+                        R.string.med_expires_format,
+                        medList.getMed().getExpiryDay(),
+                        medList.getMed().getExpiryMonth(),
+                        medList.getMed().getExpiryYear()
+                )
+        );
+
+        doseLeftTV.setText(
+                getString(
+                        R.string.med_doses_left,
+                        medList.getMed().getPuffsLeft()
+                )
+        );
+
+        String notes = medList.getMed().getNotes();
+        if (notes == null) notes = "";
+        medNotesTV.setText(
+                getString(R.string.med_additional_notes, notes)
+        );
     }
 
     private void setBackButton() {
@@ -242,8 +271,11 @@ public class MedicationInventoryActivity extends AppCompatActivity {
 
                             //safety check, shouldn't occur if buttons are enabled/disable properly
                             if (selectedMed == null) {
-                                Toast.makeText(this, "No medication selected.",
-                                        Toast.LENGTH_SHORT).show();
+                                Toast.makeText(
+                                        this,
+                                        getString(R.string.toast_no_med_selected),
+                                        Toast.LENGTH_SHORT
+                                ).show();
                                 return;
                             }
 

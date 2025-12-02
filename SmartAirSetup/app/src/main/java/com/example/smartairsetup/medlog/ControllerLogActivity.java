@@ -60,7 +60,7 @@ public class ControllerLogActivity extends AppCompatActivity {
         db = FirebaseFirestore.getInstance();
 
         TextView title = findViewById(R.id.textControllerLogTitle);
-        title.setText("Medication Logs");
+        title.setText(R.string.medication_logs);
 
         spinnerChildFilter = findViewById(R.id.spinnerChildFilter);
         spinnerMedTypeFilter = findViewById(R.id.spinnerTriggerFilter);

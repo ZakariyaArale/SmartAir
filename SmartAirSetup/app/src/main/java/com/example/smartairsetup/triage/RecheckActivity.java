@@ -40,7 +40,7 @@ public class RecheckActivity extends AppCompatActivity {
 
         int checkedId = radioGroup.getCheckedRadioButtonId();
         if (checkedId == -1) {
-            errorText.setText("Please select an option.");
+            errorText.setText(R.string.please_select_an_option);
             errorText.setVisibility(View.VISIBLE);
             return;
         }

@@ -65,7 +65,7 @@ public class DailyCheckIn extends AppCompatActivity {
         }
         TextView childNameText = findViewById(R.id.textChildNameForCheckin);
         if (childNameText != null && childName != null) {
-            childNameText.setText("Check-in for " + childName);
+            childNameText.setText(getString(R.string.check_in_for_child, childName));
         }
 
         mAuth = FirebaseAuth.getInstance();
@@ -91,10 +91,10 @@ public class DailyCheckIn extends AppCompatActivity {
 
     private void submitCheckIn() {
         textCheckInError.setVisibility(View.GONE);
-        textCheckInError.setText("");
+        textCheckInError.setText(null);
 
         if (mAuth.getCurrentUser() == null) {
-            textCheckInError.setText("You must be logged in to complete a check-in.");
+            textCheckInError.setText(R.string.checkin_error_must_be_logged_in);
             textCheckInError.setVisibility(View.VISIBLE);
             return;
         }
@@ -104,7 +104,7 @@ public class DailyCheckIn extends AppCompatActivity {
         String coughWheeze = getSelectedValue(radioCoughWheeze);
 
         if (nightWaking == null || activityLimits == null || coughWheeze == null) {
-            textCheckInError.setText("Please answer all questions.");
+            textCheckInError.setText(R.string.checkin_error_answer_all);
             textCheckInError.setVisibility(View.VISIBLE);
             return;
         }
@@ -156,7 +156,9 @@ public class DailyCheckIn extends AppCompatActivity {
                     finish(); // go back to previous screen
                 })
                 .addOnFailureListener(e -> {
-                    textCheckInError.setText("Failed to save check-in: " + e.getMessage());
+                    textCheckInError.setText(
+                            getString(R.string.checkin_error_failed_to_save, e.getMessage())
+                    );
                     textCheckInError.setVisibility(View.VISIBLE);
                     buttonSubmit.setEnabled(true);
                 });

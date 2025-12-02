@@ -157,12 +157,12 @@ public class TechniqueTraining extends AppCompatActivity {
 
                 promptCount = 0;
                 techniqueScore = 0;
-                if(mask){
+                if (mask) {
                     mask = false;
-                    maskHintButton.setText("Get Tips for Mask/Spacers");
-                }else{
+                    maskHintButton.setText(R.string.tech_mask_tips_button);
+                } else {
                     mask = true;
-                    maskHintButton.setText("Go back to basic inhaler");
+                    maskHintButton.setText(R.string.tech_mask_basic_inhaler_button);
                 }
                 updatePrompt();
 
@@ -187,26 +187,24 @@ public class TechniqueTraining extends AppCompatActivity {
         if (yesButton != null) {
             yesButton.setOnClickListener(v -> {
 
-                if(!continueMode) {
+                if (!continueMode) {
 
                     noButton.setVisibility(TextView.INVISIBLE);
-                    yesButton.setText("Continue");
+                    yesButton.setText(R.string.tech_continue);
                     continueMode = true;
-                    promptText.setText("Please wait 30 - 60 seconds between doses. Timer started now");
+                    promptText.setText(R.string.tech_wait_between_doses);
                     startGoodTimer();
 
-                }else{
-                    if(!goodZone){
-                        techniqueScore--; //this means user didn't continue in the 30 - 60 second window
+                } else {
+                    if (!goodZone) {
+                        // user didn't continue in the 30 - 60 second window
+                        techniqueScore--;
                     }
                     continueMode = false;
-                    yesButton.setText("Yes");
+                    yesButton.setText(R.string.tech_yes);
                     promptCount = 0;
                     hideYesNo();
                     updatePrompt();
-
-
-
                 }
 
             });
@@ -249,69 +247,55 @@ public class TechniqueTraining extends AppCompatActivity {
         if(!mask) {
 
             if (promptCount == 0) {
-                promptText.setText("Step 1: Shake inhaler and remove cap");}
-            else if (promptCount == 1) {
-                promptText.setText("Step 2: Exhale gently away from the mouthpiece");
+                promptText.setText(R.string.tech_step1_no_mask);
+            } else if (promptCount == 1) {
+                promptText.setText(R.string.tech_step2_no_mask);
             } else if (promptCount == 2) {
-                promptText.setText("Step 3: Place mouthpiece in mouth and" +
-                        " tightly seal lips around it");
-
+                promptText.setText(R.string.tech_step3_no_mask);
             } else if (promptCount == 3) {
-                promptText.setText("Step 4: Take a slow, deep breath and press canister once.");
-
+                promptText.setText(R.string.tech_step4_no_mask);
             } else if (promptCount == 4) {
-                promptText.setText("Step 5: Hold your breath ≈10 seconds (or as long as comfortable)");
+                promptText.setText(R.string.tech_step5_no_mask);
 
             } else if (promptCount == 5) {
-                promptText.setText("Is another dose prescribed?");
+                promptText.setText(R.string.tech_is_another_dose_prescribed);
                 yesButton.setVisibility(TextView.VISIBLE);
                 noButton.setVisibility(TextView.VISIBLE);
                 promptButton.setVisibility(TextView.INVISIBLE);
 
 
             } else if (promptCount == 6) {
-                promptText.setText("Step 6: Replace cap and rinse mouth if using a steroid inhaler");
+                promptText.setText(R.string.tech_step6_no_mask);
 
             } else if (promptCount == 7) {
-                promptText.setText("Great Job! You're done! click finish now!");
-
+                promptText.setText(R.string.tech_finished);
             }
-        }else{
+        } else {
 
             if (promptCount == 0) {
-                promptText.setText("Step 1:  Attach the spacer to the inhaler mouthpiece." +
-                        " Shake the inhaler");}
-            else if (promptCount == 1) {
-                promptText.setText("Step 2: Exhale gently away from the inhaler");
+                promptText.setText(R.string.tech_step1_mask);
+            } else if (promptCount == 1) {
+                promptText.setText(R.string.tech_step2_mask);
             } else if (promptCount == 2) {
-                promptText.setText("Step 3: put the spacer mouthpiece between your teeth and seal lips," +
-                        " or place face mask onto face if using mask");
+                promptText.setText(R.string.tech_step3_mask);
             } else if (promptCount == 3) {
-                promptText.setText("Step 4: Take a slow, deep breath and press canister once.  " +
-                        "If using mask or mouth piece inhale 3 - 5 times to get all medication");
-
+                promptText.setText(R.string.tech_step4_mask);
             } else if (promptCount == 4) {
+                // same behaviour: just skip to the next prompt
                 promptCount++;
                 updatePrompt();
-
             } else if (promptCount == 5) {
-                promptText.setText("Is another dose prescribed?");
+                promptText.setText(R.string.tech_is_another_dose_prescribed);
                 yesButton.setVisibility(TextView.VISIBLE);
                 noButton.setVisibility(TextView.VISIBLE);
                 promptButton.setVisibility(TextView.INVISIBLE);
-
-
             } else if (promptCount == 6) {
-                promptText.setText("Step 6: Replace cap and rinse mouth if using a steroid inhaler");
-
+                promptText.setText(R.string.tech_step6_mask);
             } else if (promptCount == 7) {
-                promptText.setText("Great Job! You're done! click finish now!");
-
+                // reuse the same finish text as non-mask branch
+                promptText.setText(R.string.tech_finished);
             }
-
-
         }
-
     }
 
     private void hideYesNo(){
