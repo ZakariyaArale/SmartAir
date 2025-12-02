@@ -12,6 +12,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.smartairsetup.child_home_ui.ChildHomeActivity;
 import com.example.smartairsetup.R;
+import com.example.smartairsetup.notification.AlertHelper;
 
 public class RedFlagsActivity_Child extends AppCompatActivity {
 
@@ -32,7 +33,7 @@ public class RedFlagsActivity_Child extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_red_flags_child);
 
-        // --- Retrieve intent data ---
+        //Retrieve intent data
         parentUid = getIntent().getStringExtra("PARENT_UID");
         childId = getIntent().getStringExtra("CHILD_ID");
 
@@ -49,7 +50,7 @@ public class RedFlagsActivity_Child extends AppCompatActivity {
             return;
         }
 
-        // --- Initialize UI elements ---
+        //Initialize UI elements
         radioSpeakFullSentences = findViewById(R.id.radioSpeakFullSentences);
         radioChestRetractions = findViewById(R.id.radioChestRetractions);
         radioBlueLipsNails = findViewById(R.id.radioBlueLipsNails);
@@ -57,7 +58,7 @@ public class RedFlagsActivity_Child extends AppCompatActivity {
         backButton = findViewById(R.id.backButton);
         nextButton = findViewById(R.id.nextButton);
 
-        // --- Back button ---
+        //Back button
         backButton.setOnClickListener(v -> {
             Intent intent = new Intent(this, ChildHomeActivity.class);
             intent.putExtra("PARENT_UID", parentUid);
@@ -66,7 +67,7 @@ public class RedFlagsActivity_Child extends AppCompatActivity {
             finish();
         });
 
-        // --- Next button ---
+        //Next button
         nextButton.setOnClickListener(v -> handleNextClicked());
     }
 
@@ -90,6 +91,7 @@ public class RedFlagsActivity_Child extends AppCompatActivity {
         Intent intent;
         if (cantSpeakFullSentences || chestRetractions || blueLipsNails) {
             intent = new Intent(this, EmergencyActivity_Child.class);
+            AlertHelper.sendAlertToParent(parentUid, childId, "TRIAGE_ESCALATION", this);
         } else {
             intent = new Intent(this, OptionalDataActivity_Child.class);
         }

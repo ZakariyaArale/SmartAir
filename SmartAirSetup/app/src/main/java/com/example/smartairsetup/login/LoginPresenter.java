@@ -56,8 +56,12 @@ public class LoginPresenter {
         } else {
             model.signInChild(identifier, password, new LoginModel.ChildSignInCallback() {
                 @Override
-                public void onSuccess(String parentUid, String childDocId) {
-                    view.navigateToChildHome(parentUid, childDocId);
+                public void onSuccess(String parentUid, String childDocId, boolean firstTime) {
+                    if (firstTime) {
+                        view.navigateToChildOnboarding(parentUid, childDocId);
+                    } else {
+                        view.navigateToChildHome(parentUid, childDocId);
+                    }
                 }
 
                 @Override
@@ -66,6 +70,7 @@ public class LoginPresenter {
                     view.showError(errorMessage);
                 }
             });
+
         }
     }
 

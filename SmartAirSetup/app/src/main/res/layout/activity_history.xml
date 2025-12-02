@@ -95,6 +95,13 @@
         android:backgroundTint="@color/button_icon_color"
         android:text="Export as CSV"
         android:layout_marginTop="12dp" />
+    <Button
+        android:id="@+id/buttonBack"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:backgroundTint="@color/button_icon_color"
+        android:text="Go Back to Main"
+        android:layout_marginTop="12dp" />
 
     <TextView
         android:id="@+id/textSymptomSummary"

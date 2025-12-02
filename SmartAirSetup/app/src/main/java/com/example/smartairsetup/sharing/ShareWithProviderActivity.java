@@ -6,6 +6,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.widget.*;
+import android.content.Intent;
 
 import com.example.smartairsetup.R;
 import com.google.firebase.auth.FirebaseAuth;
@@ -38,6 +39,17 @@ public class ShareWithProviderActivity extends AppCompatActivity {
 
         String childId = getIntent().getStringExtra(EXTRA_CHILD_ID);
         String childName = getIntent().getStringExtra(EXTRA_CHILD_NAME);
+
+        Button buttonGenerateInviteLink = findViewById(R.id.buttonGenerateInviteLink);
+        buttonGenerateInviteLink.setOnClickListener(v -> {
+            Intent i = new Intent(ShareWithProviderActivity.this, InviteProviderActivity.class);
+
+            // pass child context so invite is for the correct child
+            i.putExtra(EXTRA_CHILD_ID, childId);
+            i.putExtra(EXTRA_CHILD_NAME, childName);
+
+            startActivity(i);
+        });
 
         if (mAuth.getCurrentUser() == null || childId == null) {
             Toast.makeText(this, "Missing parent or child information", Toast.LENGTH_SHORT).show();

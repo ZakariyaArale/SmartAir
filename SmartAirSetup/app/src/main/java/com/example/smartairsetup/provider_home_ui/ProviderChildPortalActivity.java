@@ -3,6 +3,7 @@ package com.example.smartairsetup.provider_home_ui;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -10,6 +11,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.smartairsetup.R;
+import com.example.smartairsetup.pdf.PDFStoreActivity;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 
@@ -49,6 +51,11 @@ public class ProviderChildPortalActivity extends AppCompatActivity {
         Button btnSymptoms = findViewById(R.id.btnProviderSymptoms);
         Button btnPEF = findViewById(R.id.btnProviderPEF);
         Button btnCharts = findViewById(R.id.btnProviderCharts);
+        Button btnPDF = findViewById(R.id.btnPDF);
+
+        Button btnController = findViewById(R.id.btnProviderControllerSummary);
+        Button btnTriggers = findViewById(R.id.btnProviderTriggers);
+        Button btnTriage = findViewById(R.id.btnProviderTriageIncidents);
 
         childDocRef = db.collection("users")
                 .document(parentUid)
@@ -63,16 +70,83 @@ public class ProviderChildPortalActivity extends AppCompatActivity {
             boolean sharePEF = Boolean.TRUE.equals(snap.getBoolean("sharePEF"));
             boolean shareCharts = Boolean.TRUE.equals(snap.getBoolean("shareSummaryCharts"));
 
+            boolean shareController = Boolean.TRUE.equals(snap.getBoolean("shareControllerSummary"));
+            boolean shareTriggers = Boolean.TRUE.equals(snap.getBoolean("shareTriggers"));
+            boolean shareTriage = Boolean.TRUE.equals(snap.getBoolean("shareTriageIncidents"));
+
             btnRescue.setVisibility(shareRescue ? View.VISIBLE : View.GONE);
             btnSymptoms.setVisibility(shareSymptoms ? View.VISIBLE : View.GONE);
             btnPEF.setVisibility(sharePEF ? View.VISIBLE : View.GONE);
             btnCharts.setVisibility(shareCharts ? View.VISIBLE : View.GONE);
+
+            btnController.setVisibility(shareController ? View.VISIBLE : View.GONE);
+            btnTriggers.setVisibility(shareTriggers ? View.VISIBLE : View.GONE);
+            btnTriage.setVisibility(shareTriage ? View.VISIBLE : View.GONE);
         });
 
-        // Wire these to real “provider read-only screens” when you build them:
-        btnRescue.setOnClickListener(v -> Toast.makeText(this, "Rescue logs (shared)", Toast.LENGTH_SHORT).show());
-        btnSymptoms.setOnClickListener(v -> Toast.makeText(this, "Symptoms (shared)", Toast.LENGTH_SHORT).show());
-        btnPEF.setOnClickListener(v -> Toast.makeText(this, "PEF (shared)", Toast.LENGTH_SHORT).show());
-        btnCharts.setOnClickListener(v -> Toast.makeText(this, "Charts (shared)", Toast.LENGTH_SHORT).show());
+        btnRescue.setOnClickListener(v -> {
+            Intent i = new Intent(this, ProviderRescueLogsActivity.class);
+            i.putExtra(EXTRA_PARENT_UID, parentUid);
+            i.putExtra(EXTRA_CHILD_ID, childId);
+            i.putExtra(EXTRA_CHILD_NAME, childName);
+            startActivity(i);
+        });
+
+        btnSymptoms.setOnClickListener(v -> {
+            Intent i = new Intent(this, ProviderSymptomsActivity.class);
+            i.putExtra(EXTRA_PARENT_UID, parentUid);
+            i.putExtra(EXTRA_CHILD_ID, childId);
+            i.putExtra(EXTRA_CHILD_NAME, childName);
+            startActivity(i);
+        });
+
+        btnPEF.setOnClickListener(v -> {
+            Intent i = new Intent(this, ProviderPefActivity.class);
+            i.putExtra(EXTRA_PARENT_UID, parentUid);
+            i.putExtra(EXTRA_CHILD_ID, childId);
+            i.putExtra(EXTRA_CHILD_NAME, childName);
+            startActivity(i);
+        });
+
+        btnCharts.setOnClickListener(v -> {
+            Intent i = new Intent(this, ProviderChartsActivity.class);
+            i.putExtra(EXTRA_PARENT_UID, parentUid);
+            i.putExtra(EXTRA_CHILD_ID, childId);
+            i.putExtra(EXTRA_CHILD_NAME, childName);
+            startActivity(i);
+        });
+
+        // NEW routes
+        btnController.setOnClickListener(v -> {
+            Intent i = new Intent(this, ProviderControllerSummaryActivity.class);
+            i.putExtra(EXTRA_PARENT_UID, parentUid);
+            i.putExtra(EXTRA_CHILD_ID, childId);
+            i.putExtra(EXTRA_CHILD_NAME, childName);
+            startActivity(i);
+        });
+
+        btnTriggers.setOnClickListener(v -> {
+            Intent i = new Intent(this, ProviderTriggersActivity.class);
+            i.putExtra(EXTRA_PARENT_UID, parentUid);
+            i.putExtra(EXTRA_CHILD_ID, childId);
+            i.putExtra(EXTRA_CHILD_NAME, childName);
+            startActivity(i);
+        });
+
+        btnTriage.setOnClickListener(v -> {
+            Intent i = new Intent(this, ProviderTriageIncidentsActivity.class);
+            i.putExtra(EXTRA_PARENT_UID, parentUid);
+            i.putExtra(EXTRA_CHILD_ID, childId);
+            i.putExtra(EXTRA_CHILD_NAME, childName);
+            startActivity(i);
+        });
+
+        btnPDF.setOnClickListener(v -> {
+            Intent intent = new Intent(this, PDFStoreActivity.class);
+            intent.putExtra("PARENT_UID", parentUid);
+            intent.putExtra("CHILD_ID", childId);
+            intent.putExtra("CHILD_NAME", childName);
+            startActivity(intent);
+        });
     }
 }

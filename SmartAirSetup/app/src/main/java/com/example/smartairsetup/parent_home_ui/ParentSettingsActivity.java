@@ -13,13 +13,21 @@ import com.example.smartairsetup.navigation.AbstractNavigation;
 import com.example.smartairsetup.R;
 import com.example.smartairsetup.login.MainActivity;
 import com.example.smartairsetup.triage.EmergencyActivity;
+import com.example.smartairsetup.triage.RedFlagsActivity;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 public class ParentSettingsActivity extends AbstractNavigation {
+
+    private FirebaseAuth mAuth;
+    private FirebaseFirestore db;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        mAuth = FirebaseAuth.getInstance();
+        db = FirebaseFirestore.getInstance();
 
         EdgeToEdge.enable(this);
 
@@ -62,7 +70,12 @@ public class ParentSettingsActivity extends AbstractNavigation {
 
     @Override
     protected void onEmergencyClicked() {
-        Intent intent = new Intent(ParentSettingsActivity.this, EmergencyActivity.class);
+        Intent intent = new Intent(ParentSettingsActivity.this, RedFlagsActivity.class);
+        String parentUid = null;
+        if (mAuth.getCurrentUser() != null) {
+            parentUid = mAuth.getCurrentUser().getUid();
+        }
+        intent.putExtra("PARENT_UID", parentUid);
         startActivity(intent);
     }
 

@@ -11,6 +11,7 @@ import android.widget.Toast;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 
+import com.example.smartairsetup.history.IncidentLogActivity;
 import com.example.smartairsetup.navigation.AbstractNavigation;
 import com.example.smartairsetup.login.AddChildActivity;
 import com.example.smartairsetup.child_home_ui.ChildOverviewActivity;
@@ -26,6 +27,9 @@ import com.example.smartairsetup.pdf.PDFStoreActivity;
 import com.example.smartairsetup.pef.PEFActivity;
 import com.example.smartairsetup.triage.RedFlagsActivity;
 import com.example.smartairsetup.zone.ZoneActivity;
+import com.example.smartairsetup.notification.AlertHelper;
+import com.google.firebase.firestore.DocumentChange;
+import com.google.firebase.firestore.ListenerRegistration;
 import com.google.firebase.Timestamp;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.auth.FirebaseAuth;
@@ -44,9 +48,7 @@ public class ParentHomeActivity extends AbstractNavigation {
 
     private FirebaseAuth mAuth;
     private FirebaseFirestore db;
-
     private Button buttonAddChild;
-
     private final List<String> childNames = new ArrayList<>();
     private final List<String> childIds = new ArrayList<>();
 
@@ -55,7 +57,7 @@ public class ParentHomeActivity extends AbstractNavigation {
     private TextView textWeeklyRescue;
     private Button buttonOverviewSelectChild;
     private String selectedOverviewChildId;
-
+    private ListenerRegistration alertsListener;
     // Shared-with-provider tags (in XML)
     private TextView tagSharedRescue, tagSharedSymptoms, tagSharedHistory, tagSharedPB,
             tagSharedPEF, tagSharedPDF, tagSharedZone, tagSharedController;
@@ -185,6 +187,11 @@ public class ParentHomeActivity extends AbstractNavigation {
             startActivity(new Intent(this, ControllerLogActivity.class));
         });
 
+        Button buttonIncidentLogs = findViewById(R.id.buttonIncidentLogs);
+        buttonIncidentLogs.setOnClickListener(v -> {
+            startActivity(new Intent(this, IncidentLogActivity.class));
+        });
+
         // --- Child summary card ---
         buttonOverviewSelectChild = findViewById(R.id.buttonOverviewSelectChild);
         textWeeklyRescue = findViewById(R.id.textWeeklyRescue);
@@ -194,10 +201,15 @@ public class ParentHomeActivity extends AbstractNavigation {
 
         loadChildren();
 
-        //check notification permissions
-        NotificationPermissionsHelper.ensureNotificationPermissions(this);
-        NotificationPermissionsHelper.ensureAlarmPermissions(this);
+    }
 
+    @Override
+    protected void onPause() {
+        super.onPause();
+        if (alertsListener != null) {
+            alertsListener.remove();
+            alertsListener = null;
+        }
     }
 
     @Override
@@ -207,6 +219,10 @@ public class ParentHomeActivity extends AbstractNavigation {
 
         // If we already have a child selected, refresh the tags (in case switches changed)
         loadSharingTagsForSelectedChild();
+
+        //check notification permissions
+        NotificationPermissionsHelper.ensureNotificationPermissions(this);
+        NotificationPermissionsHelper.ensureAlarmPermissions(this);
     }
 
     private void loadChildren() {
@@ -216,6 +232,8 @@ public class ParentHomeActivity extends AbstractNavigation {
         }
 
         parentUid = mAuth.getCurrentUser().getUid();
+
+        subscribeToAlertsForParent(parentUid);
 
         CollectionReference childrenRef = db.collection("users")
                 .document(parentUid)
@@ -310,8 +328,8 @@ public class ParentHomeActivity extends AbstractNavigation {
                 );
     }
 
-    // ---------------- Shared-with-provider tags ----------------
 
+    //Shared-with-provider tags
     private void hideAllShareTags() {
         setTagVisible(tagSharedRescue, false);
         setTagVisible(tagSharedSymptoms, false);
@@ -426,7 +444,50 @@ public class ParentHomeActivity extends AbstractNavigation {
                 .addOnFailureListener(e -> hideAllShareTags());
     }
 
-    // ---------------- Existing navigation helpers ----------------
+    private void subscribeToAlertsForParent(String parentUid) {
+        // Clean old listener if any (e.g. after role switch / re-login)
+        if (alertsListener != null) {
+            alertsListener.remove();
+            alertsListener = null;
+        }
+
+        alertsListener = db.collection("users")
+                .document(parentUid)
+                .collection("alerts")
+                .orderBy("timestamp", Query.Direction.DESCENDING)
+                .limit(20)
+                .addSnapshotListener((snap, e) -> {
+                    if (e != null) {
+                        Log.e("ParentAlerts", "Listener error", e);
+                        return;
+                    }
+                    if (snap == null) return;
+
+                    for (DocumentChange change : snap.getDocumentChanges()) {
+                        if (change.getType() != DocumentChange.Type.ADDED) continue;
+
+                        DocumentSnapshot doc = change.getDocument();
+
+                        Boolean handled = doc.getBoolean("handled");
+                        if (Boolean.TRUE.equals(handled)) {
+                            continue; // already shown
+                        }
+
+                        String type = doc.getString("type");
+                        String message = doc.getString("message");
+                        if (message == null) message = "Alert from your child.";
+
+                        if (!NotificationPermissionsHelper.ensureNotificationPermissions(this)) {
+                            return;
+                        }
+
+                        AlertHelper.showAlert(this, type, message);
+
+                        // Mark as handled so we don't spam the parent
+                        doc.getReference().update("handled", true);
+                    }
+                });
+    }
 
     private void launchDailyCheckIn(String childId, String childName) {
         Intent intent = new Intent(ParentHomeActivity.this, DailyCheckIn.class);

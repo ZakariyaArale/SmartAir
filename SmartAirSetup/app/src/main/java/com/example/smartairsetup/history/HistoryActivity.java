@@ -97,6 +97,9 @@ public class HistoryActivity extends AppCompatActivity {
 
         Button buttonExportCSV = findViewById(R.id.buttonExportCSV);
         buttonExportCSV.setOnClickListener(v -> exportCSV());
+
+        Button buttonGoBack = findViewById(R.id.buttonBack);
+        buttonGoBack.setOnClickListener(v -> finish());
     }
     private void exportCSV() {
         if (historyItems.isEmpty()) {

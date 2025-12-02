@@ -1,5 +1,6 @@
 package com.example.smartairsetup.pef;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.Button;
@@ -9,6 +10,7 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.smartairsetup.R;
+import com.example.smartairsetup.notification.AlertHelper;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.SetOptions;
@@ -31,6 +33,8 @@ public class PEFActivity extends AppCompatActivity {
 
     private FirebaseFirestore db;
     private String parentID;
+    private String childUid;
+    private String mode;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,7 +52,6 @@ public class PEFActivity extends AppCompatActivity {
 
         db = FirebaseFirestore.getInstance();
 
-        // Get current logged-in user's UID
         parentID = FirebaseAuth.getInstance().getCurrentUser() != null
                 ? FirebaseAuth.getInstance().getCurrentUser().getUid()
                 : null;
@@ -59,10 +62,19 @@ public class PEFActivity extends AppCompatActivity {
             return;
         }
 
-        // Child selection dialog
         ProcessChildren provider = new FireBaseProcessChild();
         ChildDiaglog childDiaglog = new ChildDiaglog(this, provider);
         chooseChildButton.setOnClickListener(v -> childDiaglog.showSelectionDialog(chooseChildButton));
+
+
+        mode = getIntent().getStringExtra("mode");
+        if(mode != null && mode.equals("child")){
+            chooseChildButton.setText(getIntent().getStringExtra("CHILD_NAME"));
+            chooseChildButton.setTag(getIntent().getStringExtra("CHILD_ID"));
+            chooseChildButton.setEnabled(false);
+        }
+
+
         saveButton.setOnClickListener(v -> savePEF());
 
         Button backButton = findViewById(R.id.backButton);
@@ -74,7 +86,10 @@ public class PEFActivity extends AppCompatActivity {
         double percentage = (double) dailyPEF / pb;
         if (percentage >= 0.8) return "GREEN";
         else if (percentage >= 0.5) return "YELLOW";
-        else return "RED";
+        else
+            if(mode != null && mode.equals("child"))
+                AlertHelper.sendAlertToParent(parentID, childUid, "RED_ZONE", this);
+            return "RED";
     }
 
     public void savePEF() {
@@ -84,7 +99,7 @@ public class PEFActivity extends AppCompatActivity {
             return;
         }
 
-        String childUid = tag.toString();
+        childUid = tag.toString();
         String childName = chooseChildButton.getText().toString();
 
         int dailyPEF = pefParser.parsePEF(dailyPEFInput);
@@ -103,15 +118,13 @@ public class PEFActivity extends AppCompatActivity {
     }
 
     private void saveChildPEFToFirebase(String childUid, String childName, StorageChild entry) {
-
-        // Use today's date dynamically
         String todayDate = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(new Date());
 
         var childRef = db.collection("users").document(parentID).collection("children").document(childUid);
         var logsCollection = childRef.collection("PEF").document("logs").collection("daily");
         var latestRef = childRef.collection("PEF").document("latest");
 
-        // Get PB from child document
+
         childRef.get().addOnSuccessListener(childDoc -> {
             Long pbValue = childDoc.getLong("pb");
             long pb = pbValue != null ? pbValue : 0;
@@ -121,12 +134,11 @@ public class PEFActivity extends AppCompatActivity {
                 return;
             }
 
-            // Check if log for today exists
             var todayLogRef = logsCollection.document(todayDate);
             todayLogRef.get().addOnSuccessListener(todayDoc -> {
                 long oldDaily = todayDoc.getLong("dailyPEF") != null ? todayDoc.getLong("dailyPEF") : 0;
 
-                // Only overwrite if new dailyPEF is greater
+                // Only overwrite if new dailyPEF is greater (piazza)
                 if (entry.getDailyPEF() >= oldDaily) {
                     String zone = computeZone(entry.getDailyPEF(), pb);
 
@@ -143,7 +155,6 @@ public class PEFActivity extends AppCompatActivity {
                             .addOnSuccessListener(a -> Toast.makeText(this, "PEF log updated", Toast.LENGTH_SHORT).show())
                             .addOnFailureListener(e -> Log.e("PEFActivity", "Error updating log", e));
 
-                    // Update latest
                     Map<String, Object> latestData = new HashMap<>();
                     latestData.put("dailyPEF", entry.getDailyPEF());
                     latestData.put("prePEF", entry.getPrePEF());
