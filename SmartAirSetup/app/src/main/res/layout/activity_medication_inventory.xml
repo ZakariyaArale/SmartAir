@@ -209,14 +209,6 @@
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:layout_weight="1" />
-
-        <Button
-            android:id="@+id/buttonNotif"
-            android:layout_width="wrap_content"
-            android:layout_height="48dp"
-            android:backgroundTint="#2E7D32"
-            android:text="Test Notification (add to values xml)"
-            android:textColor="@android:color/white" />
     </LinearLayout>
 
     <!-- Safety note include -->

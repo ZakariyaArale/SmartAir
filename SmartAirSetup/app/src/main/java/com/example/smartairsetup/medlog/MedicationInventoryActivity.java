@@ -1,6 +1,7 @@
 package com.example.smartairsetup.medlog;
 
 import android.app.AlertDialog;
+import android.os.Build;
 import android.os.Bundle;
 
 import androidx.activity.EdgeToEdge;
@@ -75,7 +76,6 @@ public class MedicationInventoryActivity extends AppCompatActivity {
         setNewMedButton();
         setDeleteButton();
         setEditButton();
-        setNotifButton();
 
         //check notification permissions
         NotificationPermissionsHelper.ensureNotificationPermissions(this);
@@ -311,12 +311,6 @@ public class MedicationInventoryActivity extends AppCompatActivity {
         }
     }
 
-    private void setNotifButton(){
-        Button notifButton = findViewById(R.id.buttonNotif);
-        notifButton.setOnClickListener(this::onNotifClick);
-
-    }
-
     private void onNotifClick(View v) {
         Intent intent = new Intent(this, NotificationReceiver.class);
         PendingIntent pendingIntent = PendingIntent.getBroadcast(
@@ -336,8 +330,10 @@ public class MedicationInventoryActivity extends AppCompatActivity {
         long triggerTime = System.currentTimeMillis() + 60 * 1000; // 1 minute later
 
         //error is due to API difference. Have to revamp notifications to work on older API tk
-        if(alarmManager.canScheduleExactAlarms()) {
-            alarmManager.setExact(AlarmManager.RTC_WAKEUP, triggerTime, pendingIntent); //tk
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+            if(alarmManager.canScheduleExactAlarms()) {
+                alarmManager.setExact(AlarmManager.RTC_WAKEUP, triggerTime, pendingIntent); //tk
+            }
         }
         Toast.makeText(this, "Notification scheduled for 1 minute from now!", Toast.LENGTH_SHORT).show();
     }
