@@ -1,5 +1,6 @@
 package com.example.smartairsetup.parent_home_ui;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -12,6 +13,8 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 
 import com.example.smartairsetup.history.IncidentLogActivity;
+import com.example.smartairsetup.medlog.ChildMedicationWrapper;
+import com.example.smartairsetup.medlog.Medication;
 import com.example.smartairsetup.navigation.AbstractNavigation;
 import com.example.smartairsetup.login.AddChildActivity;
 import com.example.smartairsetup.child_home_ui.ChildOverviewActivity;
@@ -21,7 +24,9 @@ import com.example.smartairsetup.history.HistoryActivity;
 import com.example.smartairsetup.medlog.MedicationInventoryActivity;
 import com.example.smartairsetup.badges.ParentBadgeSettingsActivity;
 import com.example.smartairsetup.R;
+import com.example.smartairsetup.notification.AlertRepository;
 import com.example.smartairsetup.notification.NotificationPermissionsHelper;
+import com.example.smartairsetup.notification.NotificationReceiver;
 import com.example.smartairsetup.pb.PBActivity;
 import com.example.smartairsetup.pdf.PDFStoreActivity;
 import com.example.smartairsetup.pef.PEFActivity;
@@ -43,6 +48,7 @@ import java.text.DateFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Date;
+import java.util.concurrent.atomic.AtomicInteger;
 
 public class ParentHomeActivity extends AbstractNavigation {
 
@@ -62,6 +68,8 @@ public class ParentHomeActivity extends AbstractNavigation {
             tagSharedPEF, tagSharedPDF, tagSharedZone, tagSharedController;
 
     private TextView textLastRescueUsed;
+
+    private int childCount;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -185,6 +193,8 @@ public class ParentHomeActivity extends AbstractNavigation {
         buttonOverviewSelectChild.setOnClickListener(v -> showOverviewChildDialog());
 
         loadChildren();
+        checkExpiredMed();
+
 
     }
 
@@ -480,6 +490,81 @@ public class ParentHomeActivity extends AbstractNavigation {
         intent.putExtra(DailyCheckIn.EXTRA_CHILD_NAME, childName);
         startActivity(intent);
     }
+
+    private void checkExpiredMed(){
+
+        List<Medication> allMeds = new ArrayList<>();
+        childCount = 0;
+
+        //find all children associated with user
+        db.collection("users")
+                .document(parentUid)
+                .collection("children")
+                .get()
+                .addOnSuccessListener(childrenSnap -> {
+
+                    if (childrenSnap.isEmpty()) {
+                        return;
+                    }
+
+                    AtomicInteger medsLoadedCount = new AtomicInteger(0);
+
+                    for (DocumentSnapshot childDoc : childrenSnap) {
+                        String childUID = childDoc.getId();
+
+                        db.collection("users")
+                                .document(parentUid)
+                                .collection("children")
+                                .document(childUID)
+                                .collection("medications")
+                                .get()
+                                .addOnSuccessListener(medSnap -> {
+
+                                    for (DocumentSnapshot medDoc : medSnap) {
+                                        Medication med = medDoc.toObject(Medication.class);
+                                        allMeds.add(med);
+                                    }
+                                    // increment the completed counter
+                                    if (medsLoadedCount.incrementAndGet() == childrenSnap.size()) {
+                                        Log.e("ALL CHILDREN COMPLETE", "YAY");
+
+                                        for (Medication med : allMeds) {
+
+                                            Log.e("LIST GRABBED", "Med on list:" + med.getName() + " Expires in " + med.daysTillExpired() + " days");
+
+                                            //sends notifications to parent if medications are expired.
+                                            if (med.daysTillExpired() <= 0) {
+                                                AlertHelper.showAlert(this, "EXPIRY",
+                                                        med.getName() + "has expired.");
+                                            }else if(med.daysTillExpired() <= 1){
+                                                AlertHelper.showAlert(this, "EXPIRY",
+                                                        med.getName() + "will expire tomorrow");
+                                            }else if(med.daysTillExpired() <= 2){
+                                                AlertHelper.showAlert(this, "EXPIRY",
+                                                        med.getName() + "will expire in two days");
+                                            }else if(med.daysTillExpired() <= 10){
+                                                AlertHelper.showAlert(this, "EXPIRY",
+                                                        med.getName() + "will expire is 10 days or less");
+                                            }else if(med.daysTillExpired() <= 20) {
+                                                AlertHelper.showAlert(this, "EXPIRY",
+                                                        med.getName() + "will expire in 20 days or less");
+                                            }
+
+                                        }
+
+                                    }
+
+                                });
+                    }
+
+
+
+                })
+                .addOnFailureListener(e -> {
+                    Log.e("LOAD_MEDS", "Failed to load children", e);
+                });
+    }
+
 
     @Override
     protected int getLayoutResourceId() {

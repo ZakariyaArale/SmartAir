@@ -239,6 +239,7 @@ public class PrePostCheckActivity extends AppCompatActivity {
     }
 
 
+    //40 is used as 40 is 20% of the typical inhaler
     private void updatePuffsLeft() {
         DocumentReference medRef = db.collection("users").document(parentUid)
                 .collection("children").document(childId)
@@ -248,6 +249,9 @@ public class PrePostCheckActivity extends AppCompatActivity {
             Long left = doc.getLong("puffsLeft");
             left = (left == null ? 0 : left - doseCount);
             medRef.update("puffsLeft", Math.max(left, 0));
+            if (left - doseCount <= 40) {
+                AlertHelper.sendAlertToParent(parentUid, childId, "INVENTORY_LOW", this);
+            }
         });
     }
 }

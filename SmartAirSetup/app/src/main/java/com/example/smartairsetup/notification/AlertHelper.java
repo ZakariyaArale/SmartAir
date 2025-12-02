@@ -35,9 +35,11 @@ public class AlertHelper {
         } else if ("RESCUE_REPEATED".equals(type)) {
             title = "Frequent rescue use - Check on your child";
         } else if ("INVENTORY_LOW".equals(type)) {
-            title = "Medication inventory low";
+            title = "Medication doses are low. Less than 40 doses left";
         } else if ("WORSE_AFTER_DOSE".equals(type)) {
-            title = "Symptoms worse after dose";
+            title = "Symptoms worse after dose";}
+        else if ("EXPIRY".equals(type)) {
+            title = "Medication is or is close to expiring.";
         } else {
             title = "SmartAir alert";
         }
@@ -76,7 +78,7 @@ public class AlertHelper {
 
     private static void sendAlertToFirestore(String parentUid, String childId, String type, Activity passedActivity){
 
-        // 1) Send alert to Firestore (cloud)
+        // Send alert to Firestore (cloud)
         AlertRepository alertRepo = new AlertRepository();
         String message = "Your child has requested help! See title of notification";
 

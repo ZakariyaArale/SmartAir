@@ -147,6 +147,8 @@ public class Medication implements DateCalculations {
         this.puffsLeft = puffsLeft;
     }
 
+    //This wasn't implemented as it wasn't required but could be useful if parent wants control
+    // of when they get notifications
     public int getPuffNearEmptyThreshold() {
         return puffNearEmptyThreshold;
     }
