@@ -14,7 +14,7 @@ import com.example.smartairsetup.login.LoginView;
 
 /**
  * Note that we've used ArgumentCaptor its a bit overkill but we've tested using branch coverage
- * apporach, its used to verify the the arguments are correctly passed to the model.
+ * approach
  */
 public class LoginPresenterTest {
 
@@ -31,13 +31,13 @@ public class LoginPresenterTest {
 
     @Before
     public void setUp() {
-        MockitoAnnotations.initMocks(this);
+        MockitoAnnotations.openMocks(this);
         presenter = new LoginPresenter(mockView, mockModel, mockEmailValidator);
     }
 
     @Test
-    public void handleSignIn_emptyIdentifier() {
-        presenter.handleSignIn("", "password");
+    public void handleSignIn_emptyIdentifier_showsError() {
+        presenter.handleSignIn("", "pass1234");
 
         verify(mockView).clearError();
         verify(mockView).showError("Email or username is required");
@@ -57,7 +57,7 @@ public class LoginPresenterTest {
     public void handleSignIn_invalidEmail() {
         when(mockEmailValidator.isValid("bad@email")).thenReturn(false);
 
-        presenter.handleSignIn("bad@email", "password");
+        presenter.handleSignIn("invalid@email", "pass1234");
 
         verify(mockView).clearError();
         verify(mockView).enableSignInButton(false);
@@ -71,11 +71,12 @@ public class LoginPresenterTest {
         ArgumentCaptor<LoginModel.SignInCallback> captor =
                 ArgumentCaptor.forClass(LoginModel.SignInCallback.class);
 
-        presenter.handleSignIn("parent@email.com", "password");
+        presenter.handleSignIn("parent@email.com", "pass1234");
 
         verify(mockView).clearError();
         verify(mockView).enableSignInButton(false);
-        verify(mockModel).signInParentOrProvider(eq("parent@email.com"), eq("password"), captor.capture());
+        verify(mockModel).signInParentOrProvider(eq("parent@email.com"),
+                eq("pass1234"), captor.capture());
 
 
         captor.getValue().onSuccess("uid123", "roleParent");
@@ -118,15 +119,15 @@ public class LoginPresenterTest {
     }
 
     @Test
-    public void handleSignIn_child_NoHome() {
+    public void handleSignIn_child_callsModelCallback() {
         ArgumentCaptor<LoginModel.ChildSignInCallback> captor =
                 ArgumentCaptor.forClass(LoginModel.ChildSignInCallback.class);
 
-        presenter.handleSignIn("childUser", "password");
+        presenter.handleSignIn("childUser", "pass1234");
 
         verify(mockView).clearError();
         verify(mockView).enableSignInButton(false);
-        verify(mockModel).signInChild(eq("childUser"), eq("password"), captor.capture());
+        verify(mockModel).signInChild(eq("childUser"), eq("pass1234"), captor.capture());
 
         // firstTime = false
         captor.getValue().onSuccess("parentUid123", "childDoc456", false);

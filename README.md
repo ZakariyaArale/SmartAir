@@ -1,10 +1,16 @@
 # Smart Air – Code Documentation
 
 Smart Air helps parents, children, and healthcare providers track and manage asthma-related data. Core features include symptom logging, medication tracking, PEF measurement, triage support, and sharing summaries with providers.
-
 ---
 
-## Key Modules, Interactions, and Design Decisions
+## Sample Credentials (from video)
+//TODO: BEN
+  - Parent Email: Password:
+  - Child Username: Password:
+  - Provider Email: Password:
+---
+
+## System Structure, Key Modules, Interactions, and Design Decisions
 
 ### **Badges**
 - Parents can **set badges**, and children can **earn badges**.

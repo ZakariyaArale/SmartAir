@@ -21,7 +21,7 @@ import com.example.smartairsetup.history.HistoryActivity;
 import com.example.smartairsetup.medlog.MedicationInventoryActivity;
 import com.example.smartairsetup.badges.ParentBadgeSettingsActivity;
 import com.example.smartairsetup.R;
-import com.example.smartairsetup.notification.NotificationPermissionsHelper;
+import com.example.smartairsetup.notifcation.NotificationPermissionsHelper;
 import com.example.smartairsetup.pb.PBActivity;
 import com.example.smartairsetup.pdf.PDFStoreActivity;
 import com.example.smartairsetup.pef.PEFActivity;

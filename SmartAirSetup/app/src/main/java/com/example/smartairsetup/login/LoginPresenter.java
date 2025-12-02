@@ -2,8 +2,7 @@ package com.example.smartairsetup.login;
 
 /**
  * Presenter for login screen (handles business logic), note some business logic relating to
- * db is in the model. This is the only way that we can do Junit tests as per video instrcutions
- * in quercus
+ * db is in the model. This is the only way that we can do JUnit tests.
  */
 public class LoginPresenter {
 
@@ -29,6 +28,8 @@ public class LoginPresenter {
             view.showError("Password is required");
             return;
         }
+
+        // 🔥 Removed strong password validation completely
 
         view.enableSignInButton(false);
 

@@ -103,10 +103,9 @@ public class RecordMedUsageActivity extends AppCompatActivity {
                 intent.putExtra("mode", "post");
                 intent.putExtra("CHILD_ID", childID);
                 intent.putExtra("PRE_FEELING", passedFeeling);
-                intent.putExtra("TIME_STAMP", System.currentTimeMillis());
                 intent.putExtra("DOSE_COUNT", dosePicker.getValue());
                 intent.putExtra("MED_ID", medIds.get(medSpinner.getSelectedItemPosition()));
-
+                intent.putExtra("TIME_STAMP", System.currentTimeMillis());
                 startActivity(intent);
             });
         }
