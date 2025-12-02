@@ -214,6 +214,23 @@ public class ChildHomeActivity extends AbstractNavigation {
             startActivity(zoneIntent);
         });
 
+        ImageButton buttonInhalerTechnique = findViewById(R.id.buttonInhalerTechnique);
+        buttonInhalerTechnique.setOnClickListener(v -> {
+            if (childId == null || childId.isEmpty() || parentUid == null || parentUid.isEmpty()) {
+                Toast.makeText(
+                        ChildHomeActivity.this,
+                        "Missing child or parent ID.",
+                        Toast.LENGTH_SHORT
+                ).show();
+                return;
+            }
+            Intent zoneIntent = new Intent(ChildHomeActivity.this, TechniqueTraining.class);
+            zoneIntent.putExtra("CHILD_ID", childId);
+            zoneIntent.putExtra("PARENT_UID", parentUid);
+            startActivity(zoneIntent);
+        });
+
+
         ImageButton alertButton = findViewById(R.id.notificationButton);
         alertButton.setOnClickListener(v ->{
         if (childId == null || childId.isEmpty()) {
@@ -222,7 +239,7 @@ public class ChildHomeActivity extends AbstractNavigation {
                     "Please add a child first.",
                     Toast.LENGTH_SHORT
             ).show();
-        }
+            }
             //a helper method that deals with sending alerts
             AlertHelper.sendAlertToParent(parentUid, childId, "This is a test Alert!", this);
         });

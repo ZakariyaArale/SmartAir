@@ -13,4 +13,8 @@
     <item name="tagSharedPDF" type="id" />
     <item name="tagSharedZone" type="id" />
     <item name="tagSharedController" type="id" />
+    <item name="textLine1" type="id" />
+    <item name="textLine2" type="id" />
+    <item name="textEmpty" type="id" />
+    <item name="recyclerRescueLogs" type="id" />
 </resources>

@@ -17,9 +17,29 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.SmartAirSetup">
         <activity
+            android:name=".provider_home_ui.ProviderTriageIncidentsActivity"
+            android:exported="false" />
+        <activity
+            android:name=".provider_home_ui.ProviderTriggersActivity"
+            android:exported="false" />
+        <activity
+            android:name=".provider_home_ui.ProviderControllerSummaryActivity"
+            android:exported="false" />
+        <activity
+            android:name=".provider_home_ui.ProviderChartsActivity"
+            android:exported="false" />
+        <activity
+            android:name=".provider_home_ui.ProviderPefActivity"
+            android:exported="false" />
+        <activity
+            android:name=".provider_home_ui.ProviderSymptomsActivity"
+            android:exported="false" />
+        <activity
+            android:name=".provider_home_ui.ProviderRescueLogsActivity"
+            android:exported="false" />
+        <activity
             android:name=".technique.TechniqueTraining"
             android:exported="false" />
-
         <activity
             android:name=".technique.TechniqueTrainingVideo"
             android:exported="false" />
@@ -46,7 +66,7 @@
             android:exported="false" />
         <activity
             android:name=".medlog.MedicationInventoryActivity"
-            android:exported="false"/>
+            android:exported="false" />
         <activity
             android:name=".medlog.AddEditMedicationActivity"
             android:exported="false" />
@@ -205,7 +225,6 @@
                 android:name="android.support.FILE_PROVIDER_PATHS"
                 android:resource="@xml/file_paths" />
         </provider>
-
     </application>
 
 </manifest>
