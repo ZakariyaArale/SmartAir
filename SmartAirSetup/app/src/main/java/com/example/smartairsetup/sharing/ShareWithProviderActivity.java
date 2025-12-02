@@ -23,7 +23,6 @@ public class ShareWithProviderActivity extends AppCompatActivity {
     private EditText editProviderEmail;
     private Button buttonAddProvider;
 
-    private FirebaseAuth mAuth;
     private FirebaseFirestore db;
     private DocumentReference childDocRef;
 
@@ -34,7 +33,7 @@ public class ShareWithProviderActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(com.example.smartairsetup.R.layout.activity_share_with_provider);
 
-        mAuth = FirebaseAuth.getInstance();
+        FirebaseAuth mAuth = FirebaseAuth.getInstance();
         db = FirebaseFirestore.getInstance();
 
         String childId = getIntent().getStringExtra(EXTRA_CHILD_ID);

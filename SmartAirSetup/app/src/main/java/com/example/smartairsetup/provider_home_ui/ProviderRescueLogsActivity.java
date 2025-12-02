@@ -29,7 +29,6 @@ public class ProviderRescueLogsActivity extends AppCompatActivity {
 
     private RecyclerView recycler;
     private TextView emptyText;
-    private TextView title;
 
     private ProviderRescueLogAdapter adapter;
     private final List<RescueLogItem> items = new ArrayList<>();
@@ -57,7 +56,7 @@ public class ProviderRescueLogsActivity extends AppCompatActivity {
             return;
         }
 
-        title = findViewById(R.id.textTitle);
+        TextView title = findViewById(R.id.textTitle);
         title.setText((childName != null ? childName : "Child") + " • Rescue Logs");
 
         emptyText = findViewById(R.id.textEmpty);

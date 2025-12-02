@@ -21,8 +21,8 @@ import com.example.smartairsetup.R;
 public class LoginActivity extends AppCompatActivity implements LoginView {
 
     private EditText editTextIdentifier, editTextPassword;
-    private Button buttonSignIn, backButton;
-    private TextView textViewError, textViewForgotPassword;
+    private Button buttonSignIn;
+    private TextView textViewError;
 
     private LoginPresenter presenter;
 
@@ -34,9 +34,9 @@ public class LoginActivity extends AppCompatActivity implements LoginView {
         editTextIdentifier = findViewById(R.id.editTextIdentifier);
         editTextPassword = findViewById(R.id.editTextPassword);
         buttonSignIn = findViewById(R.id.buttonSignIn);
-        backButton = findViewById(R.id.backButton);
+        Button backButton = findViewById(R.id.backButton);
         textViewError = findViewById(R.id.textViewError);
-        textViewForgotPassword = findViewById(R.id.textViewForgotPassword);
+        TextView textViewForgotPassword = findViewById(R.id.textViewForgotPassword);
 
         presenter = new LoginPresenter(this, new LoginModel(), new AndroidEmailVerifier());
 

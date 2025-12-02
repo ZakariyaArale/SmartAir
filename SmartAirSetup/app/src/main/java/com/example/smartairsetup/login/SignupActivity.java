@@ -30,7 +30,6 @@ public class SignupActivity extends AppCompatActivity {
     private RadioGroup radioGroupRole;
     private Button buttonSignup;
     private TextView signupError;
-    private Button backButton;
 
     private FirebaseAuth mAuth;
     private FirebaseFirestore db;
@@ -43,8 +42,8 @@ public class SignupActivity extends AppCompatActivity {
         mAuth = FirebaseAuth.getInstance();
         db = FirebaseFirestore.getInstance();
 
-        backButton = findViewById(R.id.backButton);
-        backButton.setOnClickListener(v -> onBackPressed());
+        Button backButton1 = findViewById(R.id.backButton);
+        backButton1.setOnClickListener(v -> getOnBackPressedDispatcher().onBackPressed());
 
         signupEmail = findViewById(R.id.signupEmail);
         signupPassword = findViewById(R.id.signupPassword);

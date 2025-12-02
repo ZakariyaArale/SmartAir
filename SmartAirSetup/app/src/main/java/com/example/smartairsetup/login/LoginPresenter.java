@@ -94,6 +94,6 @@ public class LoginPresenter {
 
         model.sendPasswordResetEmail(identifier,
                 () -> view.showToast("Password reset email sent. Check your inbox."),
-                errorMessage -> view.showError(errorMessage));
+                view::showError);
     }
 }

@@ -12,22 +12,13 @@ import com.example.smartairsetup.R;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.HashMap;
-import java.util.Locale;
 import java.util.Map;
 
 public class RecordMedicationTriage extends AppCompatActivity {
 
     private String childUid;
     private String parentUid;
-    private String returnClassName;
-
-    // Red flags
-    private boolean cantSpeakFullSentences;
-    private boolean chestRetractions;
-    private boolean blueLipsNails;
 
     private FirebaseFirestore db;
 
@@ -40,14 +31,6 @@ public class RecordMedicationTriage extends AppCompatActivity {
         Intent incoming = getIntent();
         childUid = incoming.getStringExtra("CHILD_ID");
         parentUid = incoming.getStringExtra("PARENT_UID");
-
-        /*
-        returnClassName = incoming.getStringExtra("returnClass");
-
-        cantSpeakFullSentences = incoming.getBooleanExtra("cantSpeakFullSentences", false);
-        chestRetractions = incoming.getBooleanExtra("chestRetractions", false);
-        blueLipsNails = incoming.getBooleanExtra("blueLipsNails", false);
-        */
 
         if (childUid == null || parentUid == null) {
             Toast.makeText(this, "Missing parent or child UID", Toast.LENGTH_SHORT).show();
@@ -71,32 +54,7 @@ public class RecordMedicationTriage extends AppCompatActivity {
         saveButton.setOnClickListener(v -> saveMedication(chooseMedButton, doseInput));
 
         // Back button: sends parent UID and red flags back
-        backButton.setOnClickListener(v -> {
-
-            finish();
-
-            /*
-            if (returnClassName != null && !returnClassName.isEmpty()) {
-                try {
-                    Class<?> returnClass = Class.forName(returnClassName);
-                    Intent intent = new Intent(RecordMedicationTriage.this, returnClass);
-                    intent.putExtra("PARENT_UID", parentUid);
-                    intent.putExtra("CHILD_ID", childUid);
-                    intent.putExtra("cantSpeakFullSentences", cantSpeakFullSentences);
-                    intent.putExtra("chestRetractions", chestRetractions);
-                    intent.putExtra("blueLipsNails", blueLipsNails);
-                    startActivity(intent);
-                    finish();
-                } catch (ClassNotFoundException e) {
-                    e.printStackTrace();
-                    Toast.makeText(this, "Return class not found", Toast.LENGTH_SHORT).show();
-                }
-            } else {
-                finish();
-            }
-
-             */
-        });
+        backButton.setOnClickListener(v -> finish());
     }
 
     private void saveMedication(Button chooseMedButton, EditText doseInput) {
@@ -138,7 +96,7 @@ public class RecordMedicationTriage extends AppCompatActivity {
 
                     boolean isRescue = false;
                     if (doc.exists() && doc.getBoolean("isRescue") != null) {
-                        isRescue = doc.getBoolean("isRescue");
+                        isRescue = Boolean.TRUE.equals(doc.getBoolean("isRescue"));
                     }
 
                     // Build medLog entry

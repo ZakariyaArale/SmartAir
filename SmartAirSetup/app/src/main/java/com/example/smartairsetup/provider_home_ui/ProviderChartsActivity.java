@@ -26,13 +26,9 @@ public class ProviderChartsActivity extends AppCompatActivity {
 
     private FirebaseFirestore db;
 
-    private TextView textTrendChildName;
-    private RadioGroup radioRange;
     private LineChart chartSymptoms;
-    private Button backButton;
 
     private String childId;
-    private String childName;
     private String parentUid;
 
     private final SimpleDateFormat dateFormat =
@@ -47,7 +43,7 @@ public class ProviderChartsActivity extends AppCompatActivity {
 
         parentUid = getIntent().getStringExtra(ProviderChildPortalActivity.EXTRA_PARENT_UID);
         childId = getIntent().getStringExtra(ProviderChildPortalActivity.EXTRA_CHILD_ID);
-        childName = getIntent().getStringExtra(ProviderChildPortalActivity.EXTRA_CHILD_NAME);
+        String childName = getIntent().getStringExtra(ProviderChildPortalActivity.EXTRA_CHILD_NAME);
 
         if (parentUid == null || childId == null) {
             Toast.makeText(this, "Missing parent/child info", Toast.LENGTH_LONG).show();
@@ -55,10 +51,10 @@ public class ProviderChartsActivity extends AppCompatActivity {
             return;
         }
 
-        textTrendChildName = findViewById(R.id.textTrendChildName);
-        radioRange = findViewById(R.id.radioRange);
+        TextView textTrendChildName = findViewById(R.id.textTrendChildName);
+        RadioGroup radioRange = findViewById(R.id.radioRange);
         chartSymptoms = findViewById(R.id.chartSymptoms);
-        backButton = findViewById(R.id.backButton);
+        Button backButton = findViewById(R.id.backButton);
 
         backButton.setOnClickListener(v -> finish());
         textTrendChildName.setText("Child: " + (childName != null ? childName : "Child"));

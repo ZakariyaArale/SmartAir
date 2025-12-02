@@ -22,7 +22,6 @@ import java.util.Map;
 
 public class TechniqueTraining extends AppCompatActivity {
 
-    private FirebaseAuth mAuth;
     private FirebaseFirestore db;
     private  String parentUid;
     private String childId;
@@ -53,8 +52,7 @@ public class TechniqueTraining extends AppCompatActivity {
         });
 
 
-
-        mAuth = FirebaseAuth.getInstance();
+        FirebaseAuth mAuth = FirebaseAuth.getInstance();
         db = FirebaseFirestore.getInstance();
 
         if (mAuth.getCurrentUser() != null) {
@@ -100,11 +98,7 @@ public class TechniqueTraining extends AppCompatActivity {
 
     public void setExitButton() {
         if (exitButton != null) {
-            exitButton.setOnClickListener(v -> {
-
-                finish();
-
-            });
+            exitButton.setOnClickListener(v -> finish());
         }
     }
 
@@ -148,9 +142,7 @@ public class TechniqueTraining extends AppCompatActivity {
                             Toast.makeText(this, "technique log saved!", Toast.LENGTH_SHORT).show();
                             finish(); // go back or go somewhere else
                         })
-                        .addOnFailureListener(e -> {
-                            Toast.makeText(this, "Error saving log", Toast.LENGTH_SHORT).show();
-                        });
+                        .addOnFailureListener(e -> Toast.makeText(this, "Error saving log", Toast.LENGTH_SHORT).show());
 
             });
         }

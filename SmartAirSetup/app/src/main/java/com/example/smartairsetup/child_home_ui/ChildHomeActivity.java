@@ -32,7 +32,6 @@ import java.util.Map;
 
 public class ChildHomeActivity extends AbstractNavigation {
 
-    private FirebaseAuth mAuth;
     private FirebaseFirestore db;
 
     private TextView greetingText;
@@ -51,7 +50,7 @@ public class ChildHomeActivity extends AbstractNavigation {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        mAuth = FirebaseAuth.getInstance();
+        FirebaseAuth mAuth = FirebaseAuth.getInstance();
         db = FirebaseFirestore.getInstance();
 
         Intent intent = getIntent();

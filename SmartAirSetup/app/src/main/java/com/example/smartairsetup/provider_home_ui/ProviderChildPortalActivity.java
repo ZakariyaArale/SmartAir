@@ -21,15 +21,12 @@ public class ProviderChildPortalActivity extends AppCompatActivity {
     public static final String EXTRA_CHILD_ID = "extra_child_id";
     public static final String EXTRA_CHILD_NAME = "extra_child_name";
 
-    private FirebaseFirestore db;
-    private DocumentReference childDocRef;
-
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_provider_child_portal);
 
-        db = FirebaseFirestore.getInstance();
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
 
         String parentUid = getIntent().getStringExtra(EXTRA_PARENT_UID);
         String childId = getIntent().getStringExtra(EXTRA_CHILD_ID);
@@ -57,7 +54,7 @@ public class ProviderChildPortalActivity extends AppCompatActivity {
         Button btnTriggers = findViewById(R.id.btnProviderTriggers);
         Button btnTriage = findViewById(R.id.btnProviderTriageIncidents);
 
-        childDocRef = db.collection("users")
+        DocumentReference childDocRef = db.collection("users")
                 .document(parentUid)
                 .collection("children")
                 .document(childId);

@@ -20,7 +20,7 @@ import java.util.Locale;
 
 public class EmergencySelectorActivity_Child extends AppCompatActivity {
 
-    private Button saveButton, backButton, nextButton, recordMedicationButton, chooseChildButton;
+    private Button chooseChildButton;
     private EditText followUpInput;
 
     private FirebaseFirestore db;
@@ -38,10 +38,10 @@ public class EmergencySelectorActivity_Child extends AppCompatActivity {
         setContentView(R.layout.activity_emergency_select_child);
 
         // --- Initialize UI ---
-        saveButton = findViewById(R.id.saveButton);
-        backButton = findViewById(R.id.backButton);
-        nextButton = findViewById(R.id.nextButton);
-        recordMedicationButton = findViewById(R.id.recordMedicationButton);
+        Button saveButton = findViewById(R.id.saveButton);
+        Button backButton = findViewById(R.id.backButton);
+        Button nextButton = findViewById(R.id.nextButton);
+        Button recordMedicationButton = findViewById(R.id.recordMedicationButton);
         chooseChildButton = findViewById(R.id.chooseChildButton);
         followUpInput = findViewById(R.id.followUpInput);
 

@@ -29,7 +29,6 @@ import android.provider.MediaStore;
 import java.io.OutputStream;
 import java.nio.charset.StandardCharsets;
 
-
 public class HistoryActivity extends AppCompatActivity {
 
     private FirebaseAuth mAuth;
@@ -39,8 +38,6 @@ public class HistoryActivity extends AppCompatActivity {
     private EditText editEndDate;
     private Spinner spinnerTrigger;
     private Spinner spinnerSymptom;
-    private Button buttonApply;
-    private ListView listHistory;
     private TextView textSymptomSummary;
 
     private HistoryEntryAdapter historyAdapter;
@@ -49,7 +46,6 @@ public class HistoryActivity extends AppCompatActivity {
     private Spinner spinnerChild;
     private final List<String> childIds = new ArrayList<>();
     private final List<String> childNames = new ArrayList<>();
-
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -66,14 +62,10 @@ public class HistoryActivity extends AppCompatActivity {
         editEndDate = findViewById(R.id.editEndDate);
         spinnerTrigger = findViewById(R.id.spinnerTriggerFilter);
         spinnerSymptom = findViewById(R.id.spinnerSymptomFilter);
-        buttonApply = findViewById(R.id.buttonApplyFilters);
-        listHistory = findViewById(R.id.listHistory);
+        Button buttonApply = findViewById(R.id.buttonApplyFilters);
+        ListView listHistory = findViewById(R.id.listHistory);
         textSymptomSummary = findViewById(R.id.textSymptomSummary);
 
-        // Set default date range to last 30 days (or leave empty and handle in code)
-        // For now keep empty; you can prefill if you like.
-
-        // Set up spinners from resources
         ArrayAdapter<CharSequence> triggerAdapter = ArrayAdapter.createFromResource(
                 this,
                 R.array.trigger_filter_options,
@@ -101,13 +93,13 @@ public class HistoryActivity extends AppCompatActivity {
         Button buttonGoBack = findViewById(R.id.buttonBack);
         buttonGoBack.setOnClickListener(v -> finish());
     }
+
     private void exportCSV() {
         if (historyItems.isEmpty()) {
             Toast.makeText(this, "No history to export.", Toast.LENGTH_SHORT).show();
             return;
         }
 
-        // 1) Build CSV content from what is currently shown in historyItems
         StringBuilder sb = new StringBuilder();
         sb.append("Child, Date, Night waking, Activity limits, Cough/wheeze, Triggers, Author\n");
 
@@ -131,7 +123,6 @@ public class HistoryActivity extends AppCompatActivity {
 
         String fileName = "history_" + System.currentTimeMillis() + ".csv";
 
-        // 2) Create file entry in public Downloads via MediaStore
         ContentValues values = new ContentValues();
         values.put(MediaStore.Downloads.DISPLAY_NAME, fileName);
         values.put(MediaStore.Downloads.MIME_TYPE, "text/csv");
@@ -147,7 +138,6 @@ public class HistoryActivity extends AppCompatActivity {
             return;
         }
 
-        // 3) Write CSV data into that uri
         try (OutputStream os = getContentResolver().openOutputStream(uri)) {
             if (os == null) {
                 Toast.makeText(this, "Failed to open file output stream.", Toast.LENGTH_LONG).show();
@@ -168,22 +158,17 @@ public class HistoryActivity extends AppCompatActivity {
     }
 
     private String escapeCsv(String value) {
-        if (value == null) {
-            return "";
-        }
+        if (value == null) return "";
 
         boolean hasComma = value.contains(",");
         boolean hasQuote = value.contains("\"");
         boolean hasNewLine = value.contains("\n") || value.contains("\r");
 
-        if (hasQuote) {
-            value = value.replace("\"", "\"\"");
-        }
+        if (hasQuote) value = value.replace("\"", "\"\"");
 
         if (hasComma || hasQuote || hasNewLine) {
             return "\"" + value + "\"";
         }
-
         return value;
     }
 
@@ -201,15 +186,12 @@ public class HistoryActivity extends AppCompatActivity {
         int childPos = spinnerChild.getSelectedItemPosition();
         String selectedChildId = null;
         if (childPos >= 0 && childPos < childIds.size()) {
-            selectedChildId = childIds.get(childPos);  // null means "All children"
+            selectedChildId = childIds.get(childPos); // null means "All children"
         }
         final String filterChildId = selectedChildId;
 
-
         String start = editStartDate.getText().toString().trim();
         String end = editEndDate.getText().toString().trim();
-
-        // Basic sanity: if one date is empty, ignore date filtering.
         final boolean hasDateRange = !TextUtils.isEmpty(start) && !TextUtils.isEmpty(end);
 
         ref.get().addOnSuccessListener(snapshot -> {
@@ -222,24 +204,15 @@ public class HistoryActivity extends AppCompatActivity {
             for (QueryDocumentSnapshot doc : snapshot) {
                 String date = doc.getString("date");
                 if (hasDateRange && date != null) {
-                    // "yyyy-MM-dd" so lexicographic compare works
-                    if (date.compareTo(start) < 0 || date.compareTo(end) > 0) {
-                        continue;
-                    }
+                    if (date.compareTo(start) < 0 || date.compareTo(end) > 0) continue;
                 }
 
-                // Child filter
                 if (filterChildId != null) {
                     String docChildId = doc.getString("childId");
-                    if (docChildId == null || !docChildId.equals(filterChildId)) {
-                        continue;
-                    }
+                    if (docChildId == null || !docChildId.equals(filterChildId)) continue;
                 }
 
-                // Trigger filter
                 if (!passesTriggerFilter(doc)) continue;
-
-                // Symptom filter
                 if (!passesSymptomFilter(doc)) continue;
 
                 String night = doc.getString("nightWaking");
@@ -254,23 +227,6 @@ public class HistoryActivity extends AppCompatActivity {
                 if (activity != null && !"none".equals(activity)) activityProblemDays++;
                 if (cough != null && !"none".equals(cough)) coughProblemDays++;
 
-                String triggerText;
-                if (triggers == null || triggers.isEmpty()) {
-                    triggerText = "Triggers: none";
-                } else {
-                    // convert ["cold_air", "dust_pets"] -> "cold air, dust/pets"
-                    List<String> pretty = new ArrayList<>();
-                    for (String t : triggers) {
-                        switch (t) {
-                            case "cold_air": pretty.add("cold air"); break;
-                            case "dust_pets": pretty.add("dust / pets"); break;
-                            case "strong_odors": pretty.add("strong odors"); break;
-                            default: pretty.add(t.replace('_', ' '));
-                        }
-                    }
-                    triggerText = "Triggers: " + TextUtils.join(", ", pretty);
-                }
-
                 String headerChildName = (docChildName != null ? docChildName : "Child");
                 String headerDate = (date != null ? date : "Unknown date");
 
@@ -278,22 +234,7 @@ public class HistoryActivity extends AppCompatActivity {
                 String activityDisplay = (activity != null ? activity : "n/a");
                 String coughDisplay = (cough != null ? cough : "n/a");
 
-                String triggersDisplay;
-                if (triggers == null || triggers.isEmpty()) {
-                    triggersDisplay = "none";
-                } else {
-                    List<String> pretty = new ArrayList<>();
-                    for (String t : triggers) {
-                        switch (t) {
-                            case "cold_air": pretty.add("cold air"); break;
-                            case "dust_pets": pretty.add("dust / pets"); break;
-                            case "strong_odors": pretty.add("strong odors"); break;
-                            default: pretty.add(t.replace('_', ' '));
-                        }
-                    }
-                    triggersDisplay = TextUtils.join(", ", pretty);
-                }
-
+                String triggersDisplay = formatTriggers(triggers);
                 String authorDisplay = (authorLabel != null ? authorLabel.toLowerCase() : "unknown");
 
                 HistoryEntry entry = new HistoryEntry(
@@ -307,19 +248,16 @@ public class HistoryActivity extends AppCompatActivity {
                 );
 
                 historyItems.add(entry);
-
             }
 
             historyAdapter.notifyDataSetChanged();
 
-            // Story 16 summary – fill this text (we’ll refine below)
             textSymptomSummary.setText(
                     "Days with night waking: " + nightProblemDays + "\n" +
                             "Days with activity limits: " + activityProblemDays + "\n" +
                             "Days with cough/wheeze: " + coughProblemDays
             );
 
-            // Also load zone change events into the same list
             loadZoneHistory(uid, filterChildId, start, end, hasDateRange);
 
         }).addOnFailureListener(e ->
@@ -328,9 +266,24 @@ public class HistoryActivity extends AppCompatActivity {
         );
     }
 
+    private String formatTriggers(@Nullable List<String> triggers) {
+        if (triggers == null || triggers.isEmpty()) return "none";
+
+        List<String> pretty = new ArrayList<>();
+        for (String t : triggers) {
+            switch (t) {
+                case "cold_air": pretty.add("cold air"); break;
+                case "dust_pets": pretty.add("dust / pets"); break;
+                case "strong_odors": pretty.add("strong odors"); break;
+                default: pretty.add(t.replace('_', ' '));
+            }
+        }
+        return TextUtils.join(", ", pretty);
+    }
+
     private boolean passesTriggerFilter(QueryDocumentSnapshot doc) {
         int pos = spinnerTrigger.getSelectedItemPosition();
-        if (pos == 0) return true; // "Any trigger"
+        if (pos == 0) return true;
 
         String requiredKey = null;
         switch (pos) {
@@ -344,24 +297,18 @@ public class HistoryActivity extends AppCompatActivity {
 
         @SuppressWarnings("unchecked")
         List<String> triggers = (List<String>) doc.get("triggers");
-        return requiredKey == null
-                || (triggers != null && triggers.contains(requiredKey));
+        return requiredKey == null || (triggers != null && triggers.contains(requiredKey));
     }
 
     private boolean passesSymptomFilter(QueryDocumentSnapshot doc) {
         int pos = spinnerSymptom.getSelectedItemPosition();
-        if (pos == 0) return true; // "Any symptom"
+        if (pos == 0) return true;
 
-        // We interpret "some/a lot" as value != "none"
         switch (pos) {
-            case 1: // Night waking (some/a lot)
-                return isProblem(doc.getString("nightWaking"));
-            case 2: // Activity limits (some/a lot)
-                return isProblem(doc.getString("activityLimits"));
-            case 3: // Cough/wheeze (some/a lot)
-                return isProblem(doc.getString("coughWheeze"));
-            default:
-                return true;
+            case 1: return isProblem(doc.getString("nightWaking"));
+            case 2: return isProblem(doc.getString("activityLimits"));
+            case 3: return isProblem(doc.getString("coughWheeze"));
+            default: return true;
         }
     }
 
@@ -373,7 +320,6 @@ public class HistoryActivity extends AppCompatActivity {
         if (mAuth.getCurrentUser() == null) return;
         String uid = mAuth.getCurrentUser().getUid();
 
-        FirebaseFirestore db = FirebaseFirestore.getInstance();
         CollectionReference childrenRef = db.collection("users")
                 .document(uid)
                 .collection("children");
@@ -382,15 +328,12 @@ public class HistoryActivity extends AppCompatActivity {
             childIds.clear();
             childNames.clear();
 
-            // First option: All children
             childIds.add(null);
             childNames.add("All children");
 
             for (QueryDocumentSnapshot childDoc : snapshot) {
                 String name = childDoc.getString("name");
-                if (name == null || name.trim().isEmpty()) {
-                    name = "Unnamed child";
-                }
+                if (name == null || name.trim().isEmpty()) name = "Unnamed child";
                 childIds.add(childDoc.getId());
                 childNames.add(name);
             }
@@ -416,14 +359,10 @@ public class HistoryActivity extends AppCompatActivity {
                 .collection("zoneHistory");
 
         zoneRef.get().addOnSuccessListener(snapshot -> {
-
             for (QueryDocumentSnapshot doc : snapshot) {
                 String date = doc.getString("date");
                 if (hasDateRange && date != null) {
-                    // Same date filter logic as daily check-ins
-                    if (date.compareTo(start) < 0 || date.compareTo(end) > 0) {
-                        continue;
-                    }
+                    if (date.compareTo(start) < 0 || date.compareTo(end) > 0) continue;
                 }
 
                 String docChildId = doc.getString("childId");
@@ -449,13 +388,12 @@ public class HistoryActivity extends AppCompatActivity {
                         ", PB " +
                         (pb != null ? pb : 0);
 
-                // Reuse HistoryEntry to display this
                 HistoryEntry entry = new HistoryEntry(
                         childName,
                         date != null ? date : "",
-                        nightLine,   // goes in the "Night:" row
-                        "-",         // Activity
-                        "-",         // Cough/wheeze
+                        nightLine,
+                        "-",
+                        "-",
                         triggersLine,
                         "zone change"
                 );
@@ -463,7 +401,6 @@ public class HistoryActivity extends AppCompatActivity {
                 historyItems.add(entry);
             }
 
-            // Append to whatever is already shown
             historyAdapter.notifyDataSetChanged();
         });
     }

@@ -52,9 +52,7 @@ public class TechniqueTrainingVideo extends AppCompatActivity {
     private void setBackButton() {
         Button backButton = findViewById(R.id.videoBackButton);
         if (backButton != null) {
-            backButton.setOnClickListener(v -> {
-                finish();
-            });
+            backButton.setOnClickListener(v -> finish());
         }
     }
 

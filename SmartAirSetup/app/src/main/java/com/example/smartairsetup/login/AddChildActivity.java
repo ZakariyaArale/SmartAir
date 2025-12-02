@@ -30,7 +30,6 @@ public class AddChildActivity extends AppCompatActivity {
     private EditText editChildNotes;
     private TextView textChildError;
     private Button buttonSaveChild;
-    private Button backButton;
 
     private FirebaseAuth mAuth;
     private FirebaseFirestore db;
@@ -43,8 +42,8 @@ public class AddChildActivity extends AppCompatActivity {
         mAuth = FirebaseAuth.getInstance();
         db = FirebaseFirestore.getInstance();
 
-        backButton = findViewById(R.id.backButton);
-        backButton.setOnClickListener(v -> onBackPressed());
+        Button backButton1 = findViewById(R.id.backButton);
+        backButton1.setOnClickListener(v -> getOnBackPressedDispatcher().onBackPressed());
 
         editChildUsername = findViewById(R.id.editChildUsername);
         editChildPassword = findViewById(R.id.editChildPassword);

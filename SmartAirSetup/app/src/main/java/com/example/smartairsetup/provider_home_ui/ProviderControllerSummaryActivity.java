@@ -31,7 +31,6 @@ public class ProviderControllerSummaryActivity extends AppCompatActivity {
     private FirebaseFirestore db;
     private ListenerRegistration listener;
 
-    private TextView title;
     private TextView textLastTaken;
     private TextView textCount7;
     private TextView textCount30;
@@ -64,7 +63,7 @@ public class ProviderControllerSummaryActivity extends AppCompatActivity {
             return;
         }
 
-        title = findViewById(R.id.textTitle);
+        TextView title = findViewById(R.id.textTitle);
         textLastTaken = findViewById(R.id.textLastTaken);
         textCount7 = findViewById(R.id.textCount7);
         textCount30 = findViewById(R.id.textCount30);

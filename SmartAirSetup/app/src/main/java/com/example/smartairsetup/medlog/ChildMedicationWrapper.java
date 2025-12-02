@@ -7,10 +7,10 @@ Used when both are needed, for example when building med inventory list
 
  */
 public class ChildMedicationWrapper {
-    private String childName;
+    private final String childName;
 
-    private String childID;
-    private Medication medication;
+    private final String childID;
+    private final Medication medication;
 
     public ChildMedicationWrapper(String childName, String childID, Medication medication) {
         this.childName = childName;

@@ -39,7 +39,7 @@ public class FireBaseProcessChild implements ProcessChildren {
                         String name = doc.getString("name");
                         String uid = doc.getId();
 
-                        if (name == null || uid == null) {
+                        if (name == null) {
                             continue;
                         }
 

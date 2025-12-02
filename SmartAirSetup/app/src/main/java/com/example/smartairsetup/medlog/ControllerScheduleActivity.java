@@ -24,29 +24,24 @@ public class ControllerScheduleActivity extends AppCompatActivity {
     public static final String EXTRA_CHILD_ID = "extra_child_id";
     public static final String EXTRA_CHILD_NAME = "extra_child_name";
 
-    private FirebaseAuth mAuth;
     private FirebaseFirestore db;
 
-    private TextView textScheduleChildName;
     private CheckBox checkMon, checkTue, checkWed, checkThu, checkFri, checkSat, checkSun;
     private EditText editDosesPerDay;
-    private Button buttonSaveSchedule;
-    private Button backButton;
 
     private String parentUid;
     private String childId;
-    private String childName;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_controller_schedule);
 
-        mAuth = FirebaseAuth.getInstance();
+        FirebaseAuth mAuth = FirebaseAuth.getInstance();
         db = FirebaseFirestore.getInstance();
 
         childId = getIntent().getStringExtra(EXTRA_CHILD_ID);
-        childName = getIntent().getStringExtra(EXTRA_CHILD_NAME);
+        String childName = getIntent().getStringExtra(EXTRA_CHILD_NAME);
 
         if (mAuth.getCurrentUser() == null || childId == null) {
             Toast.makeText(this, "Missing parent or child info.", Toast.LENGTH_LONG).show();
@@ -55,7 +50,7 @@ public class ControllerScheduleActivity extends AppCompatActivity {
         }
         parentUid = mAuth.getCurrentUser().getUid();
 
-        textScheduleChildName = findViewById(R.id.textScheduleChildName);
+        TextView textScheduleChildName = findViewById(R.id.textScheduleChildName);
         checkMon = findViewById(R.id.checkMon);
         checkTue = findViewById(R.id.checkTue);
         checkWed = findViewById(R.id.checkWed);
@@ -64,8 +59,8 @@ public class ControllerScheduleActivity extends AppCompatActivity {
         checkSat = findViewById(R.id.checkSat);
         checkSun = findViewById(R.id.checkSun);
         editDosesPerDay = findViewById(R.id.editDosesPerDay);
-        buttonSaveSchedule = findViewById(R.id.buttonSaveSchedule);
-        backButton = findViewById(R.id.backButton);
+        Button buttonSaveSchedule = findViewById(R.id.buttonSaveSchedule);
+        Button backButton = findViewById(R.id.backButton);
         backButton.setOnClickListener(v -> finish());
 
         textScheduleChildName.setText("Child: " + childName);

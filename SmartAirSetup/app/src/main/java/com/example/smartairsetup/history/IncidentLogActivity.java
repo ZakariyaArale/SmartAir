@@ -1,14 +1,14 @@
 package com.example.smartairsetup.history;
 
 import android.os.Bundle;
-import android.view.View;
+import android.text.TextUtils;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.Spinner;
-import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -25,6 +25,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
+import java.util.Objects;
 
 public class IncidentLogActivity extends AppCompatActivity {
 
@@ -32,9 +33,6 @@ public class IncidentLogActivity extends AppCompatActivity {
     private FirebaseFirestore db;
 
     private Spinner spinnerChildFilter;
-    private Button buttonGetLogs;
-    private Button buttonBack;
-    private TextView textSymptomSummary;
     private ListView listHistory;
 
     private final List<String> childNames = new ArrayList<>();
@@ -62,27 +60,17 @@ public class IncidentLogActivity extends AppCompatActivity {
         }
 
         spinnerChildFilter = findViewById(R.id.spinnerChildFilter);
-        buttonGetLogs = findViewById(R.id.buttonGetLogs);
-        buttonBack = findViewById(R.id.buttonBack);
-        textSymptomSummary = findViewById(R.id.textSymptomSummary);
+        Button buttonGetLogs = findViewById(R.id.buttonGetLogs);
+        Button buttonBack = findViewById(R.id.buttonBack);
+        findViewById(R.id.textSymptomSummary);
         listHistory = findViewById(R.id.listHistory);
 
         setupChildSpinner();
         setupHistoryList();
 
-        buttonGetLogs.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                loadIncidentLogsForSelectedChild();
-            }
-        });
+        buttonGetLogs.setOnClickListener(v -> loadIncidentLogsForSelectedChild());
 
-        buttonBack.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                finish();
-            }
-        });
+        buttonBack.setOnClickListener(v -> finish());
     }
 
     private void setupChildSpinner() {
@@ -108,6 +96,7 @@ public class IncidentLogActivity extends AppCompatActivity {
 
 
     private void loadChildrenForCurrentParent() {
+        assert mAuth.getCurrentUser() != null;
         String parentUid = mAuth.getCurrentUser().getUid();
 
         db.collection("users")
@@ -150,6 +139,7 @@ public class IncidentLogActivity extends AppCompatActivity {
             return;
         }
 
+        assert mAuth.getCurrentUser() != null;
         String parentUid = mAuth.getCurrentUser().getUid();
         String childId = childIds.get(selected);
 
@@ -167,77 +157,44 @@ public class IncidentLogActivity extends AppCompatActivity {
                 .addOnSuccessListener(querySnapshot -> {
                     incidentItems.clear();
 
-                    int totalCount = 0;
+                    for (QueryDocumentSnapshot doc : querySnapshot) {
+                        Long timestamp = doc.getLong("timestamp");
+                        if (timestamp == null) continue;
 
-                    for (QueryDocumentSnapshot doc:querySnapshot) {
-                        Long timestamp= doc.getLong("timestamp");
-                        String zone =doc.getString("zone");
+                        String zone = doc.getString("zone");
                         Boolean blueLipsNails = doc.getBoolean("blueLipsNails");
                         Boolean cantSpeakFullSentences = doc.getBoolean("cantSpeakFullSentences");
                         Boolean chestRetractions = doc.getBoolean("chestRetractions");
-                        String userResponse =doc.getString("message-triage");
-                        long optionalPEF = 0;
-                        if(doc.contains("dailyPEF")){
-                            optionalPEF = doc.getLong("dailyPEF");
+                        String userResponse = doc.getString("message-triage");
 
-                        }
-
-                        if (timestamp ==null) {
-                            continue;
-                        }
-
-                        totalCount++;
-
-                        Date date= new Date(timestamp);
+                        Date date = new Date(timestamp);
                         String dateStr = dateTimeFormat.format(date);
 
-                        StringBuilder row =new StringBuilder();
-                        row.append(dateStr);
-                        row.append("  –  Zone: ");
-                        if (zone != null) {
-                            row.append(zone);
-                        } else {
-                            row.append("None");
-                        }
+                        StringBuilder row = new StringBuilder();
+                        row.append(dateStr)
+                                .append("  –  Zone: ")
+                                .append(Objects.requireNonNullElse(zone, "None"));
 
-                        List<String> flags = new ArrayList<>();
-                        if (blueLipsNails != null && blueLipsNails) {
-                            flags.add("Blue lips/nails");
-                        }
-                        if (cantSpeakFullSentences != null && cantSpeakFullSentences) {
-                            flags.add("Cannot speak full sentences");
-                        }
-                        if (chestRetractions != null && chestRetractions) {
-                            flags.add("Chest retractions");
-                        }
-
+                        List<String> flags = getStrings(blueLipsNails, cantSpeakFullSentences, chestRetractions);
                         if (!flags.isEmpty()) {
-                            row.append("\nFlags: ");
-                            for (int i = 0; i < flags.size(); i++) {
-                                String flag = flags.get(i);
-                                row.append(flag);
-                                if (i < flags.size() - 1) {
-                                    row.append(", ");
-                                }
-                            }
+                            row.append("\nFlags: ").append(TextUtils.join(", ", flags));
                         }
 
                         if (userResponse != null && !userResponse.trim().isEmpty()) {
-                            row.append("\nUser response: ");
-                            row.append(userResponse);
+                            row.append("\nUser response: ").append(userResponse);
                         }
 
-                        if(doc.contains("dailyPEF")){
-                            row.append("\n Optional PEF: ");
-                            row.append(optionalPEF);
+                        // ✅ Safe Long handling (no unboxing warning, no NPE)
+                        Long pefLong = doc.getLong("dailyPEF");
+                        if (pefLong != null) {
+                            row.append("\nOptional PEF: ").append(pefLong);
                         }
-                        //Hard Coded Guidance
-                        row.append("\n");
-                        row.append("\nGuidance:");
-                        row.append("\nCall emergency services immediately");
-                        row.append("\nUse rescue inhaler as prescribed while waiting");
-                        row.append("\nKeep your child calm and upright");
-                        row.append("\nDo not wait to see if symptoms improve");
+
+                        row.append("\n\nGuidance:")
+                                .append("\nCall emergency services immediately")
+                                .append("\nUse rescue inhaler as prescribed while waiting")
+                                .append("\nKeep your child calm and upright")
+                                .append("\nDo not wait to see if symptoms improve");
 
                         incidentItems.add(row.toString());
                     }
@@ -250,5 +207,20 @@ public class IncidentLogActivity extends AppCompatActivity {
                         "Failed to load incident logs: " + e.getMessage(),
                         Toast.LENGTH_LONG
                 ).show());
+    }
+
+    @NonNull
+    private static List<String> getStrings(Boolean blueLipsNails, Boolean cantSpeakFullSentences, Boolean chestRetractions) {
+        List<String> flags = new ArrayList<>();
+        if (blueLipsNails != null && blueLipsNails) {
+            flags.add("Blue lips/nails");
+        }
+        if (cantSpeakFullSentences != null && cantSpeakFullSentences) {
+            flags.add("Cannot speak full sentences");
+        }
+        if (chestRetractions != null && chestRetractions) {
+            flags.add("Chest retractions");
+        }
+        return flags;
     }
 }

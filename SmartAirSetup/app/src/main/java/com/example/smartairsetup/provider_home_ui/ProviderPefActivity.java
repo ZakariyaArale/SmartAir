@@ -24,7 +24,6 @@ public class ProviderPefActivity extends AppCompatActivity {
     private FirebaseFirestore db;
     private ListenerRegistration listener;
 
-    private TextView title;
     private TextView summary;
     private TextView emptyText;
     private RecyclerView recycler;
@@ -49,7 +48,7 @@ public class ProviderPefActivity extends AppCompatActivity {
             return;
         }
 
-        title = findViewById(R.id.textTitle);
+        TextView title = findViewById(R.id.textTitle);
         summary = findViewById(R.id.textSummary);
         emptyText = findViewById(R.id.textEmpty);
         recycler = findViewById(R.id.recyclerPefLogs);

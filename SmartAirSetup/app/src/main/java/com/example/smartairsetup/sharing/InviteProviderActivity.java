@@ -27,7 +27,6 @@ public class InviteProviderActivity extends AppCompatActivity {
     public static final String EXTRA_CHILD_ID = "extra_child_id";
     public static final String EXTRA_CHILD_NAME = "extra_child_name";
 
-    private FirebaseAuth mAuth;
     private FirebaseFirestore db;
 
     private TextView textInviteLink;
@@ -43,7 +42,7 @@ public class InviteProviderActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_invite_provider);
 
-        mAuth = FirebaseAuth.getInstance();
+        FirebaseAuth mAuth = FirebaseAuth.getInstance();
         db = FirebaseFirestore.getInstance();
 
         childId = getIntent().getStringExtra(EXTRA_CHILD_ID);

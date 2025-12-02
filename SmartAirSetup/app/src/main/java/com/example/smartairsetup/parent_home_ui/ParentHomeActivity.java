@@ -48,7 +48,6 @@ public class ParentHomeActivity extends AbstractNavigation {
 
     private FirebaseAuth mAuth;
     private FirebaseFirestore db;
-    private Button buttonAddChild;
     private final List<String> childNames = new ArrayList<>();
     private final List<String> childIds = new ArrayList<>();
 
@@ -87,14 +86,10 @@ public class ParentHomeActivity extends AbstractNavigation {
 
         // --- Buttons ---
         Button buttonViewHistory = findViewById(R.id.buttonViewHistory);
-        buttonViewHistory.setOnClickListener(v -> {
-            startActivity(new Intent(ParentHomeActivity.this, HistoryActivity.class));
-        });
+        buttonViewHistory.setOnClickListener(v -> startActivity(new Intent(ParentHomeActivity.this, HistoryActivity.class)));
 
         Button buttonChildOverview = findViewById(R.id.buttonChildOverview);
-        buttonChildOverview.setOnClickListener(v -> {
-            startActivity(new Intent(ParentHomeActivity.this, ChildOverviewActivity.class));
-        });
+        buttonChildOverview.setOnClickListener(v -> startActivity(new Intent(ParentHomeActivity.this, ChildOverviewActivity.class)));
 
         Button buttonSetPB = findViewById(R.id.buttonSetPB);
         buttonSetPB.setOnClickListener(v -> {
@@ -115,9 +110,7 @@ public class ParentHomeActivity extends AbstractNavigation {
         });
 
         Button buttonAddBadges = findViewById(R.id.buttonAddBadges);
-        buttonAddBadges.setOnClickListener(v -> {
-            startActivity(new Intent(this, ParentBadgeSettingsActivity.class));
-        });
+        buttonAddBadges.setOnClickListener(v -> startActivity(new Intent(this, ParentBadgeSettingsActivity.class)));
 
         Button buttonDailyCheckIn = findViewById(R.id.buttonDailyCheckIn);
         buttonDailyCheckIn.setOnClickListener(v -> {
@@ -141,15 +134,11 @@ public class ParentHomeActivity extends AbstractNavigation {
             }
         });
 
-        buttonAddChild = findViewById(R.id.buttonAddChild);
-        buttonAddChild.setOnClickListener(v -> {
-            startActivity(new Intent(this, AddChildActivity.class));
-        });
+        Button buttonAddChild = findViewById(R.id.buttonAddChild);
+        buttonAddChild.setOnClickListener(v -> startActivity(new Intent(this, AddChildActivity.class)));
 
         Button buttonMedicationInventory = findViewById(R.id.buttonMedicationInventory);
-        buttonMedicationInventory.setOnClickListener(v -> {
-            startActivity(new Intent(this, MedicationInventoryActivity.class));
-        });
+        buttonMedicationInventory.setOnClickListener(v -> startActivity(new Intent(this, MedicationInventoryActivity.class)));
 
         Button buttonPDF = findViewById(R.id.buttonPDF);
         buttonPDF.setOnClickListener(v -> {
@@ -183,14 +172,10 @@ public class ParentHomeActivity extends AbstractNavigation {
         });
 
         Button buttonControllerLog = findViewById(R.id.buttonControllerLog);
-        buttonControllerLog.setOnClickListener(v -> {
-            startActivity(new Intent(this, ControllerLogActivity.class));
-        });
+        buttonControllerLog.setOnClickListener(v -> startActivity(new Intent(this, ControllerLogActivity.class)));
 
         Button buttonIncidentLogs = findViewById(R.id.buttonIncidentLogs);
-        buttonIncidentLogs.setOnClickListener(v -> {
-            startActivity(new Intent(this, IncidentLogActivity.class));
-        });
+        buttonIncidentLogs.setOnClickListener(v -> startActivity(new Intent(this, IncidentLogActivity.class)));
 
         // --- Child summary card ---
         buttonOverviewSelectChild = findViewById(R.id.buttonOverviewSelectChild);

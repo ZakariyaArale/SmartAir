@@ -17,16 +17,16 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Objects;
 
 public class OptionalDataActivity_Child extends AppCompatActivity {
 
-    private Button saveButton, backButton, nextButton, chooseChildButton;
+    private Button chooseChildButton;
     private EditText followUpInput;
 
     private Intent intent;
     private FirebaseFirestore db;
     private String childId;
-    private Button recordMedicationButton;
     private String parentUid;
 
     // Red flags from previous screen
@@ -39,12 +39,12 @@ public class OptionalDataActivity_Child extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_optional_data_child);
 
-        saveButton = findViewById(R.id.saveButton);
-        backButton = findViewById(R.id.backButton);
-        nextButton = findViewById(R.id.nextButton);
+        Button saveButton = findViewById(R.id.saveButton);
+        Button backButton = findViewById(R.id.backButton);
+        Button nextButton = findViewById(R.id.nextButton);
         followUpInput = findViewById(R.id.followUpInput);
         chooseChildButton = findViewById(R.id.chooseChildButton); // New button
-        recordMedicationButton = findViewById(R.id.recordMedicationButton);
+        Button recordMedicationButton = findViewById(R.id.recordMedicationButton);
 
         db = FirebaseFirestore.getInstance();
 
@@ -151,7 +151,7 @@ public class OptionalDataActivity_Child extends AppCompatActivity {
 
         triageRef.get().addOnSuccessListener(doc -> {
             if (doc.exists() && doc.getString("zone") != null) {
-                launchZoneActivity(doc.getString("zone"));
+                launchZoneActivity(Objects.requireNonNull(doc.getString("zone")));
             } else {
                 DocumentReference latestPEFRef = db.collection("users")
                         .document(parentUid)
@@ -162,7 +162,7 @@ public class OptionalDataActivity_Child extends AppCompatActivity {
 
                 latestPEFRef.get().addOnSuccessListener(snapshot -> {
                     if (snapshot.exists() && snapshot.getString("zone") != null) {
-                        launchZoneActivity(snapshot.getString("zone"));
+                        launchZoneActivity(Objects.requireNonNull(snapshot.getString("zone")));
                     } else {
                         Toast.makeText(this, "Please record PEF", Toast.LENGTH_SHORT).show();
                     }

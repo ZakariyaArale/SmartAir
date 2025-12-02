@@ -19,7 +19,6 @@ import com.google.firebase.firestore.FirebaseFirestore;
 
 public class ChildFamilyActivity extends AbstractNavigation {
 
-    private FirebaseAuth mAuth;
     private FirebaseFirestore db;
 
     private LinearLayout familyListContainer;
@@ -31,7 +30,7 @@ public class ChildFamilyActivity extends AbstractNavigation {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        mAuth = FirebaseAuth.getInstance();
+        FirebaseAuth mAuth = FirebaseAuth.getInstance();
         db = FirebaseFirestore.getInstance();
 
         familyListContainer = findViewById(R.id.familyListContainer);

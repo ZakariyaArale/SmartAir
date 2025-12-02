@@ -41,12 +41,11 @@ public class AddEditMedicationActivity extends AppCompatActivity {
     private Spinner childSpinner;
     private Switch rescueMedSwitch;
 
-    private FirebaseAuth mAuth;
     private FirebaseFirestore db;
 
     private String parentUid;
-    private List<String> childNames = new ArrayList<>();
-    private List<String> childIds = new ArrayList<>();
+    private final List<String> childNames = new ArrayList<>();
+    private final List<String> childIds = new ArrayList<>();
 
     private boolean isEditMode = false;
     private String passedMedID;
@@ -65,7 +64,7 @@ public class AddEditMedicationActivity extends AppCompatActivity {
             return insets;
         });
 
-        mAuth = FirebaseAuth.getInstance();
+        FirebaseAuth mAuth = FirebaseAuth.getInstance();
         db = FirebaseFirestore.getInstance();
 
         getIds();
@@ -160,9 +159,7 @@ public class AddEditMedicationActivity extends AppCompatActivity {
     private void setCancelButton() {
         Button cancelButton = findViewById(R.id.cancelButton);
         if (cancelButton != null) {
-            cancelButton.setOnClickListener(v -> {
-                finish();
-            });
+            cancelButton.setOnClickListener(v -> finish());
         }
     }
 

@@ -9,7 +9,6 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.example.smartairsetup.notification.AlertHelper;
 import com.example.smartairsetup.notification.NotificationPermissionsHelper;
 import com.example.smartairsetup.notification.NotificationReceiver;
 import com.example.smartairsetup.parent_home_ui.ParentHomeActivity;
@@ -20,9 +19,6 @@ public class RedFlagsActivity extends AppCompatActivity {
     private RadioGroup radioSpeakFullSentences;
     private RadioGroup radioChestRetractions;
     private RadioGroup radioBlueLipsNails;
-
-    private Button backButton;
-    private Button nextButton;
 
     private String parentUid; // receive from intent
 
@@ -45,8 +41,8 @@ public class RedFlagsActivity extends AppCompatActivity {
         radioBlueLipsNails = findViewById(R.id.radioBlueLipsNails);
 
         // Initialize Buttons
-        backButton = findViewById(R.id.backButton);
-        nextButton = findViewById(R.id.nextButton);
+        Button backButton = findViewById(R.id.backButton);
+        Button nextButton = findViewById(R.id.nextButton);
 
         // Back button simply finishes this activity
         backButton.setOnClickListener(v -> {

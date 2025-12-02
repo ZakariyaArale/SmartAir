@@ -39,8 +39,6 @@ public class ControllerLogActivity extends AppCompatActivity {
     private Spinner spinnerMedTypeFilter;
     private EditText editStartDate;
     private EditText editEndDate;
-    private Button buttonApplyFilters;
-    private ListView listHistory;
 
     private final List<String> childIds = new ArrayList<>();
     private final List<String> childNames = new ArrayList<>();
@@ -68,8 +66,8 @@ public class ControllerLogActivity extends AppCompatActivity {
         spinnerMedTypeFilter = findViewById(R.id.spinnerTriggerFilter);
         editStartDate = findViewById(R.id.editStartDate);
         editEndDate = findViewById(R.id.editEndDate);
-        buttonApplyFilters = findViewById(R.id.buttonApplyFilters);
-        listHistory = findViewById(R.id.listHistory);
+        Button buttonApplyFilters = findViewById(R.id.buttonApplyFilters);
+        ListView listHistory = findViewById(R.id.listHistory);
 
         setupMedTypeSpinner();
         loadChildrenForFilter();

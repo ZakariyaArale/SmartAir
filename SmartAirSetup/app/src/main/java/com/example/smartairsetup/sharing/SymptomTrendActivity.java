@@ -28,17 +28,12 @@ public class SymptomTrendActivity extends AppCompatActivity {
     public static final String EXTRA_CHILD_ID = "extra_child_id";
     public static final String EXTRA_CHILD_NAME = "extra_child_name";
 
-    private FirebaseAuth mAuth;
     private FirebaseFirestore db;
 
-    private TextView textTrendChildName;
-    private RadioGroup radioRange;
     private LineChart chartSymptoms;
 
     private String childId;
-    private String childName;
     private String parentUid;
-    private Button backButton;
 
 
     private final SimpleDateFormat dateFormat =
@@ -49,11 +44,11 @@ public class SymptomTrendActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_symptom_trend);
 
-        mAuth = FirebaseAuth.getInstance();
+        FirebaseAuth mAuth = FirebaseAuth.getInstance();
         db = FirebaseFirestore.getInstance();
 
         childId = getIntent().getStringExtra(EXTRA_CHILD_ID);
-        childName = getIntent().getStringExtra(EXTRA_CHILD_NAME);
+        String childName = getIntent().getStringExtra(EXTRA_CHILD_NAME);
 
         if (mAuth.getCurrentUser() == null || childId == null) {
             Toast.makeText(this, "Missing parent or child information", Toast.LENGTH_LONG).show();
@@ -62,10 +57,10 @@ public class SymptomTrendActivity extends AppCompatActivity {
         }
         parentUid = mAuth.getCurrentUser().getUid();
 
-        textTrendChildName = findViewById(R.id.textTrendChildName);
-        radioRange = findViewById(R.id.radioRange);
+        TextView textTrendChildName = findViewById(R.id.textTrendChildName);
+        RadioGroup radioRange = findViewById(R.id.radioRange);
         chartSymptoms = findViewById(R.id.chartSymptoms);
-        backButton = findViewById(R.id.backButton);
+        Button backButton = findViewById(R.id.backButton);
         backButton.setOnClickListener(v -> finish());
 
         textTrendChildName.setText("Child: " + childName);

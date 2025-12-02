@@ -44,6 +44,6 @@ public interface DateCalculations {
         total += monthDiff;
 
         // Step 3: add day difference, could return negative value
-        return total += (endDay - startDay);
+        return total + (endDay - startDay);
     }
 }

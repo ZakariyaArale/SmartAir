@@ -5,7 +5,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 
 
 /**
- * Model for login screen (handles business logic), note some buisness logic relating to
+ * Model for login screen (handles business logic), note some business logic relating to
  * db is in the model. This is the only way that we can do Junit tests for presenter
  */
 public class LoginModel {

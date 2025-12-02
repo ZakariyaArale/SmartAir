@@ -1,7 +1,6 @@
 package com.example.smartairsetup.badges;
 
 import android.os.Bundle;
-import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -19,15 +18,11 @@ import com.google.firebase.firestore.QuerySnapshot;
 
 public class ChildBadgesActivity extends AppCompatActivity {
 
-    // UI
-    private TextView textBackBadges;
     private ImageView imageBadgePerfectWeek;
     private ImageView imageBadgeTechnique;
     private ImageView imageBadgeLowRescueMonth;
     private TextView textBadgeTechniqueDesc;
 
-    // Firebase
-    private FirebaseAuth mAuth;
     private FirebaseFirestore db;
 
     // Intent keys
@@ -42,22 +37,19 @@ public class ChildBadgesActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_child_badge);
 
-        mAuth = FirebaseAuth.getInstance();
+        // Firebase
+        FirebaseAuth mAuth = FirebaseAuth.getInstance();
         db = FirebaseFirestore.getInstance();
 
         // Bind views
-        textBackBadges = findViewById(R.id.textBackBadges);
+        // UI
+        TextView textBackBadges = findViewById(R.id.textBackBadges);
         imageBadgePerfectWeek = findViewById(R.id.imageBadgePerfectWeek);
         imageBadgeTechnique = findViewById(R.id.imageBadgeTechnique);
         imageBadgeLowRescueMonth = findViewById(R.id.imageBadgeLowRescueMonth);
         textBadgeTechniqueDesc = findViewById(R.id.textBadgeTechniqueDesc);
 
-        textBackBadges.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                finish();
-            }
-        });
+        textBackBadges.setOnClickListener(view -> finish());
 
         // Parent UID: by default, the FirebaseAuth current user
         FirebaseUser currentUser = mAuth.getCurrentUser();

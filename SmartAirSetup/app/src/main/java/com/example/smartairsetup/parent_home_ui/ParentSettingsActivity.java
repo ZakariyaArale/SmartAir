@@ -12,7 +12,6 @@ import androidx.core.view.WindowInsetsCompat;
 import com.example.smartairsetup.navigation.AbstractNavigation;
 import com.example.smartairsetup.R;
 import com.example.smartairsetup.login.MainActivity;
-import com.example.smartairsetup.triage.EmergencyActivity;
 import com.example.smartairsetup.triage.RedFlagsActivity;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -20,14 +19,13 @@ import com.google.firebase.firestore.FirebaseFirestore;
 public class ParentSettingsActivity extends AbstractNavigation {
 
     private FirebaseAuth mAuth;
-    private FirebaseFirestore db;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         mAuth = FirebaseAuth.getInstance();
-        db = FirebaseFirestore.getInstance();
+        FirebaseFirestore.getInstance();
 
         EdgeToEdge.enable(this);
 
@@ -81,6 +79,6 @@ public class ParentSettingsActivity extends AbstractNavigation {
 
     @Override
     protected void onSettingsClicked() {
-        //Dont do anything since we are in settings
+        //Don't do anything since we are in settings
     }
 }

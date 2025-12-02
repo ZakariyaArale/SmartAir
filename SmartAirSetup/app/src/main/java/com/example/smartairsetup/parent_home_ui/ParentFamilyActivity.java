@@ -19,7 +19,6 @@ import com.example.smartairsetup.login.AddChildActivity;
 import com.example.smartairsetup.R;
 import com.example.smartairsetup.child_home_ui.ChildHomeActivity;
 import com.example.smartairsetup.onboarding.OnboardingActivity;
-import com.example.smartairsetup.triage.EmergencyActivity;
 import com.example.smartairsetup.triage.RedFlagsActivity;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentSnapshot;
@@ -33,7 +32,6 @@ public class ParentFamilyActivity extends AbstractNavigation {
     private FirebaseFirestore db;
 
     private LinearLayout familyListContainer;
-    private Button addMemberButton;
 
     private View currentConfirmationView;
     private View currentSelectedRow;
@@ -47,7 +45,7 @@ public class ParentFamilyActivity extends AbstractNavigation {
 
         // Find views AFTER setContentView
         familyListContainer = findViewById(R.id.familyListContainer);
-        addMemberButton = findViewById(R.id.addMemberButton);
+        Button addMemberButton = findViewById(R.id.addMemberButton);
 
         addMemberButton.setOnClickListener(view -> {
             Intent intent = new Intent(ParentFamilyActivity.this, AddChildActivity.class);
@@ -88,7 +86,7 @@ public class ParentFamilyActivity extends AbstractNavigation {
                     for (DocumentSnapshot doc : querySnapshot.getDocuments()) {
                         String childId = doc.getId();
                         String name = doc.getString("name");
-                        addFamilyRow(childId, name, "Child");
+                        addFamilyRow(childId, name);
                     }
                 })
                 .addOnFailureListener(e -> {
@@ -97,7 +95,7 @@ public class ParentFamilyActivity extends AbstractNavigation {
                 });
     }
 
-    private void addFamilyRow(String childId, String name, String role) {
+    private void addFamilyRow(String childId, String name) {
         View rowView = getLayoutInflater().inflate(
                 R.layout.item_family_member,
                 familyListContainer,
@@ -109,7 +107,7 @@ public class ParentFamilyActivity extends AbstractNavigation {
         TextView roleText = rowView.findViewById(R.id.textRole);
 
         nameText.setText(name);
-        roleText.setText(role);
+        roleText.setText("Child");
         avatarImage.setImageResource(R.drawable.person);
 
         rowView.setOnClickListener(view -> showConfirmationForChild(childId, name, rowView));
@@ -196,12 +194,10 @@ public class ParentFamilyActivity extends AbstractNavigation {
                                 }
                             }
                             // If no firstTime true, go to ChildHomeActivity
-                            if (!firstTimeFound) {
-                                Intent childIntent = new Intent(ParentFamilyActivity.this, ChildHomeActivity.class);
-                                childIntent.putExtra("CHILD_ID", childId);
-                                childIntent.putExtra("CHILD_NAME", name);
-                                startActivity(childIntent);
-                            }
+                            Intent childIntent = new Intent(ParentFamilyActivity.this, ChildHomeActivity.class);
+                            childIntent.putExtra("CHILD_ID", childId);
+                            childIntent.putExtra("CHILD_NAME", name);
+                            startActivity(childIntent);
                         } else {
                             Log.e(TAG, "No matching child in childAccounts");
                             // Fallback to ChildHomeActivity
@@ -211,9 +207,7 @@ public class ParentFamilyActivity extends AbstractNavigation {
                             startActivity(childIntent);
                         }
                     })
-                    .addOnFailureListener(e -> {
-                        Toast.makeText(this, "Error checking child account.", Toast.LENGTH_SHORT).show();
-                    });
+                    .addOnFailureListener(e -> Toast.makeText(this, "Error checking child account.", Toast.LENGTH_SHORT).show());
         });
     }
 

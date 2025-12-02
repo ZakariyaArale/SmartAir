@@ -28,14 +28,13 @@ public class RecordMedUsageActivity extends AppCompatActivity {
 
 
     private NumberPicker dosePicker;
-    private FirebaseAuth mAuth;
     private FirebaseFirestore db;
     private String parentUid;
 
     Button nextButton;
     private Spinner medSpinner;
-    private List<String> medIds = new ArrayList<>();
-    private List<String> medNames = new ArrayList<>();
+    private final List<String> medIds = new ArrayList<>();
+    private final List<String> medNames = new ArrayList<>();
 
     //passed values
     private int passedFeeling;
@@ -61,7 +60,7 @@ public class RecordMedUsageActivity extends AppCompatActivity {
         passedFeeling = intent.getIntExtra("PRE_FEELING", 0);
         childID = intent.getStringExtra("CHILD_ID");
 
-        mAuth = FirebaseAuth.getInstance();
+        FirebaseAuth mAuth = FirebaseAuth.getInstance();
         db = FirebaseFirestore.getInstance();
 
         if (mAuth.getCurrentUser() != null) {
@@ -83,9 +82,7 @@ public class RecordMedUsageActivity extends AppCompatActivity {
     private void setBackButton() {
         Button backButton = findViewById(R.id.medLogBackButton);
         if (backButton != null) {
-            backButton.setOnClickListener(v -> {
-                finish();
-            });
+            backButton.setOnClickListener(v -> finish());
         }
     }
 

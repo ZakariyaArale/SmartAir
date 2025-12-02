@@ -41,17 +41,14 @@ public class MedicationInventoryActivity extends AppCompatActivity {
     private TextView expiryDateTV;
     private TextView doseLeftTV;
     private TextView medNotesTV;
-    private Button backButton;
 
-    private Button newMedButton;
     private Button deleteMedButton;
     private Button editMedButton;
-    private Button notifButton;
 
     private FirebaseAuth mAuth;
     private FirebaseFirestore db;
     private String parentUID;
-    private List<ChildMedicationWrapper> allMeds = new ArrayList<>();
+    private final List<ChildMedicationWrapper> allMeds = new ArrayList<>();
     private ChildMedicationWrapper selectedMed = null;
 
 
@@ -154,16 +151,12 @@ public class MedicationInventoryActivity extends AppCompatActivity {
                                         adapter.notifyDataSetChanged();  // <--- THIS is what makes them appear
 
                                 })
-                                .addOnFailureListener(e -> {
-                                    Log.e("LOAD_MEDS", "Failed to load meds for " + childUID, e);
-                                });
+                                .addOnFailureListener(e -> Log.e("LOAD_MEDS", "Failed to load meds for " + childUID, e));
                     }
 
 
                 })
-                .addOnFailureListener(e -> {
-                    Log.e("LOAD_MEDS", "Failed to load children", e);
-                });
+                .addOnFailureListener(e -> Log.e("LOAD_MEDS", "Failed to load children", e));
     }
 
     public void showDetails(ChildMedicationWrapper medList) {
@@ -212,7 +205,7 @@ public class MedicationInventoryActivity extends AppCompatActivity {
     }
 
     private void setBackButton() {
-        backButton = findViewById(R.id.backButton);
+        Button backButton = findViewById(R.id.backButton);
         if (backButton != null) {
             backButton.setOnClickListener(v -> {
                 Intent intent = new Intent(this, ParentHomeActivity.class);
@@ -222,7 +215,7 @@ public class MedicationInventoryActivity extends AppCompatActivity {
     }
 
     private void setNewMedButton() {
-        newMedButton = findViewById(R.id.newMedButton);
+        Button newMedButton = findViewById(R.id.newMedButton);
         if (newMedButton != null) {
             newMedButton.setOnClickListener(v -> {
                 Intent intent = new Intent(this, AddEditMedicationActivity.class);
@@ -278,17 +271,13 @@ public class MedicationInventoryActivity extends AppCompatActivity {
                                         // refresh list
                                         loadAllMedications();
                                     })
-                                    .addOnFailureListener(e -> {
-                                        Toast.makeText(this, "Failed to delete: "
-                                                + e.getMessage(), Toast.LENGTH_SHORT).show();
-                                    });
+                                    .addOnFailureListener(e -> Toast.makeText(this, "Failed to delete: "
+                                            + e.getMessage(), Toast.LENGTH_SHORT).show());
 
                         })
                         //allows user to leave notification set up till later
                         .setNegativeButton("Maybe Later", (dialog,
-                                                           which) -> {
-                            dialog.dismiss();
-                        })
+                                                           which) -> dialog.dismiss())
                         .setCancelable(false) //doesn't allow user to click out of the pop-up
                         // by clicking elsewhere
                         .show(); //makes constructed pop-up visible
@@ -323,7 +312,7 @@ public class MedicationInventoryActivity extends AppCompatActivity {
     }
 
     private void setNotifButton(){
-        notifButton = findViewById(R.id.buttonNotif);
+        Button notifButton = findViewById(R.id.buttonNotif);
         notifButton.setOnClickListener(this::onNotifClick);
 
     }

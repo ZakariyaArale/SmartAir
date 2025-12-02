@@ -26,6 +26,7 @@ public class Medication implements DateCalculations {
 
     private Date createdAt;
 
+    // ****** methods are used at gets and sets for Firebase ******
 
     public Medication() {
         //default constructor needed for firebase

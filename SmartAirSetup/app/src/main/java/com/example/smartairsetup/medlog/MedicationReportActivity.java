@@ -21,17 +21,12 @@ public class MedicationReportActivity extends AppCompatActivity {
     public static final String EXTRA_CHILD_ID = "extra_child_id";
     public static final String EXTRA_CHILD_NAME = "extra_child_name";
 
-    private FirebaseAuth mAuth;
     private FirebaseFirestore db;
 
-    private TextView textReportChildName;
-    private TextView textReportRange;
     private TextView textReportAdherence;
 
     private String parentUid;
     private String childId;
-    private String childName;
-    private Button backButton;
 
     private final SimpleDateFormat dateFormat =
             new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
@@ -41,11 +36,11 @@ public class MedicationReportActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_medication_report);
 
-        mAuth = FirebaseAuth.getInstance();
+        FirebaseAuth mAuth = FirebaseAuth.getInstance();
         db = FirebaseFirestore.getInstance();
 
         childId = getIntent().getStringExtra(EXTRA_CHILD_ID);
-        childName = getIntent().getStringExtra(EXTRA_CHILD_NAME);
+        String childName = getIntent().getStringExtra(EXTRA_CHILD_NAME);
 
         if (mAuth.getCurrentUser() == null || childId == null) {
             Toast.makeText(this, "Missing parent or child information", Toast.LENGTH_LONG).show();
@@ -54,10 +49,10 @@ public class MedicationReportActivity extends AppCompatActivity {
         }
         parentUid = mAuth.getCurrentUser().getUid();
 
-        textReportChildName = findViewById(R.id.textReportChildName);
-        textReportRange = findViewById(R.id.textReportRange);
+        TextView textReportChildName = findViewById(R.id.textReportChildName);
+        TextView textReportRange = findViewById(R.id.textReportRange);
         textReportAdherence = findViewById(R.id.textReportAdherence);
-        backButton = findViewById(R.id.backButton);
+        Button backButton = findViewById(R.id.backButton);
         backButton.setOnClickListener(v -> finish());
 
         textReportChildName.setText("Child: " + childName);

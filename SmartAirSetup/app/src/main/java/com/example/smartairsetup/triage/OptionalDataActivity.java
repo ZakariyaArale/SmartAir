@@ -23,7 +23,7 @@ import java.util.Map;
 
 public class OptionalDataActivity extends AppCompatActivity {
 
-    private Button chooseChildButton, saveButton, backButton, nextButton, recordMedicationButton;
+    private Button chooseChildButton;
     private EditText followUpInput, pefInput;
 
     private FirebaseFirestore db;
@@ -43,10 +43,10 @@ public class OptionalDataActivity extends AppCompatActivity {
         chooseChildButton = findViewById(R.id.chooseChildButton);
         followUpInput = findViewById(R.id.followUpInput);
         pefInput = findViewById(R.id.pefInput);
-        saveButton = findViewById(R.id.saveButton);
-        backButton = findViewById(R.id.backButton);
-        nextButton = findViewById(R.id.nextButton);
-        recordMedicationButton = findViewById(R.id.recordMedicationButton);
+        Button saveButton = findViewById(R.id.saveButton);
+        Button backButton = findViewById(R.id.backButton);
+        Button nextButton = findViewById(R.id.nextButton);
+        Button recordMedicationButton = findViewById(R.id.recordMedicationButton);
 
         db = FirebaseFirestore.getInstance();
 

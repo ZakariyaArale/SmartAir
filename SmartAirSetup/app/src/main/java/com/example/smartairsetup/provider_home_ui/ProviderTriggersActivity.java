@@ -27,7 +27,6 @@ public class ProviderTriggersActivity extends AppCompatActivity {
     private FirebaseFirestore db;
     private ListenerRegistration listener;
 
-    private TextView title;
     private TextView summary;
     private TextView empty;
     private ListView list;
@@ -52,7 +51,7 @@ public class ProviderTriggersActivity extends AppCompatActivity {
             return;
         }
 
-        title = findViewById(R.id.textTitle);
+        TextView title = findViewById(R.id.textTitle);
         summary = findViewById(R.id.textSummary);
         empty = findViewById(R.id.textEmpty);
         list = findViewById(R.id.listTriggers);

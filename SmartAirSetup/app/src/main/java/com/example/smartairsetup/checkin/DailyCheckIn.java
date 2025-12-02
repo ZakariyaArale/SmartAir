@@ -14,7 +14,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.smartairsetup.R;
-import com.example.smartairsetup.pef.UserID;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
 
@@ -33,7 +32,6 @@ public class DailyCheckIn extends AppCompatActivity {
     private RadioGroup radioCoughWheeze;
     private TextView textCheckInError;
     private Button buttonSubmit;
-    private Button buttonBack;
 
     private FirebaseAuth mAuth;
     private FirebaseFirestore db;
@@ -79,7 +77,7 @@ public class DailyCheckIn extends AppCompatActivity {
         radioCoughWheeze = findViewById(R.id.radioCoughWheeze);
         textCheckInError = findViewById(R.id.textCheckInError);
         buttonSubmit = findViewById(R.id.buttonSubmitCheckIn);
-        buttonBack = findViewById(R.id.buttonBack);
+        Button buttonBack = findViewById(R.id.buttonBack);
         checkTriggerExercise = findViewById(R.id.checkTriggerExercise);
         checkTriggerColdAir = findViewById(R.id.checkTriggerColdAir);
         checkTriggerDustPets = findViewById(R.id.checkTriggerDustPets);

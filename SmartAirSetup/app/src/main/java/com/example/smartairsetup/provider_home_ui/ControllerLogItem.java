@@ -51,7 +51,7 @@ public class ControllerLogItem {
         if (name == null) name = "Controller medication";
 
         // Dose fields: your flow uses DOSE_COUNT — most teams save it as doseCount.
-        String dose = null;
+        String dose;
         Long doseCount = doc.getLong("doseCount");
         if (doseCount == null) doseCount = doc.getLong("DOSE_COUNT");
 
@@ -62,13 +62,13 @@ public class ControllerLogItem {
         }
         if (dose == null) dose = "-";
 
-        Date takenAt = parseAnyTimestamp(doc, "timestamp");
+        Date takenAt = parseAnyTimestamp(doc);
 
         return new ControllerLogItem(name, dose, takenAt);
     }
 
-    private static Date parseAnyTimestamp(DocumentSnapshot doc, String field) {
-        Object raw = doc.get(field);
+    private static Date parseAnyTimestamp(DocumentSnapshot doc) {
+        Object raw = doc.get("timestamp");
         if (raw == null) raw = doc.get("takenAt");
 
         if (raw instanceof Timestamp) return ((Timestamp) raw).toDate();

@@ -10,7 +10,6 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.example.smartairsetup.child_home_ui.ChildHomeActivity;
 import com.example.smartairsetup.R;
 import com.example.smartairsetup.pef.PEFActivity;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -28,7 +27,6 @@ public class ZoneActivityChild extends AppCompatActivity {
     private String parentID;
 
     private String currentZone = null;
-    private TextView zoneLabel;
     private GradientDrawable background;
     private Button pefButton;
     private String childName;
@@ -38,7 +36,7 @@ public class ZoneActivityChild extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_zone_child);
 
-        zoneLabel = findViewById(R.id.zoneLabel);
+        TextView zoneLabel = findViewById(R.id.zoneLabel);
 
         background = (GradientDrawable) zoneLabel.getBackground();
 
@@ -59,9 +57,7 @@ public class ZoneActivityChild extends AppCompatActivity {
             return;
         }
 
-        backButton.setOnClickListener(v -> {
-            finish();
-        });
+        backButton.setOnClickListener(v -> finish());
 
 
 

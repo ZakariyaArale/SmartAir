@@ -17,6 +17,8 @@ import com.example.smartairsetup.login.MainActivity;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.*;
 
+import java.util.Objects;
+
 public class ProviderHomeActivity extends AppCompatActivity {
 
     private FirebaseAuth mAuth;
@@ -78,7 +80,7 @@ public class ProviderHomeActivity extends AppCompatActivity {
                         String childId = doc.getId();
 
                         String parentUid =
-                                doc.getReference().getParent().getParent().getId();
+                                Objects.requireNonNull(doc.getReference().getParent().getParent()).getId();
 
                         View row = inflater.inflate(R.layout.item_provider_child, container, false);
                         TextView nameTv = row.findViewById(R.id.textChildNameRow);

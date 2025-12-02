@@ -11,20 +11,16 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Toast;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.smartairsetup.R;
 import com.example.smartairsetup.parent_home_ui.ParentHomeActivity;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
-import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -46,8 +42,8 @@ public class ParentBadgeSettingsActivity extends AppCompatActivity {
 
     // Spinner data
     private ArrayAdapter<String> childrenAdapter;
-    private final List<String> childNames = new ArrayList<String>();
-    private final List<String> childIds = new ArrayList<String>();
+    private final List<String> childNames = new ArrayList<>();
+    private final List<String> childIds = new ArrayList<>();
 
     private String selectedChildId = null;
 
@@ -203,43 +199,38 @@ public class ParentBadgeSettingsActivity extends AppCompatActivity {
                 .document(childId)
                 .collection("badges");
 
-        badgesRef.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-            @Override
-            public void onComplete(
-                    @NonNull Task<QuerySnapshot> task
-            ) {
-                if (!task.isSuccessful()) {
-                    Toast.makeText(
-                            ParentBadgeSettingsActivity.this,
-                            "Failed to load badge goals.",
-                            Toast.LENGTH_SHORT
-                    ).show();
-                    return;
-                }
-
-                int techniqueTarget = 10;      // default
-                int lowRescueThreshold = 4;    // default
-
-                for (DocumentSnapshot doc : task.getResult()) {
-                    String badgeId = doc.getId();
-                    Long targetLong = doc.getLong("target");
-
-                    if (targetLong == null) {
-                        continue;
-                    }
-
-                    int target = targetLong.intValue();
-
-                    if ("technique_sessions".equals(badgeId)) {
-                        techniqueTarget = target;
-                    } else if ("low_rescue_month".equals(badgeId)) {
-                        lowRescueThreshold = target;
-                    }
-                }
-
-                editTechniqueSessions.setText(String.valueOf(techniqueTarget));
-                editLowRescueDays.setText(String.valueOf(lowRescueThreshold));
+        badgesRef.get().addOnCompleteListener(task -> {
+            if (!task.isSuccessful()) {
+                Toast.makeText(
+                        ParentBadgeSettingsActivity.this,
+                        "Failed to load badge goals.",
+                        Toast.LENGTH_SHORT
+                ).show();
+                return;
             }
+
+            int techniqueTarget = 10;      // default
+            int lowRescueThreshold = 4;    // default
+
+            for (DocumentSnapshot doc : task.getResult()) {
+                String badgeId = doc.getId();
+                Long targetLong = doc.getLong("target");
+
+                if (targetLong == null) {
+                    continue;
+                }
+
+                int target = targetLong.intValue();
+
+                if ("technique_sessions".equals(badgeId)) {
+                    techniqueTarget = target;
+                } else if ("low_rescue_month".equals(badgeId)) {
+                    lowRescueThreshold = target;
+                }
+            }
+
+            editTechniqueSessions.setText(String.valueOf(techniqueTarget));
+            editLowRescueDays.setText(String.valueOf(lowRescueThreshold));
         });
     }
 
@@ -295,10 +286,10 @@ public class ParentBadgeSettingsActivity extends AppCompatActivity {
                 .document(selectedChildId)
                 .collection("badges");
 
-        Map<String, Object> techniqueData = new HashMap<String, Object>();
+        Map<String, Object> techniqueData = new HashMap<>();
         techniqueData.put("target", techniqueTarget);
 
-        Map<String, Object> lowRescueData = new HashMap<String, Object>();
+        Map<String, Object> lowRescueData = new HashMap<>();
         lowRescueData.put("target", lowRescueThreshold);
 
         // Save both documents; show a single toast based on low_rescue_month write

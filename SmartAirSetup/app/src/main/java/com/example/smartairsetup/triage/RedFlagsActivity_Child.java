@@ -22,9 +22,6 @@ public class RedFlagsActivity_Child extends AppCompatActivity {
     private RadioGroup radioChestRetractions;
     private RadioGroup radioBlueLipsNails;
 
-    private Button backButton;
-    private Button nextButton;
-
     private String parentUid;
     private String childId;
 
@@ -55,8 +52,8 @@ public class RedFlagsActivity_Child extends AppCompatActivity {
         radioChestRetractions = findViewById(R.id.radioChestRetractions);
         radioBlueLipsNails = findViewById(R.id.radioBlueLipsNails);
 
-        backButton = findViewById(R.id.backButton);
-        nextButton = findViewById(R.id.nextButton);
+        Button backButton = findViewById(R.id.backButton);
+        Button nextButton = findViewById(R.id.nextButton);
 
         //Back button
         backButton.setOnClickListener(v -> {

@@ -10,16 +10,13 @@ import com.example.smartairsetup.onboarding.OnboardingActivity;
 
 public class MainActivity extends AppCompatActivity {
 
-    private Button buttonNewUser;
-    private Button buttonExistingUser;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        buttonNewUser = findViewById(R.id.buttonNewUser);
-        buttonExistingUser = findViewById(R.id.buttonExistingUser);
+        Button buttonNewUser = findViewById(R.id.buttonNewUser);
+        Button buttonExistingUser = findViewById(R.id.buttonExistingUser);
 
         buttonNewUser.setOnClickListener(v -> {
             Intent intent = new Intent(MainActivity.this, OnboardingActivity.class);

@@ -25,7 +25,8 @@ import java.util.Map;
 
 public class EmergencySelectorActivity extends AppCompatActivity {
 
-    private Button chooseChildButton, saveButton, backButton, nextButton, recordMedicationButton;
+    private Button chooseChildButton;
+    private Button recordMedicationButton;
     private EditText followUpInput;
 
     private FirebaseFirestore db;
@@ -44,9 +45,9 @@ public class EmergencySelectorActivity extends AppCompatActivity {
 
         chooseChildButton = findViewById(R.id.chooseChildButton);
         followUpInput = findViewById(R.id.followUpInput);
-        saveButton = findViewById(R.id.saveButton);
-        backButton = findViewById(R.id.backButton);
-        nextButton = findViewById(R.id.nextButton);
+        Button saveButton = findViewById(R.id.saveButton);
+        Button backButton = findViewById(R.id.backButton);
+        Button nextButton = findViewById(R.id.nextButton);
         recordMedicationButton = findViewById(R.id.recordMedicationButton);
 
         db = FirebaseFirestore.getInstance();
@@ -87,11 +88,7 @@ public class EmergencySelectorActivity extends AppCompatActivity {
             selectedChildUid = tag.toString();
             Intent intent = new Intent(EmergencySelectorActivity.this, RecordMedicationTriage.class);
             intent.putExtra("CHILD_ID", selectedChildUid);
-            //intent.putExtra("returnClass", EmergencySelectorActivity.this.getClass().getName());
             intent.putExtra("PARENT_UID", parentUid);
-            //intent.putExtra("cantSpeakFullSentences", cantSpeakFullSentences);
-            // intent.putExtra("chestRetractions", chestRetractions);
-            //intent.putExtra("blueLipsNails", blueLipsNails);
 
             Log.d("EmergencySelector", "Launching RecordMedicationTriage: childUid=" + selectedChildUid
                     + ", parentUid=" + parentUid

@@ -37,13 +37,13 @@ public class RescueLogItem {
                 doc.get("dose")
         );
 
-        Date takenAt = parseAnyTimestamp(doc, "timestamp");
+        Date takenAt = parseAnyTimestamp(doc);
 
         return new RescueLogItem(doc.getId(), medId, doseCount, takenAt);
     }
 
-    private static Date parseAnyTimestamp(DocumentSnapshot doc, String field) {
-        Object raw = doc.get(field);
+    private static Date parseAnyTimestamp(DocumentSnapshot doc) {
+        Object raw = doc.get("timestamp");
         if (raw == null) raw = doc.get("TIME_STAMP");
         if (raw == null) raw = doc.get("takenAt");
 

@@ -24,7 +24,6 @@ public class ProviderTriageIncidentsActivity extends AppCompatActivity {
     private FirebaseFirestore db;
     private ListenerRegistration listener;
 
-    private TextView title;
     private TextView textSummary;
     private TextView emptyText;
     private RecyclerView recycler;
@@ -49,7 +48,7 @@ public class ProviderTriageIncidentsActivity extends AppCompatActivity {
             return;
         }
 
-        title = findViewById(R.id.textTitle);
+        TextView title = findViewById(R.id.textTitle);
         textSummary = findViewById(R.id.textSummary);
         emptyText = findViewById(R.id.textEmpty);
         recycler = findViewById(R.id.recyclerTriage);

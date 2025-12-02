@@ -15,8 +15,8 @@ import java.util.List;
 
 public class MedicationAdapter extends RecyclerView.Adapter<MedicationAdapter.MedViewHolder> {
 
-    private List<ChildMedicationWrapper> meds;
-    private OnMedClickListener listener;
+    private final List<ChildMedicationWrapper> meds;
+    private final OnMedClickListener listener;
 
     private int selectedPosition = RecyclerView.NO_POSITION;
 
@@ -26,6 +26,7 @@ public class MedicationAdapter extends RecyclerView.Adapter<MedicationAdapter.Me
         this.listener = listener;
     }
 
+    @NonNull
     @Override
     public MedViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
 

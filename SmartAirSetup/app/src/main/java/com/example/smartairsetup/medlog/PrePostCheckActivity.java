@@ -38,7 +38,6 @@ public class PrePostCheckActivity extends AppCompatActivity {
     private int doseCount;
     private String medID;
 
-    private FirebaseAuth mAuth;
     private FirebaseFirestore db;
     private String parentUid;
 
@@ -56,7 +55,7 @@ public class PrePostCheckActivity extends AppCompatActivity {
             return insets;
         });
 
-        mAuth = FirebaseAuth.getInstance();
+        FirebaseAuth mAuth = FirebaseAuth.getInstance();
         db = FirebaseFirestore.getInstance();
         parentUid = mAuth.getCurrentUser() != null ? mAuth.getCurrentUser().getUid() : null;
 
