@@ -59,7 +59,7 @@
             android:name=".medlog.RecordMedUsageActivity"
             android:exported="false" />
         <activity
-            android:name=".checkin.PrePostCheckActivity"
+            android:name=".medlog.PrePostCheckActivity"
             android:exported="false" />
         <activity
             android:name=".triage.RecheckActivity"
@@ -216,7 +216,7 @@
             android:exported="false" />
 
         <receiver
-            android:name=".notifcation.NotificationReceiver"
+            android:name=".notification.NotificationReceiver"
             android:exported="true" />
 
         <provider

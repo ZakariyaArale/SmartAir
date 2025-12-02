@@ -22,8 +22,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 
-import com.example.smartairsetup.notifcation.NotificationPermissionsHelper;
-import com.example.smartairsetup.notifcation.NotificationReceiver;
+import com.example.smartairsetup.notification.NotificationPermissionsHelper;
+import com.example.smartairsetup.notification.NotificationReceiver;
 import com.example.smartairsetup.R;
 import com.example.smartairsetup.parent_home_ui.ParentHomeActivity;
 import com.google.firebase.auth.FirebaseAuth;

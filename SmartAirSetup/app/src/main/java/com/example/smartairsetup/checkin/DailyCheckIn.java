@@ -201,8 +201,4 @@ public class DailyCheckIn extends AppCompatActivity {
         return text;
     }
 
-    public static interface ChildFetchListener {
-        void onChildrenLoaded(List<UserID> children);
-        void onError(Exception e);
-    }
 }

@@ -9,6 +9,9 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.smartairsetup.notification.AlertHelper;
+import com.example.smartairsetup.notification.NotificationPermissionsHelper;
+import com.example.smartairsetup.notification.NotificationReceiver;
 import com.example.smartairsetup.parent_home_ui.ParentHomeActivity;
 import com.example.smartairsetup.R;
 
@@ -73,6 +76,19 @@ public class RedFlagsActivity extends AppCompatActivity {
             Intent intent;
             if (cantSpeakFullSentences || chestRetractions || blueLipsNails) {
                 intent = new Intent(this, EmergencyActivity.class);
+
+                if (!NotificationPermissionsHelper.ensureNotificationPermissions(this)) {
+                    return;
+                }
+                Intent intent2 = new Intent(this, NotificationReceiver.class);
+                intent2.putExtra(NotificationReceiver.EXTRA_TITLE, "CALL 911!");
+                intent2.putExtra(NotificationReceiver.EXTRA_MESSAGE, "Click Button Below to Call.");
+                intent2.putExtra(NotificationReceiver.EXTRA_ID, (int) System.currentTimeMillis());
+                sendBroadcast(intent2);
+
+
+
+
             } else {
                 intent = new Intent(this, OptionalDataActivity.class);
             }
