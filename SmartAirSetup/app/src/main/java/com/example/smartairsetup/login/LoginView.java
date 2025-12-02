@@ -10,4 +10,6 @@ public interface LoginView {
     void navigateToChildHome(String parentUid, String childId);
     void navigateToRoleHome(String role);
     void showToast(String message);
+
+    void navigateToChildOnboarding(String parentUid, String childDocId);
 }

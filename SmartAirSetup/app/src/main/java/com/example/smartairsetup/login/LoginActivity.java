@@ -10,6 +10,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.smartairsetup.child_home_ui.ChildHomeActivity;
+import com.example.smartairsetup.onboarding.OnboardingActivity;
 import com.example.smartairsetup.parent_home_ui.ParentHomeActivity;
 import com.example.smartairsetup.provider_home_ui.ProviderHomeActivity;
 import com.example.smartairsetup.R;
@@ -90,6 +91,17 @@ public class LoginActivity extends AppCompatActivity implements LoginView {
         startActivity(intent);
         finish();
     }
+
+    @Override
+    public void navigateToChildOnboarding(String parentUid, String childId) {
+        Intent intent = new Intent(this, OnboardingActivity.class);
+        intent.putExtra("PARENT_UID", parentUid);
+        intent.putExtra("CHILD_ID", childId);
+        intent.putExtra("firstTime", true);
+        startActivity(intent);
+        finish();
+    }
+
 
     @Override
     public void showToast(String message) {
