@@ -2,6 +2,7 @@ package com.example.smartairsetup.medlog;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.*;
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -14,9 +15,12 @@ import com.example.smartairsetup.child_home_ui.ChildHomeActivity;
 import com.example.smartairsetup.notification.AlertHelper;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class PrePostCheckActivity extends AppCompatActivity {
@@ -148,9 +152,6 @@ public class PrePostCheckActivity extends AppCompatActivity {
     }
 
 
-    // ------------------------------
-    // POST MODE LOGGING + ALERTS
-    // ------------------------------
     private void savePostLog() {
 
         timestampNow = System.currentTimeMillis();
@@ -203,29 +204,41 @@ public class PrePostCheckActivity extends AppCompatActivity {
                 });
     }
 
-    // ------------------------------
-    // RAPID RESCUE CHECK (3 IN 3H + BUFFER)
-    // ------------------------------
     private void checkRapidRescue() {
+
+        Log.d("RESCUE_DEBUG", "------------------------------------");
+        Log.d("RESCUE_DEBUG", "checkRapidRescue() CALLED");
+        Log.d("RESCUE_DEBUG", "childId = " + childId);
+        Log.d("RESCUE_DEBUG", "parentUid = " + parentUid);
+        Log.d("RESCUE_DEBUG", "timestampNow = " + timestampNow);
 
         long buffer = 10 * 1000; // 10-second buffer
         long cutoff = timestampNow - (3 * 60 * 60 * 1000) - buffer;
 
+
+
         db.collection("users").document(parentUid)
                 .collection("children").document(childId)
                 .collection("medLogs")
-                .whereEqualTo("isRescue", true)
-                .whereGreaterThanOrEqualTo("timestamp", cutoff)
+                .whereEqualTo("isRescue", true)  // single-field index is automatic
                 .get()
-                .addOnSuccessListener(snap -> {
+                .addOnSuccessListener(snapshot -> {
+                    List<DocumentSnapshot> recentRescues = new ArrayList<>();
 
-                    int count = snap.size();
 
-                    if (count >= 3) {
+                    for (DocumentSnapshot doc : snapshot) {
+                        Long ts = doc.getLong("timestamp");
+                        if (ts != null && ts >= cutoff) {
+                            recentRescues.add(doc);
+                        }
+                    }
+
+                    if (recentRescues.size() >= 3) {
                         AlertHelper.sendAlertToParent(parentUid, childId, "RESCUE_REPEATED", this);
                     }
                 });
     }
+
 
     private void updatePuffsLeft() {
         DocumentReference medRef = db.collection("users").document(parentUid)
