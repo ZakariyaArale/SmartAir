@@ -39,6 +39,7 @@ public class TechniqueTraining extends AppCompatActivity {
     private Button maskHintButton;
     private Button yesButton;
     private Button noButton;
+    private Button exitButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -72,6 +73,7 @@ public class TechniqueTraining extends AppCompatActivity {
         setMaskHintButton();
         setNoButton();
         setYesButton();
+        setExitButton();
 
         promptCount = 0;
         techniqueScore = 0;
@@ -92,9 +94,19 @@ public class TechniqueTraining extends AppCompatActivity {
         maskHintButton = findViewById(R.id.maskTipsButton);
         yesButton = findViewById(R.id.yesButton);
         noButton = findViewById(R.id.noButton);
+        exitButton = findViewById(R.id.techniqueExitButton);
 
     }
 
+    public void setExitButton() {
+        if (exitButton != null) {
+            exitButton.setOnClickListener(v -> {
+
+                finish();
+
+            });
+        }
+    }
 
     private void setVideoButton(){
 
