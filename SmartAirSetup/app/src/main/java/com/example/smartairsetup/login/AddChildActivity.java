@@ -177,6 +177,7 @@ public class AddChildActivity extends AppCompatActivity {
                     accountData.put("password", password);
                     accountData.put("parentUid", parentUid);
                     accountData.put("childDocId", childDocId);
+                    accountData.put("firstTime", true);
 
                     db.collection("childAccounts")
                             .document(username)
