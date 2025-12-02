@@ -17,6 +17,15 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.SmartAirSetup">
         <activity
+            android:name=".provider_home_ui.ProviderTriageIncidentsActivity"
+            android:exported="false" />
+        <activity
+            android:name=".provider_home_ui.ProviderTriggersActivity"
+            android:exported="false" />
+        <activity
+            android:name=".provider_home_ui.ProviderControllerSummaryActivity"
+            android:exported="false" />
+        <activity
             android:name=".provider_home_ui.ProviderChartsActivity"
             android:exported="false" />
         <activity

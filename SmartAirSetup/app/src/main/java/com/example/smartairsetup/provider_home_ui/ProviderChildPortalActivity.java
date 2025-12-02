@@ -46,10 +46,16 @@ public class ProviderChildPortalActivity extends AppCompatActivity {
         Button back = findViewById(R.id.backButton);
         back.setOnClickListener(v -> finish());
 
+        // Existing buttons
         Button btnRescue = findViewById(R.id.btnProviderRescueLogs);
         Button btnSymptoms = findViewById(R.id.btnProviderSymptoms);
         Button btnPEF = findViewById(R.id.btnProviderPEF);
         Button btnCharts = findViewById(R.id.btnProviderCharts);
+
+        // NEW buttons
+        Button btnController = findViewById(R.id.btnProviderControllerSummary);
+        Button btnTriggers = findViewById(R.id.btnProviderTriggers);
+        Button btnTriage = findViewById(R.id.btnProviderTriageIncidents);
 
         childDocRef = db.collection("users")
                 .document(parentUid)
@@ -64,10 +70,18 @@ public class ProviderChildPortalActivity extends AppCompatActivity {
             boolean sharePEF = Boolean.TRUE.equals(snap.getBoolean("sharePEF"));
             boolean shareCharts = Boolean.TRUE.equals(snap.getBoolean("shareSummaryCharts"));
 
+            boolean shareController = Boolean.TRUE.equals(snap.getBoolean("shareControllerSummary"));
+            boolean shareTriggers = Boolean.TRUE.equals(snap.getBoolean("shareTriggers"));
+            boolean shareTriage = Boolean.TRUE.equals(snap.getBoolean("shareTriageIncidents"));
+
             btnRescue.setVisibility(shareRescue ? View.VISIBLE : View.GONE);
             btnSymptoms.setVisibility(shareSymptoms ? View.VISIBLE : View.GONE);
             btnPEF.setVisibility(sharePEF ? View.VISIBLE : View.GONE);
             btnCharts.setVisibility(shareCharts ? View.VISIBLE : View.GONE);
+
+            btnController.setVisibility(shareController ? View.VISIBLE : View.GONE);
+            btnTriggers.setVisibility(shareTriggers ? View.VISIBLE : View.GONE);
+            btnTriage.setVisibility(shareTriage ? View.VISIBLE : View.GONE);
         });
 
         btnRescue.setOnClickListener(v -> {
@@ -96,6 +110,31 @@ public class ProviderChildPortalActivity extends AppCompatActivity {
 
         btnCharts.setOnClickListener(v -> {
             Intent i = new Intent(this, ProviderChartsActivity.class);
+            i.putExtra(EXTRA_PARENT_UID, parentUid);
+            i.putExtra(EXTRA_CHILD_ID, childId);
+            i.putExtra(EXTRA_CHILD_NAME, childName);
+            startActivity(i);
+        });
+
+        // NEW routes
+        btnController.setOnClickListener(v -> {
+            Intent i = new Intent(this, ProviderControllerSummaryActivity.class);
+            i.putExtra(EXTRA_PARENT_UID, parentUid);
+            i.putExtra(EXTRA_CHILD_ID, childId);
+            i.putExtra(EXTRA_CHILD_NAME, childName);
+            startActivity(i);
+        });
+
+        btnTriggers.setOnClickListener(v -> {
+            Intent i = new Intent(this, ProviderTriggersActivity.class);
+            i.putExtra(EXTRA_PARENT_UID, parentUid);
+            i.putExtra(EXTRA_CHILD_ID, childId);
+            i.putExtra(EXTRA_CHILD_NAME, childName);
+            startActivity(i);
+        });
+
+        btnTriage.setOnClickListener(v -> {
+            Intent i = new Intent(this, ProviderTriageIncidentsActivity.class);
             i.putExtra(EXTRA_PARENT_UID, parentUid);
             i.putExtra(EXTRA_CHILD_ID, childId);
             i.putExtra(EXTRA_CHILD_NAME, childName);
