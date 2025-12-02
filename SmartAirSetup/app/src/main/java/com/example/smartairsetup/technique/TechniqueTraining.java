@@ -39,6 +39,7 @@ public class TechniqueTraining extends AppCompatActivity {
     private Button maskHintButton;
     private Button yesButton;
     private Button noButton;
+    private Button exitButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,7 +64,7 @@ public class TechniqueTraining extends AppCompatActivity {
         }
 
         Intent intent = getIntent();
-        childId = getIntent().getStringExtra("CHILD_ID");
+        childId = intent.getStringExtra("CHILD_ID");
 
         setIds();
         setVideoButton();
@@ -72,6 +73,7 @@ public class TechniqueTraining extends AppCompatActivity {
         setMaskHintButton();
         setNoButton();
         setYesButton();
+        setExitButton();
 
         promptCount = 0;
         techniqueScore = 0;
@@ -92,9 +94,19 @@ public class TechniqueTraining extends AppCompatActivity {
         maskHintButton = findViewById(R.id.maskTipsButton);
         yesButton = findViewById(R.id.yesButton);
         noButton = findViewById(R.id.noButton);
+        exitButton = findViewById(R.id.techniqueExitButton);
 
     }
 
+    public void setExitButton() {
+        if (exitButton != null) {
+            exitButton.setOnClickListener(v -> {
+
+                finish();
+
+            });
+        }
+    }
 
     private void setVideoButton(){
 
@@ -192,7 +204,7 @@ public class TechniqueTraining extends AppCompatActivity {
                     startGoodTimer();
 
                 }else{
-                    if(goodZone == false){
+                    if(!goodZone){
                         techniqueScore--; //this means user didn't continue in the 30 - 60 second window
                     }
                     continueMode = false;

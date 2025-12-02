@@ -6,12 +6,14 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
+import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.smartairsetup.R;
+import com.example.smartairsetup.login.MainActivity;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.*;
 
@@ -38,10 +40,25 @@ public class ProviderHomeActivity extends AppCompatActivity {
 
         container = findViewById(com.example.smartairsetup.R.id.providerChildrenContainer);
 
+        Button buttonSignOut = findViewById(R.id.buttonSignOut);
+        buttonSignOut.setOnClickListener(v -> {
+            FirebaseAuth.getInstance().signOut();
+            Intent signOutIntent = new Intent(this, MainActivity.class);
+            // Make sure the user cannot go back to the main screen after signing out
+            signOutIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            startActivity(signOutIntent);
+            finish();
+        });
+
         loadSharedChildren();
     }
 
     private void loadSharedChildren() {
+        if (mAuth.getCurrentUser() == null) {
+            Toast.makeText(this, "Not signed in as provider.", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
         String providerUid = mAuth.getCurrentUser().getUid();
 
         db.collectionGroup("children")
@@ -54,19 +71,17 @@ public class ProviderHomeActivity extends AppCompatActivity {
                     if (snap == null) return;
 
                     container.removeAllViews();
-
                     LayoutInflater inflater = LayoutInflater.from(this);
 
                     for (DocumentSnapshot doc : snap.getDocuments()) {
                         String childName = doc.getString("name");
                         String childId = doc.getId();
 
-                        // users/{parentUid}/children/{childId}
-                        String parentUid = doc.getReference().getParent().getParent().getId();
+                        String parentUid =
+                                doc.getReference().getParent().getParent().getId();
 
-                        android.view.View row = inflater.inflate(com.example.smartairsetup.R.layout.item_provider_child, container, false);
-
-                        TextView nameTv = row.findViewById(com.example.smartairsetup.R.id.textChildNameRow);
+                        View row = inflater.inflate(R.layout.item_provider_child, container, false);
+                        TextView nameTv = row.findViewById(R.id.textChildNameRow);
                         Button viewBtn = row.findViewById(R.id.buttonViewChild);
 
                         nameTv.setText(childName != null ? childName : "(Unnamed child)");

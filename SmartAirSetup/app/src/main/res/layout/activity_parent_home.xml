@@ -359,6 +359,13 @@
                 android:background="@drawable/bg_shared_tag"
                 android:visibility="gone" />
 
+            <Button
+                android:id="@+id/buttonIncidentLogs"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                android:backgroundTint="@color/button_icon_color"
+                android:text="Incident Logs" />
         </LinearLayout>
     </ScrollView>
 

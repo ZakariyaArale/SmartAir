@@ -12,6 +12,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.smartairsetup.child_home_ui.ChildHomeActivity;
 import com.example.smartairsetup.R;
+import com.example.smartairsetup.pef.PEFActivity;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.Calendar;
@@ -28,6 +29,9 @@ public class ZoneActivityChild extends AppCompatActivity {
 
     private String currentZone = null;
     private TextView zoneLabel;
+    private GradientDrawable background;
+    private Button pefButton;
+    private String childName;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,9 +39,13 @@ public class ZoneActivityChild extends AppCompatActivity {
         setContentView(R.layout.activity_zone_child);
 
         zoneLabel = findViewById(R.id.zoneLabel);
+
+        background = (GradientDrawable) zoneLabel.getBackground();
+
         chooseChildButton = findViewById(R.id.chooseChildButton);
         backButton = findViewById(R.id.backButton);
-        GradientDrawable background = (GradientDrawable) zoneLabel.getBackground();
+        pefButton = findViewById(R.id.pefButton);
+
 
         db = FirebaseFirestore.getInstance();
 
@@ -51,19 +59,32 @@ public class ZoneActivityChild extends AppCompatActivity {
             return;
         }
 
-        loadChildInfo(background);
-
         backButton.setOnClickListener(v -> {
-            Intent intent = new Intent(this, ChildHomeActivity.class);
+            finish();
+        });
+
+
+
+    }
+
+    @Override
+    protected void onResume(){
+        super.onResume();
+        loadChildInfo();
+
+        pefButton.setOnClickListener(v -> {
+            Intent intent = new Intent(this, PEFActivity.class);
             if (childUid != null && !childUid.isEmpty()) {
                 intent.putExtra("CHILD_ID", childUid);
                 intent.putExtra("PARENT_UID", parentID);
+                intent.putExtra("mode", "child");
+                intent.putExtra("CHILD_NAME", childName);
             }
             startActivity(intent);
         });
     }
 
-    private void loadChildInfo(GradientDrawable background) {
+    private void loadChildInfo() {
         db.collection("users")
                 .document(parentID)
                 .collection("children")
@@ -121,7 +142,7 @@ public class ZoneActivityChild extends AppCompatActivity {
                                 String zone = latestDoc.getString("zone");
 
                                 if (zone != null) {
-                                    setZoneColor(zone, background);
+                                    setZoneColor(zone);
                                 } else {
                                     Long dailyPEF = latestDoc.getLong("dailyPEF");
                                     Long pb = latestDoc.getLong("pb");
@@ -129,9 +150,9 @@ public class ZoneActivityChild extends AppCompatActivity {
                                     if (dailyPEF != null && pb != null && dailyPEF > 0 && pb > 0) {
                                         double percentage = (double) dailyPEF / pb;
 
-                                        if (percentage >= 0.8) setZoneColor("GREEN", background);
-                                        else if (percentage >= 0.5) setZoneColor("YELLOW", background);
-                                        else setZoneColor("RED", background);
+                                        if (percentage >= 0.8) setZoneColor("GREEN");
+                                        else if (percentage >= 0.5) setZoneColor("YELLOW");
+                                        else setZoneColor("RED");
                                     } else {
                                         currentZone = null;
                                         background.setColor(Color.parseColor("#808080"));
@@ -141,7 +162,7 @@ public class ZoneActivityChild extends AppCompatActivity {
                 });
     }
 
-    private void setZoneColor(String zone, GradientDrawable background) {
+    private void setZoneColor(String zone) {
         currentZone = zone.toUpperCase();
 
         switch (currentZone) {

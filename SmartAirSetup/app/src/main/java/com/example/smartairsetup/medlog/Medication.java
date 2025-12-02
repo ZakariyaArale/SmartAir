@@ -1,7 +1,5 @@
 package com.example.smartairsetup.medlog;
 
-import com.example.smartairsetup.checkin.DateCalculations;
-
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Date;
