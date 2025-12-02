@@ -99,6 +99,14 @@
     <string name="safety_note">This is guidance, not a diagnosis. If in doubt, call an emergency.</string>
 
     <string name="technique">Use perfect inhaler technique 10 times.</string>
+    <string name="save_child">Save child</string>
+    <string name="confirm_child_password">Confirm child password</string>
+    <string name="date_of_birth_yyyy_mm_dd">Date of birth (YYYY-MM-DD)</string>
+    <string name="child_name">Child name</string>
+    <string name="notes_optional">Notes (optional)</string>
+    <string name="child_password">Child password</string>
+    <string name="add_child">Add child</string>
+    <string name="child_username">Child username</string>
 
 
 </resources>

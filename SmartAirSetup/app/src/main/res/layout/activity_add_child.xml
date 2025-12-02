@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -17,7 +18,8 @@
             android:id="@+id/textAddChildTitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Add child"
+            android:autofillHints=""
+            android:text="@string/add_child"
             android:textSize="24sp"
             android:textColor="#2E7D32"
             android:fontFamily="@font/nunito_regular"
@@ -29,61 +31,77 @@
             android:id="@+id/editChildUsername"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Child username"
-            android:inputType="text"
             android:background="@android:color/white"
-            android:padding="12dp" />
+            android:hint="@string/child_username"
+            android:inputType="text"
+            android:padding="12dp"
+            android:textColorHint="#757575"
+            tools:ignore="Autofill,VisualLintTextFieldSize" />
 
         <EditText
             android:id="@+id/editChildPassword"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Child password"
-            android:inputType="textPassword"
             android:layout_marginTop="12dp"
             android:background="@android:color/white"
-            android:padding="12dp" />
+            android:hint="@string/child_password"
+            android:inputType="textPassword"
+            android:padding="12dp"
+            android:textColorHint="#757575"
+            tools:ignore="Autofill,VisualLintTextFieldSize" />
 
         <EditText
             android:id="@+id/editChildConfirmPassword"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Confirm child password"
-            android:inputType="textPassword"
             android:layout_marginTop="12dp"
+            android:autofillHints=""
             android:background="@android:color/white"
-            android:padding="12dp" />
+            android:hint="@string/confirm_child_password"
+            android:inputType="textPassword"
+            android:padding="12dp"
+            android:textColorHint="#757575"
+            tools:ignore="VisualLintTextFieldSize" />
 
         <EditText
             android:id="@+id/editChildName"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Child name"
-            android:inputType="textPersonName"
             android:layout_marginTop="12dp"
+            android:autofillHints=""
             android:background="@android:color/white"
-            android:padding="12dp" />
+            android:hint="@string/child_name"
+            android:inputType="textPersonName"
+            android:padding="12dp"
+            android:textColorHint="#757575"
+            tools:ignore="VisualLintTextFieldSize" />
 
         <EditText
             android:id="@+id/editChildDob"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Date of birth (YYYY-MM-DD)"
-            android:inputType="date"
             android:layout_marginTop="12dp"
+            android:autofillHints=""
             android:background="@android:color/white"
-            android:padding="12dp" />
+            android:hint="@string/date_of_birth_yyyy_mm_dd"
+            android:importantForAutofill="no"
+            android:inputType="date"
+            android:padding="12dp"
+            android:textColorHint="#757575"
+            tools:ignore="VisualLintTextFieldSize" />
 
         <EditText
             android:id="@+id/editChildNotes"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Notes (optional)"
-            android:inputType="textMultiLine"
-            android:minLines="3"
             android:layout_marginTop="12dp"
             android:background="@android:color/white"
-            android:padding="12dp" />
+            android:hint="@string/notes_optional"
+            android:inputType="textMultiLine"
+            android:minLines="3"
+            android:padding="12dp"
+            android:textColorHint="#757575"
+            tools:ignore="Autofill,VisualLintTextFieldSize" />
 
         <TextView
             android:id="@+id/textChildError"
@@ -97,10 +115,11 @@
             android:id="@+id/buttonSaveChild"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Save child"
+            android:text="@string/save_child"
             android:layout_marginTop="24dp"
             android:backgroundTint="#2E7D32"
-            android:textColor="@android:color/white" />
+            android:textColor="@android:color/white"
+            tools:ignore="VisualLintButtonSize" />
 
         <Button
             android:id="@+id/backButton"
