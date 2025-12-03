@@ -48,7 +48,6 @@ public class RecheckActivity extends AppCompatActivity {
         RadioButton rb = findViewById(checkedId);
         String choice = rb.getText().toString().toLowerCase();
 
-        // If not improving OR red flag -> emergency
         boolean needsEmergency =
                 choice.contains("worse") ||
                         choice.contains("red flag") ||

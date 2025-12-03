@@ -50,7 +50,6 @@ public class OptionalDataActivity extends AppCompatActivity {
 
         db = FirebaseFirestore.getInstance();
 
-        // Retrieve extras from intent
         Intent incoming = getIntent();
         parentUid = incoming.getStringExtra("PARENT_UID");
         cantSpeakFullSentences = incoming.getBooleanExtra("cantSpeakFullSentences", false);
@@ -63,14 +62,12 @@ public class OptionalDataActivity extends AppCompatActivity {
             return;
         }
 
-        // Child selection dialog
         ProcessChildren provider = new FireBaseProcessChild();
         ChildDiaglog dialog = new ChildDiaglog(this, provider);
         chooseChildButton.setOnClickListener(v -> dialog.showSelectionDialog(chooseChildButton));
 
         saveButton.setOnClickListener(v -> saveTriageLog());
 
-        // Record Medication button -> passes parent UID and red flags
         recordMedicationButton.setOnClickListener(v -> {
             Object tag = chooseChildButton.getTag();
             if (tag == null) {
@@ -91,7 +88,6 @@ public class OptionalDataActivity extends AppCompatActivity {
             startActivity(intent);
         });
 
-        // Back button: sends parent UID + red flags back to previous activity
         backButton.setOnClickListener(v -> {
             Intent intent = new Intent(this, RedFlagsActivity.class);
             intent.putExtra("PARENT_UID", parentUid);
@@ -123,7 +119,6 @@ public class OptionalDataActivity extends AppCompatActivity {
 
             triageRef.get().addOnSuccessListener(doc -> {
 
-                // --- CASE 1: Today's triage exists and has a valid zone ---
                 if (doc.exists()) {
                     String triageZone = doc.getString("zone");
                     if (triageZone != null) {
@@ -132,7 +127,6 @@ public class OptionalDataActivity extends AppCompatActivity {
                     }
                 }
 
-                // --- CASE 2: No triage OR no zone -> fall back to PEF/latest ---
                 DocumentReference latestPEFRef = db.collection("users")
                         .document(parentUid)
                         .collection("children")
@@ -275,7 +269,6 @@ public class OptionalDataActivity extends AppCompatActivity {
                 return;
         }
 
-        // Pass required extras
         intent.putExtra("PARENT_UID", parentUid);
         intent.putExtra("CHILD_ID", selectedChildUid);
         intent.putExtra("cantSpeakFullSentences", cantSpeakFullSentences);

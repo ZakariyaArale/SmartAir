@@ -21,8 +21,6 @@ public class ZoneActivityChild extends AppCompatActivity {
     private Button chooseChildButton;
     public Button backButton;
     private FirebaseFirestore db;
-
-    // Receive these from intent
     private String childUid;
     private String parentID;
 
@@ -47,7 +45,6 @@ public class ZoneActivityChild extends AppCompatActivity {
 
         db = FirebaseFirestore.getInstance();
 
-        // Get childId and parentId from intent
         childUid = getIntent().getStringExtra("CHILD_ID");
         parentID = getIntent().getStringExtra("PARENT_UID");
 

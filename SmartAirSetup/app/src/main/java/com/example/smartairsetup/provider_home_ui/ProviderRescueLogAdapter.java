@@ -40,7 +40,6 @@ public class ProviderRescueLogAdapter extends RecyclerView.Adapter<ProviderRescu
                 : "Rescue medication";
         h.medName.setText(name);
 
-        // <-- IMPORTANT: now uses doseCount (int), not doseText
         h.dose.setText("Dose: " + (item.doseCount > 0 ? item.doseCount : "-"));
 
         if (item.takenAt != null) {

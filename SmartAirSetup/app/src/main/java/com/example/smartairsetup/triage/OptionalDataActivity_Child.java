@@ -28,8 +28,6 @@ public class OptionalDataActivity_Child extends AppCompatActivity {
     private FirebaseFirestore db;
     private String childId;
     private String parentUid;
-
-    // Red flags from previous screen
     private boolean cantSpeakFullSentences;
     private boolean chestRetractions;
     private boolean blueLipsNails;
@@ -48,7 +46,6 @@ public class OptionalDataActivity_Child extends AppCompatActivity {
 
         db = FirebaseFirestore.getInstance();
 
-        // Receive parentUid, childId, red flags
         intent = getIntent();
         parentUid = intent.getStringExtra("PARENT_UID");
         childId = intent.getStringExtra("CHILD_ID");
@@ -62,7 +59,6 @@ public class OptionalDataActivity_Child extends AppCompatActivity {
             return;
         }
 
-        // Fetch child name to show on button
         fetchChildName();
 
         saveButton.setOnClickListener(v -> saveTriageLog());

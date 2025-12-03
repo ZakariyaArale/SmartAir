@@ -45,7 +45,6 @@ public class YellowCardActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_yellow_card);
 
-        // --- READ DATA FROM INTENT ---
         int isChildFlag = getIntent().getIntExtra(EXTRA_IS_CHILD, 0); // default parent
         this.isChild = isChildFlag == 1;
 
@@ -56,20 +55,17 @@ public class YellowCardActivity extends AppCompatActivity {
         this.chestRetractions = getIntent().getBooleanExtra(EXTRA_RETRACTIONS, false);
         this.blueLipsNails = getIntent().getBooleanExtra(EXTRA_BLUE_LIPS, false);
 
-        // Validation
         if (parentUid == null || childUid == null) {
             Toast.makeText(this, "Missing parent or child UID", Toast.LENGTH_SHORT).show();
             finish();
             return;
         }
 
-        // --- UI ---
         textTimer = findViewById(R.id.buttonStartTimer);
         Button feelWorse = findViewById(R.id.buttonFeelWorse);
         Button backButton = findViewById(R.id.backButton);
         Button nextButton = findViewById(R.id.nextButton);
 
-        // --- BUTTONS ---
         feelWorse.setOnClickListener(v -> goToEmergency());
         backButton.setOnClickListener(v -> goBackToOptional());
 
@@ -81,14 +77,12 @@ public class YellowCardActivity extends AppCompatActivity {
             } else {
                 intent = new Intent(this, ParentHomeActivity.class);
             }
-            // Pass parent and child IDs
             intent.putExtra(EXTRA_PARENT_ID, parentUid);
             intent.putExtra(EXTRA_CHILD_UID, childUid);
             startActivity(intent);
             finish();
         });
 
-        // --- Recheck Handler ---
         recheckLauncher = registerForActivityResult(
                 new ActivityResultContracts.StartActivityForResult(),
                 result -> {
@@ -104,7 +98,6 @@ public class YellowCardActivity extends AppCompatActivity {
         startTenMinuteTimer();
     }
 
-    // --- TIMER ---
     private void startTenMinuteTimer() {
         updateTimerText(TEN_MIN_MS);
 
@@ -130,7 +123,6 @@ public class YellowCardActivity extends AppCompatActivity {
         textTimer.setText(String.format("%02d:%02d", minutes, seconds));
     }
 
-    // --- BUTTON LOGIC ---
     private void goToEmergency() {
         cancelTimer();
         Intent i = new Intent(this, isChild ? RedFlagsActivity_Child.class : RedFlagsActivity.class);
@@ -147,7 +139,6 @@ public class YellowCardActivity extends AppCompatActivity {
         finish();
     }
 
-    // --- UTILITY FOR PASSING COMMON DATA ---
     private void sendCommonData(Intent i) {
         i.putExtra(EXTRA_PARENT_ID, parentUid);
         i.putExtra(EXTRA_CHILD_UID, childUid);
