@@ -8,7 +8,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
  * Model for login screen (handles business logic), note some business logic relating to
  * db is in the model. This is the only way that we can do Junit tests for presenter
  */
-public class LoginModel {
+public class LoginModel implements Signin_Observer, Signin_Observer_Child {
 
     private final FirebaseAuth mAuth;
     private final FirebaseFirestore db;
@@ -79,17 +79,6 @@ public class LoginModel {
                         onFailure.onError(message);
                     }
                 });
-    }
-
-    // Callback are used to pass results back to the presenter, make sure data is sent correctly
-    public interface SignInCallback {
-        void onSuccess(String uid, String role);
-        void onFailure(String errorMessage);
-    }
-
-    public interface ChildSignInCallback {
-        void onSuccess(String parentUid, String childDocId, boolean firstTime);
-        void onFailure(String errorMessage);
     }
 
     public interface ErrorCallback {

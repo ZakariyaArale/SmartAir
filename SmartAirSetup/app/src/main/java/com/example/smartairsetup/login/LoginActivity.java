@@ -38,7 +38,7 @@ public class LoginActivity extends AppCompatActivity implements LoginView {
         textViewError = findViewById(R.id.textViewError);
         TextView textViewForgotPassword = findViewById(R.id.textViewForgotPassword);
 
-        presenter = new LoginPresenter(this, new LoginModel(), new AndroidEmailVerifier());
+        presenter = new LoginPresenter(this, new LoginModel(), new BuiltinEmailVerifier());
 
         buttonSignIn.setOnClickListener(v ->
                 presenter.handleSignIn(editTextIdentifier.getText().toString().trim(),

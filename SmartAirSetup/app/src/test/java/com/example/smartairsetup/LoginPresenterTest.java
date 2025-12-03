@@ -2,9 +2,11 @@ package com.example.smartairsetup;
 
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
+import org.mockito.junit.MockitoJUnitRunner;
+
 import static org.mockito.Mockito.*;
 
 import com.example.smartairsetup.login.EmailValidator;
@@ -12,213 +14,166 @@ import com.example.smartairsetup.login.LoginModel;
 import com.example.smartairsetup.login.LoginPresenter;
 import com.example.smartairsetup.login.LoginView;
 
-/**
- * Note that we've used ArgumentCaptor its a bit overkill but we've tested using branch coverage
- * approach
- */
+/** IMPORTANT: Video with Rawad uses older version of mockito. We have use the documentation and
+ * examples online to get it to work. Additionality since we used imports for email validation
+ * it would be tricky to test it using the Mockito methods learning in the MVP lec as such we used
+ * interfaces and classes to help with the presenters "buisness logic"
+ * */
+@RunWith(MockitoJUnitRunner.class)
 public class LoginPresenterTest {
 
     @Mock
-    private LoginView mockView;
+    private LoginView view;
 
     @Mock
-    private LoginModel mockModel;
+    private LoginModel model;
 
     @Mock
-    private EmailValidator mockEmailValidator;
+    private EmailValidator builtin_validator;
 
     private LoginPresenter presenter;
 
+    //This is a method that runs before each test cases
     @Before
     public void setUp() {
-        MockitoAnnotations.openMocks(this);
-        presenter = new LoginPresenter(mockView, mockModel, mockEmailValidator);
+        presenter = new LoginPresenter(view, model, builtin_validator);
     }
 
     @Test
     public void handleSignIn_emptyIdentifier_showsError() {
-        presenter.handleSignIn("", "pass1234");
-
-        verify(mockView).clearError();
-        verify(mockView).showError("Email or username is required");
-        verify(mockView, never()).enableSignInButton(anyBoolean());
+        presenter.handleSignIn("", "123456");
+        verify(view).clearError();
+        verify(view).showError("Email or username is required");
+        verify(view, never()).enableSignInButton(anyBoolean());
     }
 
     @Test
     public void handleSignIn_emptyPassword() {
-        presenter.handleSignIn("user@example.com", "");
-
-        verify(mockView).clearError();
-        verify(mockView).showError("Password is required");
-        verify(mockView, never()).enableSignInButton(anyBoolean());
+        presenter.handleSignIn("rawad@gmail.com", "");
+        verify(view).clearError();
+        verify(view).showError("Password is required");
+        verify(view, never()).enableSignInButton(anyBoolean());
     }
 
     @Test
     public void handleSignIn_invalidEmail() {
-        when(mockEmailValidator.isValid("bad@email")).thenReturn(false);
-
-        presenter.handleSignIn("invalid@email", "pass1234");
-
-        verify(mockView).clearError();
-        verify(mockView).enableSignInButton(false);
-        verify(mockView).showError("Enter a valid email");
+        when(builtin_validator.isValid("rawad@gmail.com")).thenReturn(false);
+        presenter.handleSignIn("rawad@gmail.com", "CSCB07");
+        verify(view).clearError();
+        verify(view).enableSignInButton(false);
+        verify(view).showError("Enter a valid email");
     }
 
     @Test
     public void handleSignIn_parent() {
-        when(mockEmailValidator.isValid("parent@email.com")).thenReturn(true);
-
-        ArgumentCaptor<LoginModel.SignInCallback> captor =
-                ArgumentCaptor.forClass(LoginModel.SignInCallback.class);
-
-        presenter.handleSignIn("parent@email.com", "pass1234");
-
-        verify(mockView).clearError();
-        verify(mockView).enableSignInButton(false);
-        verify(mockModel).signInParentOrProvider(eq("parent@email.com"),
-                eq("pass1234"), captor.capture());
-
-
-        captor.getValue().onSuccess("uid123", "roleParent");
-        verify(mockView).navigateToRoleHome("roleParent");
+        when(builtin_validator.isValid("rawad@gmail.com")).thenReturn(true);
+        ArgumentCaptor<LoginModel.SignInCallback> captor = ArgumentCaptor.forClass(LoginModel.SignInCallback.class);
+        presenter.handleSignIn("rawad@gmail.com", "CSCB07");
+        verify(view).clearError();
+        verify(view).enableSignInButton(false);
+        verify(model).signInParentOrProvider(eq("rawad@gmail.com"), eq("CSCB07"), captor.capture());
+        captor.getValue().onSuccess("id", "roleParent");
+        verify(view).navigateToRoleHome("roleParent");
     }
 
     @Test
     public void handleSignIn_parent_Failure() {
-        when(mockEmailValidator.isValid("parent@email.com")).thenReturn(true);
-
-        ArgumentCaptor<LoginModel.SignInCallback> captor =
-                ArgumentCaptor.forClass(LoginModel.SignInCallback.class);
-
-        presenter.handleSignIn("parent@email.com", "password");
-
-        verify(mockView).clearError();
-        verify(mockView).enableSignInButton(false);
-        verify(mockModel).signInParentOrProvider(eq("parent@email.com"), eq("password"), captor.capture());
-
-        // Failure case
+        when(builtin_validator.isValid("rawad@gmail.com")).thenReturn(true);
+        ArgumentCaptor<LoginModel.SignInCallback> captor = ArgumentCaptor.forClass(LoginModel.SignInCallback.class);
+        presenter.handleSignIn("rawad@gmail.com", "CSCB07");
+        verify(view).clearError();
+        verify(view).enableSignInButton(false);
+        verify(model).signInParentOrProvider(eq("rawad@gmail.com"), eq("CSCB07"), captor.capture());
         captor.getValue().onFailure("Sign in failed");
-        verify(mockView).enableSignInButton(true);
-        verify(mockView).showError("Sign in failed");
+        verify(view).enableSignInButton(true);
+        verify(view).showError("Sign in failed");
     }
-
 
     @Test
     public void handleSignIn_child_Onboarding() {
-        ArgumentCaptor<LoginModel.ChildSignInCallback> captor =
-                ArgumentCaptor.forClass(LoginModel.ChildSignInCallback.class);
-
-        presenter.handleSignIn("childUser", "password");
-
-        verify(mockView).clearError();
-        verify(mockView).enableSignInButton(false);
-        verify(mockModel).signInChild(eq("childUser"), eq("password"), captor.capture());
-
-        captor.getValue().onSuccess("parentUid123", "childDoc456", true);
-        verify(mockView).navigateToChildOnboarding("parentUid123", "childDoc456");
+        ArgumentCaptor<LoginModel.ChildSignInCallback> captor = ArgumentCaptor.forClass(LoginModel.ChildSignInCallback.class);
+        presenter.handleSignIn("Anna", "CSCB07");
+        verify(view).clearError();
+        verify(view).enableSignInButton(false);
+        verify(model).signInChild(eq("Anna"), eq("CSCB07"), captor.capture());
+        captor.getValue().onSuccess("pid", "cid", true);
+        verify(view).navigateToChildOnboarding("pid", "cid");
     }
 
     @Test
     public void handleSignIn_child_callsModelCallback() {
-        ArgumentCaptor<LoginModel.ChildSignInCallback> captor =
-                ArgumentCaptor.forClass(LoginModel.ChildSignInCallback.class);
+        ArgumentCaptor<LoginModel.ChildSignInCallback> captor = ArgumentCaptor.forClass(LoginModel.ChildSignInCallback.class);
+        presenter.handleSignIn("Anna", "CSCB07");
 
-        presenter.handleSignIn("childUser", "pass1234");
+        verify(view).clearError();
+        verify(view).enableSignInButton(false);
+        verify(model).signInChild(eq("Anna"), eq("CSCB07"), captor.capture());
 
-        verify(mockView).clearError();
-        verify(mockView).enableSignInButton(false);
-        verify(mockModel).signInChild(eq("childUser"), eq("pass1234"), captor.capture());
-
-        // firstTime = false
-        captor.getValue().onSuccess("parentUid123", "childDoc456", false);
-        verify(mockView).navigateToChildHome("parentUid123", "childDoc456");
+        captor.getValue().onSuccess("pid", "cid", false);
+        verify(view).navigateToChildHome("pid", "cid");
     }
 
     @Test
     public void handleSignIn_child_Failure() {
-        ArgumentCaptor<LoginModel.ChildSignInCallback> captor =
-                ArgumentCaptor.forClass(LoginModel.ChildSignInCallback.class);
-
-        presenter.handleSignIn("childUser", "password");
-
-        verify(mockView).clearError();
-        verify(mockView).enableSignInButton(false);
-        verify(mockModel).signInChild(eq("childUser"), eq("password"), captor.capture());
-
-        // Failure case
+        ArgumentCaptor<LoginModel.ChildSignInCallback> captor = ArgumentCaptor.forClass(LoginModel.ChildSignInCallback.class);
+        presenter.handleSignIn("Anna", "CSCA08");
+        verify(view).clearError();
+        verify(view).enableSignInButton(false);
+        verify(model).signInChild(eq("Anna"), eq("CSCA08"), captor.capture());
         captor.getValue().onFailure("Child sign in failed");
-        verify(mockView).enableSignInButton(true);
-        verify(mockView).showError("Child sign in failed");
+        verify(view).enableSignInButton(true);
+        verify(view).showError("Child sign in failed");
     }
-
 
     @Test
     public void handleForgotPassword_EmptyError() {
         presenter.handleForgotPassword("");
-
-        verify(mockView).clearError();
-        verify(mockView).showError("Enter your email to reset password");
-        verify(mockModel, never()).sendPasswordResetEmail(anyString(), any(), any());
+        verify(view).clearError();
+        verify(view).showError("Enter your email to reset password");
+        verify(model, never()).sendPasswordResetEmail(anyString(), any(), any());
     }
 
     @Test
     public void handleForgotPassword_NoEmailError() {
-        presenter.handleForgotPassword("childUser");
-
-        verify(mockView).clearError();
-        verify(mockView).showError("Password reset is only available for parent/provider emails.");
-        verify(mockModel, never()).sendPasswordResetEmail(anyString(), any(), any());
+        presenter.handleForgotPassword("Anna");
+        verify(view).clearError();
+        verify(view).showError("Password reset is only available for parent/provider emails.");
+        verify(model, never()).sendPasswordResetEmail(anyString(), any(), any());
     }
 
     @Test
     public void handleForgotPassword_InvalidEmail_showsError() {
-        when(mockEmailValidator.isValid("invalid@email")).thenReturn(false);
-
-        presenter.handleForgotPassword("invalid@email");
-
-        verify(mockView).clearError();
-        verify(mockView).showError("Enter a valid email");
-        verify(mockModel, never()).sendPasswordResetEmail(anyString(), any(), any());
+        when(builtin_validator.isValid("rawad@gmai.com")).thenReturn(false);
+        presenter.handleForgotPassword("rawad@gmai.com");
+        verify(view).clearError();
+        verify(view).showError("Enter a valid email");
+        verify(model, never()).sendPasswordResetEmail(anyString(), any(), any());
     }
 
     @Test
     public void handleForgotPasswordOnSuccess() {
-        when(mockEmailValidator.isValid("good@email.com")).thenReturn(true);
-
+        when(builtin_validator.isValid("rawad@gmai.com")).thenReturn(true);
         ArgumentCaptor<Runnable> successCaptor = ArgumentCaptor.forClass(Runnable.class);
-        ArgumentCaptor<LoginModel.ErrorCallback> errorCaptor =
-                ArgumentCaptor.forClass(LoginModel.ErrorCallback.class);
-
-        presenter.handleForgotPassword("good@email.com");
-
-        verify(mockView).clearError();
-        verify(mockModel).sendPasswordResetEmail(
-                eq("good@email.com"),
+        ArgumentCaptor<LoginModel.ErrorCallback> errorCaptor = ArgumentCaptor.forClass(LoginModel.ErrorCallback.class);
+        presenter.handleForgotPassword("rawad@gmai.com");
+        verify(view).clearError();
+        verify(model).sendPasswordResetEmail(
+                eq("rawad@gmai.com"),
                 successCaptor.capture(),
                 errorCaptor.capture()
         );
-
         successCaptor.getValue().run();
-        verify(mockView).showToast("Password reset email sent. Check your inbox.");
+        verify(view).showToast("Password reset email sent. Check your inbox.");
     }
 
     @Test
     public void handleForgotPasswordOnFailure() {
-        when(mockEmailValidator.isValid("good@email.com")).thenReturn(true);
-
+        when(builtin_validator.isValid("rawad@gmai.com")).thenReturn(true);
         ArgumentCaptor<Runnable> successCaptor = ArgumentCaptor.forClass(Runnable.class);
-        ArgumentCaptor<LoginModel.ErrorCallback> errorCaptor =
-                ArgumentCaptor.forClass(LoginModel.ErrorCallback.class);
-
-        presenter.handleForgotPassword("good@email.com");
-
-        verify(mockModel).sendPasswordResetEmail(
-                eq("good@email.com"),
-                successCaptor.capture(),
-                errorCaptor.capture()
-        );
-
+        ArgumentCaptor<LoginModel.ErrorCallback> errorCaptor = ArgumentCaptor.forClass(LoginModel.ErrorCallback.class);
+        presenter.handleForgotPassword("rawad@gmai.com");
+        verify(model).sendPasswordResetEmail(eq("rawad@gmai.com"), successCaptor.capture(), errorCaptor.capture());
         errorCaptor.getValue().onError("Reset failed");
-        verify(mockView).showError("Reset failed");
+        verify(view).showError("Reset failed");
     }
 }
