@@ -27,7 +27,6 @@ public class RedFlagsActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_red_flags);
 
-        // Receive parent UID from intent
         parentUid = getIntent().getStringExtra("PARENT_UID");
         if (parentUid == null) {
             Toast.makeText(this, "Missing parent ID", Toast.LENGTH_SHORT).show();
@@ -35,16 +34,13 @@ public class RedFlagsActivity extends AppCompatActivity {
             return;
         }
 
-        // Initialize RadioGroups
         radioSpeakFullSentences = findViewById(R.id.radioSpeakFullSentences);
         radioChestRetractions = findViewById(R.id.radioChestRetractions);
         radioBlueLipsNails = findViewById(R.id.radioBlueLipsNails);
 
-        // Initialize Buttons
         Button backButton = findViewById(R.id.backButton);
         Button nextButton = findViewById(R.id.nextButton);
 
-        // Back button simply finishes this activity
         backButton.setOnClickListener(v -> {
             Intent intent = new Intent(RedFlagsActivity.this, ParentHomeActivity.class);
             intent.putExtra("PARENT_UID", parentUid);
@@ -52,9 +48,7 @@ public class RedFlagsActivity extends AppCompatActivity {
             finish();
         });
 
-        // Next button
         nextButton.setOnClickListener(v -> {
-            // Ensure all questions answered
             if (radioSpeakFullSentences.getCheckedRadioButtonId() == -1 ||
                     radioChestRetractions.getCheckedRadioButtonId() == -1 ||
                     radioBlueLipsNails.getCheckedRadioButtonId() == -1) {
@@ -63,12 +57,10 @@ public class RedFlagsActivity extends AppCompatActivity {
                 return;
             }
 
-            // Check each radio button directly
             boolean cantSpeakFullSentences = ((RadioButton) findViewById(R.id.radioSpeakNo)).isChecked();
             boolean chestRetractions = ((RadioButton) findViewById(R.id.radioChestYes)).isChecked();
             boolean blueLipsNails = ((RadioButton) findViewById(R.id.radioBlueYes)).isChecked();
 
-            // Launch correct activity and pass parent UID
             Intent intent;
             if (cantSpeakFullSentences || chestRetractions || blueLipsNails) {
                 intent = new Intent(this, EmergencyActivity.class);
@@ -88,7 +80,6 @@ public class RedFlagsActivity extends AppCompatActivity {
             } else {
                 intent = new Intent(this, OptionalDataActivity.class);
             }
-            // Pass the parent UID along
             intent.putExtra("PARENT_UID", parentUid);
             intent.putExtra("cantSpeakFullSentences", cantSpeakFullSentences);
             intent.putExtra("chestRetractions", chestRetractions);

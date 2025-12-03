@@ -27,7 +27,6 @@ public class RecordMedicationTriage extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_triage_medication);
 
-        // Retrieve extras
         Intent incoming = getIntent();
         childUid = incoming.getStringExtra("CHILD_ID");
         parentUid = incoming.getStringExtra("PARENT_UID");
@@ -46,14 +45,11 @@ public class RecordMedicationTriage extends AppCompatActivity {
         Button saveButton = findViewById(R.id.saveButton);
         Button backButton = findViewById(R.id.backButton);
 
-        // Medication selection dialog
         MedicationDialog dialog = new MedicationDialog(this, new FireBaseProcessMedication(parentUid,childUid));
         chooseMedButton.setOnClickListener(v -> dialog.showSelectionDialog(chooseMedButton));
 
-        // Save button
         saveButton.setOnClickListener(v -> saveMedication(chooseMedButton, doseInput));
 
-        // Back button: sends parent UID and red flags back
         backButton.setOnClickListener(v -> finish());
     }
 
@@ -83,8 +79,6 @@ public class RecordMedicationTriage extends AppCompatActivity {
 
         long now = System.currentTimeMillis();
 
-        // Make a med log to keep track of medication usage
-        // fetch isRescue
         db.collection("users")
                 .document(parentUid)
                 .collection("children")
@@ -99,21 +93,18 @@ public class RecordMedicationTriage extends AppCompatActivity {
                         isRescue = Boolean.TRUE.equals(doc.getBoolean("isRescue"));
                     }
 
-                    // Build medLog entry
                     Map<String, Object> medLog = new HashMap<>();
                     medLog.put("timestamp", now);
                     medLog.put("doseCount", doseTaken);
                     medLog.put("medId", medUUID);
                     medLog.put("childId", childUid);
 
-                    // triage has no pre/post feelings, so default values used
                     medLog.put("preFeeling", -1);
                     medLog.put("postFeeling", -1);
                     medLog.put("feelingChange", "N/A");
 
                     medLog.put("isRescue", isRescue);
 
-                    // Save inside medLogs collection
                     db.collection("users")
                             .document(parentUid)
                             .collection("children")
@@ -128,7 +119,6 @@ public class RecordMedicationTriage extends AppCompatActivity {
                             );
                 });
 
-        //updates puff count
         DocumentReference medRef = db.collection("users")
                 .document(parentUid)
                 .collection("children")

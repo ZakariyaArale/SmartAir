@@ -30,7 +30,6 @@ public class RedFlagsActivity_Child extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_red_flags_child);
 
-        //Retrieve intent data
         parentUid = getIntent().getStringExtra("PARENT_UID");
         childId = getIntent().getStringExtra("CHILD_ID");
 
@@ -47,7 +46,6 @@ public class RedFlagsActivity_Child extends AppCompatActivity {
             return;
         }
 
-        //Initialize UI elements
         radioSpeakFullSentences = findViewById(R.id.radioSpeakFullSentences);
         radioChestRetractions = findViewById(R.id.radioChestRetractions);
         radioBlueLipsNails = findViewById(R.id.radioBlueLipsNails);
@@ -55,7 +53,6 @@ public class RedFlagsActivity_Child extends AppCompatActivity {
         Button backButton = findViewById(R.id.backButton);
         Button nextButton = findViewById(R.id.nextButton);
 
-        //Back button
         backButton.setOnClickListener(v -> {
             Intent intent = new Intent(this, ChildHomeActivity.class);
             intent.putExtra("PARENT_UID", parentUid);
@@ -64,7 +61,6 @@ public class RedFlagsActivity_Child extends AppCompatActivity {
             finish();
         });
 
-        //Next button
         nextButton.setOnClickListener(v -> handleNextClicked());
     }
 
@@ -79,12 +75,10 @@ public class RedFlagsActivity_Child extends AppCompatActivity {
             return;
         }
 
-        // Extract boolean answers
         boolean cantSpeakFullSentences = ((RadioButton) findViewById(R.id.radioSpeakNo)).isChecked();
         boolean chestRetractions = ((RadioButton) findViewById(R.id.radioChestYes)).isChecked();
         boolean blueLipsNails = ((RadioButton) findViewById(R.id.radioBlueYes)).isChecked();
 
-        // Decide next screen
         Intent intent;
         if (cantSpeakFullSentences || chestRetractions || blueLipsNails) {
             intent = new Intent(this, EmergencyActivity_Child.class);
@@ -93,7 +87,6 @@ public class RedFlagsActivity_Child extends AppCompatActivity {
             intent = new Intent(this, OptionalDataActivity_Child.class);
         }
 
-        // Pass required data forward
         intent.putExtra("PARENT_UID", parentUid);
         intent.putExtra("CHILD_ID", childId); // <-- consistent key
         intent.putExtra("cantSpeakFullSentences", cantSpeakFullSentences);
