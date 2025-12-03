@@ -77,7 +77,7 @@ public class EmergencySelectorActivity extends AppCompatActivity {
 
         });
 
-        // Record Medication button → passes returnClass dynamically
+        // Record Medication button -> passes returnClass dynamically
         recordMedicationButton.setOnClickListener(v -> {
             Object tag = chooseChildButton.getTag();
             if (tag == null) {
@@ -98,7 +98,7 @@ public class EmergencySelectorActivity extends AppCompatActivity {
             startActivity(intent);
         });
 
-        // Back button → return to EmergencyActivity with parent UID + red flags
+        // Back button -> return to EmergencyActivity with parent UID + red flags
         backButton.setOnClickListener(v -> {
             Intent intent = new Intent(this, EmergencyActivity.class);
             intent.putExtra("PARENT_UID", parentUid);
@@ -108,7 +108,7 @@ public class EmergencySelectorActivity extends AppCompatActivity {
             startActivity(intent);
         });
 
-        // Next button → placeholder, can extend for next workflow
+        // Next button -> placeholder, can extend for next workflow
         nextButton.setOnClickListener(v -> {
             Intent intent = new Intent(this, ParentHomeActivity.class);
             startActivity(intent);

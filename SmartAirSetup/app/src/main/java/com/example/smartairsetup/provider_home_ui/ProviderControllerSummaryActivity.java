@@ -113,13 +113,11 @@ public class ProviderControllerSummaryActivity extends AppCompatActivity {
                     onDone.run();
                 })
                 .addOnFailureListener(e -> {
-                    // Not fatal; we can still show logs (med name may be generic)
                     onDone.run();
                 });
     }
 
     private void listenForControllerLogs(String parentUid, String childId) {
-        // If you ever see “requires an index”, click the console link and create it.
         listener = db.collection("users")
                 .document(parentUid)
                 .collection("children")
@@ -146,7 +144,6 @@ public class ProviderControllerSummaryActivity extends AppCompatActivity {
 
                     Date lastTaken = null;
 
-                    // Protect against duplicate docs (rare, but can happen if you accidentally add twice)
                     Set<String> seenIds = new HashSet<>();
 
                     for (var doc : snap.getDocuments()) {

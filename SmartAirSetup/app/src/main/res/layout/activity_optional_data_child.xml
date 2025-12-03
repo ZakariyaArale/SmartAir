@@ -64,7 +64,6 @@
     </LinearLayout>
 
     <!-- Follow-Up Notes -->
-    <!-- Follow-Up Notes -->
     <LinearLayout
         android:id="@+id/emergencyNotesSection"
         android:layout_width="0dp"
@@ -101,8 +100,6 @@
             android:padding="8dp"
             android:textSize="16sp"/>
     </LinearLayout>
-
-    <!-- Optional PEF Section -->
 
     <!-- Save Button -->
 

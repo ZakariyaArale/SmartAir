@@ -56,9 +56,11 @@ public class ChildHomeActivity extends AbstractNavigation {
         Intent intent = getIntent();
         FirebaseUser currentUser = mAuth.getCurrentUser();
 
+        // Case 1: parent/provider logged in with FirebaseAuth
         if (currentUser != null) {
             parentUid = currentUser.getUid();
         }
+        // Case 2: child login (no FirebaseAuth user, rely on intent extras)
         else if (intent != null) {
             parentUid = intent.getStringExtra("PARENT_UID");
         }
@@ -68,6 +70,7 @@ public class ChildHomeActivity extends AbstractNavigation {
             return;
         }
 
+        // Child id is always passed via intent
         if (intent != null) {
             childID = intent.getStringExtra("CHILD_ID");
             if (childID == null || childID.isEmpty()) {
@@ -93,6 +96,7 @@ public class ChildHomeActivity extends AbstractNavigation {
                         for (QueryDocumentSnapshot doc : querySnapshot) {
                             Boolean firstTime = doc.getBoolean("firstTime");
                             if (firstTime != null && firstTime) {
+                                // Update firstTime to false
                                 doc.getReference()
                                         .update("firstTime", false)
                                         .addOnSuccessListener(aVoid ->
@@ -100,6 +104,7 @@ public class ChildHomeActivity extends AbstractNavigation {
                                         .addOnFailureListener(e ->
                                                 Log.e("ChildHome", "Failed to update firstTime", e));
 
+                                // Optional: notify the child
                                 Toast.makeText(this, "Welcome! First time setup.", Toast.LENGTH_SHORT).show();
                             }
                         }

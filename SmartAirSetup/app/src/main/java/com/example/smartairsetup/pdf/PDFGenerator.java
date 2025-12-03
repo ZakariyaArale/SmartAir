@@ -182,7 +182,6 @@ public class PDFGenerator {
                         endTimestamp
                 );
 
-                // --- NEW: Symptom burden summary (problem days) ---
                 String symptomBurdenSummary = buildSymptomBurdenSummary(
                         parentID,
                         childID,
@@ -296,7 +295,7 @@ public class PDFGenerator {
         document.add(new Paragraph("Email: " + parentEmail));
         document.add(new Paragraph("\n"));
 
-        // 3. Rescue Frequency & Controller Adherence
+        // Rescue Frequency & Controller Adherence
         document.add(new Paragraph("3. Rescue Frequency & Controller Adherence", font));
         if (shareRescueLogs || shareControllerSummary) {
             if (rescueControllerSummary == null || rescueControllerSummary.trim().isEmpty()) {
@@ -309,7 +308,7 @@ public class PDFGenerator {
         }
         document.add(new Paragraph("\n"));
 
-        // 4. Symptom Burden (Problem Days)
+        // Symptom Burden (Problem Days)
         document.add(new Paragraph("4. Symptom Burden (Problem Days)", font));
         if (shareSymptoms) {
             if (symptomBurdenSummary == null || symptomBurdenSummary.trim().isEmpty()) {
@@ -322,7 +321,7 @@ public class PDFGenerator {
         }
         document.add(new Paragraph("\n"));
 
-        // 5. Zone Distribution (PEF)
+        // Zone Distribution (PEF)
         document.add(new Paragraph("5. Zone Distribution (PEF)", font));
         if (sharePEF) {
             document.add(new Paragraph(zoneTable));
@@ -331,7 +330,7 @@ public class PDFGenerator {
         }
         document.add(new Paragraph("\n"));
 
-        // 6. Noticeable Triage Events
+        // Noticeable Triage Events
         document.add(new Paragraph("6. Noticeable Triage Events", font));
         if (shareTriageIncidents) {
             if (triageEvents == null || triageEvents.isEmpty()) {

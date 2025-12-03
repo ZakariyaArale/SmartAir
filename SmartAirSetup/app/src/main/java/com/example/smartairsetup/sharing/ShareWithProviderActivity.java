@@ -76,7 +76,6 @@ public class ShareWithProviderActivity extends AppCompatActivity {
         Button backButton = findViewById(com.example.smartairsetup.R.id.backButton);
         backButton.setOnClickListener(v -> finish());
 
-        // NEW: provider binding
         editProviderEmail = findViewById(com.example.smartairsetup.R.id.editProviderEmail);
         buttonAddProvider = findViewById(com.example.smartairsetup.R.id.buttonAddProvider);
 

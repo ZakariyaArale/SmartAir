@@ -13,7 +13,6 @@ public class RescueLogItem {
     public final int doseCount;
     public final Date takenAt;
 
-    // hydrated later from /medications/{medId}
     public String medName = "Rescue medication";
 
     public RescueLogItem(String logId, String medId, int doseCount, Date takenAt) {

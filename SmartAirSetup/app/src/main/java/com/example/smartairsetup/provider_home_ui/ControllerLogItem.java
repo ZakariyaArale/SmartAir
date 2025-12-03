@@ -50,7 +50,7 @@ public class ControllerLogItem {
         }
         if (name == null) name = "Controller medication";
 
-        // Dose fields: your flow uses DOSE_COUNT — most teams save it as doseCount.
+        // Dose fields
         String dose;
         Long doseCount = doc.getLong("doseCount");
         if (doseCount == null) doseCount = doc.getLong("DOSE_COUNT");

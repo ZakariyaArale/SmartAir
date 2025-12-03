@@ -29,8 +29,6 @@ public class LoginPresenter {
             return;
         }
 
-        // 🔥 Removed strong password validation completely
-
         view.enableSignInButton(false);
 
         if (identifier.contains("@")) {

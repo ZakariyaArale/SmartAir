@@ -37,7 +37,7 @@ public class ProviderChartsActivity extends AppCompatActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_symptom_trend); // reuse same layout
+        setContentView(R.layout.activity_symptom_trend);
 
         db = FirebaseFirestore.getInstance();
 

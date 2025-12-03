@@ -9,13 +9,6 @@
     android:background="#DFF3FF"
     tools:context=".badges.ParentBadgeSettingsActivity">
 
-    <!-- Top bar: Child selection + Back button -->
-
-    <!-- Title -->
-
-    <!-- High-quality technique sessions target -->
-
-    <!-- Low rescue month (≤ X rescue days / 30 days) -->
 
     <!-- Save button -->
     <EditText
