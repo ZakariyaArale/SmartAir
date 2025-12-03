@@ -9,10 +9,6 @@ public class OptionalEntry {
         this.pefTriage = pefTriage;
     }
 
-    public int getRescueAttempts() {
-        return rescueAttempts;
-    }
-    public int getPefTriage() {
-        return pefTriage;
-    }
+    public int getRescueAttempts() { return rescueAttempts; }
+    public int getPefTriage() { return pefTriage; }
 }

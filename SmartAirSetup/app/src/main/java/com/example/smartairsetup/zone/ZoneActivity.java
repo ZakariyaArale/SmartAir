@@ -26,10 +26,11 @@ public class ZoneActivity extends AppCompatActivity {
     public Button backButton;
     public TextView zoneLabel;
     private FirebaseFirestore db;
-    private String parentID;
+    private String parentID; // parent UID received from intent
 
+    // Track current state
     private String selectedChildUid = null;
-    private String currentZone = null;
+    private String currentZone = null; // "GREEN"/"YELLOW"/"RED"
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,6 +44,7 @@ public class ZoneActivity extends AppCompatActivity {
         background.setColor(Color.parseColor("#808080"));
         db = FirebaseFirestore.getInstance();
 
+        // Get parent UID from intent
         if (getIntent() != null && getIntent().hasExtra("PARENT_UID")) {
             parentID = getIntent().getStringExtra("PARENT_UID");
         } else {
@@ -54,13 +56,16 @@ public class ZoneActivity extends AppCompatActivity {
         ProcessChildren provider = new FireBaseProcessChild();
         ChildDiaglog childDiaglog = new ChildDiaglog(this, provider);
 
+        // Choose child button
         chooseChildButton.setOnClickListener(v -> childDiaglog.showSelectionDialog(chooseChildButton));
 
+        // Back button just finishes the activity
         backButton.setOnClickListener(v -> {
             Intent intent = new Intent(this, ParentHomeActivity.class);
             startActivity(intent);
         });
 
+        // Zone label click shows current zone info
         zoneLabel.setOnClickListener(v -> {
             if (selectedChildUid == null) {
                 Toast.makeText(this, "Select a child first.", Toast.LENGTH_SHORT).show();
@@ -73,6 +78,7 @@ public class ZoneActivity extends AppCompatActivity {
             Toast.makeText(this, "Current zone: " + currentZone, Toast.LENGTH_SHORT).show();
         });
 
+        // If a child is already selected, update immediately
         Object tag = chooseChildButton.getTag();
         if (tag != null) {
             selectedChildUid = tag.toString();
