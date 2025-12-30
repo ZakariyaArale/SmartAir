@@ -263,7 +263,6 @@ Sorts display by decending timestamp.
 
 ## Contributors
 
-* Team name: **Smart Air – Group 67**
 * Course: **CSCB07 – Software Design (Fall 2025)**
 * Members:
 
